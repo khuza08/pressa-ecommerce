@@ -37,13 +37,6 @@ export default function Header() {
 
   return (
     <>
-      {/* Mobile Menu Overlay */}
-      {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
-          onClick={() => setMobileMenuOpen(false)}
-        ></div>
-      )}
 
       <header className="sticky top-0 z-50 bg-white">
         {/* Top Bar */}
@@ -167,195 +160,204 @@ export default function Header() {
         </nav>
       </header>
 
-      {/* Mobile Drawer Menu (Sidebar) */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden bg-white overflow-y-auto pb-16">
-          <div className="p-4 flex justify-between items-center border-b">
-            <h2 className="text-lg font-bold text-black">Menu</h2>
-            <button
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-black"
-              aria-label="Close menu"
-            >
-              <FiX className="text-2xl" />
-            </button>
+      {/* Mobile Drawer Menu (Sidebar from Left) */}
+{mobileMenuOpen && (
+  <>
+    {/* Blurred Overlay */}
+    <div
+      className="fixed inset-0 z-40 bg-opacity-30 backdrop-blur-xl lg:hidden"
+      onClick={() => setMobileMenuOpen(false)}
+    ></div>
+
+    {/* Sidebar */}
+    <div className="fixed top-0 left-0 z-50 h-full w-80 max-w-[80vw] bg-white shadow-lg lg:hidden overflow-y-auto">
+            <div className="p-4 flex justify-between items-center border-b">
+              <h2 className="text-lg font-bold text-black">Menu</h2>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-black"
+                aria-label="Close menu"
+              >
+                <FiX className="text-2xl" />
+              </button>
+            </div>
+
+            <ul className="p-4 space-y-4">
+              <li>
+                <a href="#" className="block py-2 font-medium text-black">
+                  Home
+                </a>
+              </li>
+
+              {/* Men's Accordion */}
+              <li>
+                <button
+                  className="flex justify-between items-center w-full py-2 font-medium text-black"
+                  onClick={() => toggleAccordion("mens")}
+                >
+                  <span>Men's</span>
+                  {openAccordion === "mens" ? (
+                    <FiMinus className="text-lg" />
+                  ) : (
+                    <FiPlus className="text-lg" />
+                  )}
+                </button>
+                {openAccordion === "mens" && (
+                  <ul className="pl-4 mt-2 space-y-2 text-black">
+                    <li>
+                      <a href="#" className="block py-1">
+                        Shirt
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Shorts & Jeans
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Safety Shoes
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Wallet
+                      </a>
+                    </li>
+                  </ul>
+                )}
+              </li>
+
+              {/* Women's Accordion */}
+              <li>
+                <button
+                  className="flex justify-between items-center w-full py-2 font-medium text-black"
+                  onClick={() => toggleAccordion("womens")}
+                >
+                  <span>Women's</span>
+                  {openAccordion === "womens" ? (
+                    <FiMinus className="text-lg" />
+                  ) : (
+                    <FiPlus className="text-lg" />
+                  )}
+                </button>
+                {openAccordion === "womens" && (
+                  <ul className="pl-4 mt-2 space-y-2 text-black">
+                    <li>
+                      <a href="#" className="block py-1">
+                        Dress & Frock
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Earrings
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Necklace
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Makeup Kit
+                      </a>
+                    </li>
+                  </ul>
+                )}
+              </li>
+
+              {/* Jewelry Accordion */}
+              <li>
+                <button
+                  className="flex justify-between items-center w-full py-2 font-medium text-black"
+                  onClick={() => toggleAccordion("jewelry")}
+                >
+                  <span>Jewelry</span>
+                  {openAccordion === "jewelry" ? (
+                    <FiMinus className="text-lg" />
+                  ) : (
+                    <FiPlus className="text-lg" />
+                  )}
+                </button>
+                {openAccordion === "jewelry" && (
+                  <ul className="pl-4 mt-2 space-y-2 text-gray-600">
+                    <li>
+                      <a href="#" className="block py-1">
+                        Earrings
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Couple Rings
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Necklace
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Bracelets
+                      </a>
+                    </li>
+                  </ul>
+                )}
+              </li>
+
+              {/* Perfume Accordion */}
+              <li>
+                <button
+                  className="flex justify-between items-center w-full py-2 font-medium text-black"
+                  onClick={() => toggleAccordion("perfume")}
+                >
+                  <span>Perfume</span>
+                  {openAccordion === "perfume" ? (
+                    <FiMinus className="text-lg" />
+                  ) : (
+                    <FiPlus className="text-lg" />
+                  )}
+                </button>
+                {openAccordion === "perfume" && (
+                  <ul className="pl-4 mt-2 space-y-2 text-gray-600">
+                    <li>
+                      <a href="#" className="block py-1">
+                        Clothes Perfume
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Deodorant
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Flower Fragrance
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Air Freshener
+                      </a>
+                    </li>
+                  </ul>
+                )}
+              </li>
+
+              <li>
+                <a href="#" className="block py-2 font-medium">
+                  Blog
+                </a>
+              </li>
+              <li>
+                <a href="#" className="block py-2 font-medium">
+                  Hot Offers
+                </a>
+              </li>
+            </ul>
           </div>
-
-          <ul className="p-4 space-y-4">
-            <li>
-              <a href="#" className="block py-2 font-medium text-black">
-                Home
-              </a>
-            </li>
-
-            {/* Men's Accordion */}
-            <li>
-              <button
-                className="flex justify-between items-center w-full py-2 font-medium text-black"
-                onClick={() => toggleAccordion("mens")}
-              >
-                <span>Men's</span>
-                {openAccordion === "mens" ? (
-                  <FiMinus className="text-lg" />
-                ) : (
-                  <FiPlus className="text-lg" />
-                )}
-              </button>
-              {openAccordion === "mens" && (
-                <ul className="pl-4 mt-2 space-y-2 text-black">
-                  <li>
-                    <a href="#" className="block py-1">
-                      Shirt
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="block py-1">
-                      Shorts & Jeans
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="block py-1">
-                      Safety Shoes
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="block py-1">
-                      Wallet
-                    </a>
-                  </li>
-                </ul>
-              )}
-            </li>
-
-            {/* Women's Accordion */}
-            <li>
-              <button
-                className="flex justify-between items-center w-full py-2 font-medium text-black"
-                onClick={() => toggleAccordion("womens")}
-              >
-                <span>Women's</span>
-                {openAccordion === "womens" ? (
-                  <FiMinus className="text-lg" />
-                ) : (
-                  <FiPlus className="text-lg" />
-                )}
-              </button>
-              {openAccordion === "womens" && (
-                <ul className="pl-4 mt-2 space-y-2 text-black">
-                  <li>
-                    <a href="#" className="block py-1">
-                      Dress & Frock
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="block py-1">
-                      Earrings
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="block py-1">
-                      Necklace
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="block py-1">
-                      Makeup Kit
-                    </a>
-                  </li>
-                </ul>
-              )}
-            </li>
-
-            {/* Jewelry Accordion */}
-            <li>
-              <button
-                className="flex justify-between items-center w-full py-2 font-medium text-black"
-                onClick={() => toggleAccordion("jewelry")}
-              >
-                <span>Jewelry</span>
-                {openAccordion === "jewelry" ? (
-                  <FiMinus className="text-lg" />
-                ) : (
-                  <FiPlus className="text-lg" />
-                )}
-              </button>
-              {openAccordion === "jewelry" && (
-                <ul className="pl-4 mt-2 space-y-2 text-gray-600">
-                  <li>
-                    <a href="#" className="block py-1">
-                      Earrings
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="block py-1">
-                      Couple Rings
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="block py-1">
-                      Necklace
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="block py-1">
-                      Bracelets
-                    </a>
-                  </li>
-                </ul>
-              )}
-            </li>
-
-            {/* Perfume Accordion */}
-            <li>
-              <button
-                className="flex justify-between items-center w-full py-2 font-medium text-black"
-                onClick={() => toggleAccordion("perfume")}
-              >
-                <span>Perfume</span>
-                {openAccordion === "perfume" ? (
-                  <FiMinus className="text-lg" />
-                ) : (
-                  <FiPlus className="text-lg" />
-                )}
-              </button>
-              {openAccordion === "perfume" && (
-                <ul className="pl-4 mt-2 space-y-2 text-gray-600">
-                  <li>
-                    <a href="#" className="block py-1">
-                      Clothes Perfume
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="block py-1">
-                      Deodorant
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="block py-1">
-                      Flower Fragrance
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="block py-1">
-                      Air Freshener
-                    </a>
-                  </li>
-                </ul>
-              )}
-            </li>
-
-            <li>
-              <a href="#" className="block py-2 font-medium">
-                Blog
-              </a>
-            </li>
-            <li>
-              <a href="#" className="block py-2 font-medium">
-                Hot Offers
-              </a>
-            </li>
-          </ul>
-        </div>
+        </>
       )}
 
       {/* BOTTOM NAVIGATION BAR (Mobile Only) */}
