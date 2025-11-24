@@ -40,14 +40,13 @@ export default function Header() {
 
       <header className="sticky top-0 z-50 bg-white">
         {/* Top Bar */}
-        <div className="hidden md:block text-white/80 text-sm">
+        <div className="hidden md:block text-black text-sm">
           <div className="container mx-auto flex justify-between items-center py-2 px-4">
             <div className="flex space-x-4">
               {socialIcons.map((item, idx) => (
                 <a
                   key={idx}
                   href={item.href}
-                  className="hover:text-white transition"
                   aria-label="Social link"
                 >
                   {item.icon}
@@ -58,10 +57,6 @@ export default function Header() {
               <b>Free Shipping</b> This Week Order Over - $55
             </p>
             <div className="flex space-x-2">
-              <select className="bg-transparent border-none text-black text-sm">
-                <option>USD $</option>
-                <option>EUR €</option>
-              </select>
               <select className="bg-transparent border-none text-black text-sm">
                 <option>English</option>
                 <option>Español</option>
@@ -81,8 +76,8 @@ export default function Header() {
 
             {/* Search Bar (Centered) */}
             <div className="flex-1 max-w-lg relative">
-              <div className="flex items-center border border-gray-300 rounded-full overflow-hidden">
-                <span className="pl-4 text-gray-600">
+              <div className="flex items-center border border-black rounded-full overflow-hidden">
+                <span className="pl-4 text-black">
                   <FiSearch />
                 </span>
                 <input
@@ -116,42 +111,42 @@ export default function Header() {
           <div className="container mx-auto px-4 py-2">
             <ul className="flex flex-wrap justify-center space-x-4 md:space-x-6">
               <li>
-                <a href="#" className="font-medium text-black/70 hover:text-black transition">
+                <a href="#" className="font-medium text-black hover:text-black transition">
                   Home
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium text-black/70 hover:text-black transition">
+                <a href="#" className="font-medium text-black hover:text-black transition">
                   Categories
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium text-black/70 hover:text-black transition">
+                <a href="#" className="font-medium text-black hover:text-black transition">
                   Men's
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium text-black/70 hover:text-black transition">
+                <a href="#" className="font-medium text-black hover:text-black transition">
                   Women's
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium text-black/70 hover:text-black transition">
+                <a href="#" className="font-medium text-black hover:text-black transition">
                   Jewelry
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium text-black/70 hover:text-black transition">
+                <a href="#" className="font-medium text-black hover:text-black transition">
                   Perfume
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium text-black/70 hover:text-black transition">
+                <a href="#" className="font-medium text-black hover:text-black transition">
                   Blog
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium text-black/70 hover:text-black transition">
+                <a href="#" className="font-medium text-black hover:text-black transition">
                   Hot Offers
                 </a>
               </li>
@@ -282,7 +277,7 @@ export default function Header() {
                   )}
                 </button>
                 {openAccordion === "jewelry" && (
-                  <ul className="pl-4 mt-2 space-y-2 text-gray-600">
+                  <ul className="pl-4 mt-2 space-y-2 text-black">
                     <li>
                       <a href="#" className="block py-1">
                         Earrings
@@ -321,7 +316,7 @@ export default function Header() {
                   )}
                 </button>
                 {openAccordion === "perfume" && (
-                  <ul className="pl-4 mt-2 space-y-2 text-gray-600">
+                  <ul className="pl-4 mt-2 space-y-2 text-black">
                     <li>
                       <a href="#" className="block py-1">
                         Clothes Perfume
@@ -347,12 +342,12 @@ export default function Header() {
               </li>
 
               <li>
-                <a href="#" className="block py-2 font-medium">
+                <a href="#" className="block py-2 font-medium text-black">
                   Blog
                 </a>
               </li>
               <li>
-                <a href="#" className="block py-2 font-medium">
+                <a href="#" className="block py-2 font-medium text-black">
                   Hot Offers
                 </a>
               </li>
@@ -362,7 +357,7 @@ export default function Header() {
       )}
 
       {/* BOTTOM NAVIGATION BAR (Mobile Only) */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-black/20 shadow-lg">
         <div className="flex justify-around items-center py-2 px-4">
           {/* Menu Button */}
           <button
@@ -370,38 +365,38 @@ export default function Header() {
             className="flex flex-col items-center p-2"
             aria-label="Menu"
           >
-            <FiMenu className="text-xl text-gray-700" />
-            <span className="text-xs mt-1 text-gray-700">Menu</span>
+            <FiMenu className="text-xl text-black" />
+            <span className="text-xs mt-1 text-black">Menu</span>
           </button>
 
           {/* Cart */}
           <button className="flex flex-col items-center p-2 relative" aria-label="Cart">
-            <FiShoppingCart className="text-xl text-gray-700" />
+            <FiShoppingCart className="text-xl text-black" />
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
               67
             </span>
-            <span className="text-xs mt-1 text-gray-700">Cart</span>
+            <span className="text-xs mt-1 text-black">Cart</span>
           </button>
 
           {/* Home */}
           <a href="#" className="flex flex-col items-center p-2" aria-label="Home">
-            <FiHome className="text-xl text-gray-700" />
-            <span className="text-xs mt-1 text-gray-700">Home</span>
+            <FiHome className="text-xl text-black" />
+            <span className="text-xs mt-1 text-black">Home</span>
           </a>
 
           {/* Wishlist */}
           <button className="flex flex-col items-center p-2 relative" aria-label="Wishlist">
-            <FiHeart className="text-xl text-gray-700" />
+            <FiHeart className="text-xl text-black" />
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
               67
             </span>
-            <span className="text-xs mt-1 text-gray-700">Wishlist</span>
+            <span className="text-xs mt-1 text-black">Wishlist</span>
           </button>
 
           {/* Categories / Grid */}
           <button className="flex flex-col items-center p-2" aria-label="Categories">
-            <FiGrid className="text-xl text-gray-700" />
-            <span className="text-xs mt-1 text-gray-700">Category</span>
+            <FiGrid className="text-xl text-black" />
+            <span className="text-xs mt-1 text-black">Category</span>
           </button>
         </div>
       </div>
