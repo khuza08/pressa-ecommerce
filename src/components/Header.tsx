@@ -43,9 +43,9 @@ export default function Header() {
         ></div>
       )}
 
-      <header className="sticky top-0 z-50 bg-white shadow-sm">
+      <header className="sticky top-0 z-50 bg-white">
         {/* Top Bar */}
-        <div className="hidden md:block bg-gray-900 text-gray-300 text-sm">
+        <div className="hidden md:block text-white/80 text-sm">
           <div className="container mx-auto flex justify-between items-center py-2 px-4">
             <div className="flex space-x-4">
               {socialIcons.map((item, idx) => (
@@ -59,15 +59,15 @@ export default function Header() {
                 </a>
               ))}
             </div>
-            <p>
+            <p className="text-black">
               <b>Free Shipping</b> This Week Order Over - $55
             </p>
             <div className="flex space-x-2">
-              <select className="bg-transparent border-none text-white text-sm">
+              <select className="bg-transparent border-none text-black text-sm">
                 <option>USD $</option>
                 <option>EUR €</option>
               </select>
-              <select className="bg-transparent border-none text-white text-sm">
+              <select className="bg-transparent border-none text-black text-sm">
                 <option>English</option>
                 <option>Español</option>
                 <option>Français</option>
@@ -78,35 +78,35 @@ export default function Header() {
 
         {/* Main Header */}
         <div className="container mx-auto py-4 px-4 flex items-center justify-between">
-          <a href="#" className="text-2xl font-bold">Anon</a>
+          <a href="#" className="text-black text-2xl font-bold">PRESSA</a>
 
           {/* Desktop Search */}
           <div className="hidden lg:flex flex-1 max-w-xl mx-8">
             <input
               type="search"
               placeholder="Enter your product name..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-l focus:outline-none focus:ring-1 focus:ring-gray-400"
+              className="w-full px-4 py-2 border border-black text-black rounded-lg"
             />
-            <button className="bg-gray-800 text-white px-4 rounded-r hover:bg-gray-700 transition">
+            <button className="text-black px-4 transition">
               <FiSearch className="text-xl" />
             </button>
           </div>
 
           {/* User Actions */}
           <div className="flex items-center space-x-4">
-            <button className="text-gray-700 hover:text-black" aria-label="Account">
+            <button className="text-black" aria-label="Account">
               <FiUser className="text-xl" />
             </button>
-            <button className="text-gray-700 hover:text-black relative" aria-label="Wishlist">
+            <button className="text-black relative" aria-label="Wishlist">
               <FiHeart className="text-xl" />
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                0
+                67
               </span>
             </button>
-            <button className="text-gray-700 hover:text-black relative" aria-label="Cart">
+            <button className="text-black relative" aria-label="Cart">
               <FiShoppingBag className="text-xl" />
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                0
+                67
               </span>
             </button>
           </div>
@@ -122,46 +122,46 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:block bg-gray-100">
+        <nav className="hidden lg:block b">
           <div className="container mx-auto px-4 py-2">
             <ul className="flex flex-wrap justify-center space-x-4 md:space-x-6">
               <li>
-                <a href="#" className="font-medium hover:text-blue-600 transition">
+                <a href="#" className="font-medium text-black/70 hover:text-black transition">
                   Home
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium hover:text-blue-600 transition">
+                <a href="#" className="font-medium text-black/70 hover:text-black transition">
                   Categories
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium hover:text-blue-600 transition">
+                <a href="#" className="font-medium text-black/70 hover:text-black transition">
                   Men's
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium hover:text-blue-600 transition">
+                <a href="#" className="font-medium text-black/70 hover:text-black transition">
                   Women's
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium hover:text-blue-600 transition">
+                <a href="#" className="font-medium text-black/70 hover:text-black transition">
                   Jewelry
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium hover:text-blue-600 transition">
+                <a href="#" className="font-medium text-black/70 hover:text-black transition">
                   Perfume
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium hover:text-blue-600 transition">
+                <a href="#" className="font-medium text-black/70 hover:text-black transition">
                   Blog
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium hover:text-blue-600 transition">
+                <a href="#" className="font-medium text-black/70 hover:text-black transition">
                   Hot Offers
                 </a>
               </li>
@@ -174,10 +174,10 @@ export default function Header() {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden bg-white overflow-y-auto pb-16">
           <div className="p-4 flex justify-between items-center border-b">
-            <h2 className="text-lg font-bold">Menu</h2>
+            <h2 className="text-lg font-bold text-black">Menu</h2>
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="text-gray-700"
+              className="text-black"
               aria-label="Close menu"
             >
               <FiX className="text-2xl" />
@@ -186,7 +186,7 @@ export default function Header() {
 
           <ul className="p-4 space-y-4">
             <li>
-              <a href="#" className="block py-2 font-medium">
+              <a href="#" className="block py-2 font-medium text-black">
                 Home
               </a>
             </li>
@@ -194,7 +194,7 @@ export default function Header() {
             {/* Men's Accordion */}
             <li>
               <button
-                className="flex justify-between items-center w-full py-2 font-medium"
+                className="flex justify-between items-center w-full py-2 font-medium text-black"
                 onClick={() => toggleAccordion("mens")}
               >
                 <span>Men's</span>
@@ -205,7 +205,7 @@ export default function Header() {
                 )}
               </button>
               {openAccordion === "mens" && (
-                <ul className="pl-4 mt-2 space-y-2 text-gray-600">
+                <ul className="pl-4 mt-2 space-y-2 text-black">
                   <li>
                     <a href="#" className="block py-1">
                       Shirt
@@ -233,7 +233,7 @@ export default function Header() {
             {/* Women's Accordion */}
             <li>
               <button
-                className="flex justify-between items-center w-full py-2 font-medium"
+                className="flex justify-between items-center w-full py-2 font-medium text-black"
                 onClick={() => toggleAccordion("womens")}
               >
                 <span>Women's</span>
@@ -244,7 +244,7 @@ export default function Header() {
                 )}
               </button>
               {openAccordion === "womens" && (
-                <ul className="pl-4 mt-2 space-y-2 text-gray-600">
+                <ul className="pl-4 mt-2 space-y-2 text-black">
                   <li>
                     <a href="#" className="block py-1">
                       Dress & Frock
@@ -272,7 +272,7 @@ export default function Header() {
             {/* Jewelry Accordion */}
             <li>
               <button
-                className="flex justify-between items-center w-full py-2 font-medium"
+                className="flex justify-between items-center w-full py-2 font-medium text-black"
                 onClick={() => toggleAccordion("jewelry")}
               >
                 <span>Jewelry</span>
@@ -311,7 +311,7 @@ export default function Header() {
             {/* Perfume Accordion */}
             <li>
               <button
-                className="flex justify-between items-center w-full py-2 font-medium"
+                className="flex justify-between items-center w-full py-2 font-medium text-black"
                 onClick={() => toggleAccordion("perfume")}
               >
                 <span>Perfume</span>
