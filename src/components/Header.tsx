@@ -10,7 +10,7 @@ import {
   FiSearch,
   FiUser,
   FiHeart,
-  FiShoppingBag,
+  FiShoppingCart,
   FiMenu,
   FiX,
   FiPlus,
@@ -109,7 +109,7 @@ export default function Header() {
                 </span>
               </button>
               <button className="text-black relative" aria-label="Cart">
-                <FiShoppingBag className="text-xl" />
+                <FiShoppingCart className="text-xl" />
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   67
                 </span>
@@ -373,7 +373,7 @@ export default function Header() {
 
           {/* Cart */}
           <button className="flex flex-col items-center p-2 relative" aria-label="Cart">
-            <FiShoppingBag className="text-xl text-gray-700" />
+            <FiShoppingCart className="text-xl text-gray-700" />
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
               67
             </span>
