@@ -114,14 +114,6 @@ export default function Header() {
             </button>
           </div>
 
-          {/* Mobile Menu Button (Hidden on mobile, replaced by bottom nav) */}
-          <button
-            className="lg:hidden text-gray-700"
-            onClick={() => setMobileMenuOpen(true)}
-            aria-label="Open menu"
-          >
-            <FiMenu className="text-2xl" />
-          </button>
         </div>
 
         {/* Desktop Navigation */}
