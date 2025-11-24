@@ -105,16 +105,28 @@ export default function Header() {
                   Home
                 </a>
               </li>
-              <li>
+              <li className="relative group">
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Categories
                 </a>
+                <ul className="absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                  {["All Products", "New Arrivals", "Best Sellers", "Sale Items", "Trending"].map((item, i) => (
+                    <li key={i}>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        {item}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </li>
               <li className="relative group">
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Men's
                 </a>
-                <ul className="absolute top-full left-0 bg-white shadow-lg rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                <ul className="absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
                   {["Shirt", "Shorts & Jeans", "Safety Shoes", "Wallet"].map((item, i) => (
                     <li key={i}>
                       <a
@@ -131,7 +143,7 @@ export default function Header() {
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Women's
                 </a>
-                <ul className="absolute top-full left-0 bg-white shadow-lg rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                <ul className="absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
                   {["Dress & Frock", "Earrings", "Necklace", "Makeup Kit"].map((item, i) => (
                     <li key={i}>
                       <a
@@ -148,7 +160,7 @@ export default function Header() {
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Jewelry
                 </a>
-                <ul className="absolute top-full left-0 bg-white shadow-lg rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                <ul className="absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
                   {["Earrings", "Couple Rings", "Necklace", "Bracelets"].map((item, i) => (
                     <li key={i}>
                       <a
@@ -165,7 +177,7 @@ export default function Header() {
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Perfume
                 </a>
-                <ul className="absolute top-full left-0 bg-white shadow-lg rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                <ul className="absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
                   {["Clothes Perfume", "Deodorant", "Flower Fragrance", "Air Freshener"].map(
                     (item, i) => (
                       <li key={i}>
@@ -203,7 +215,7 @@ export default function Header() {
             style={{ height: "calc(100vh - 4rem)" }}
             onClick={() => setMobileMenuOpen(false)}
           ></div>
-          <div className="fixed top-0 left-0 z-50 h-full w-80 max-w-[80vw] bg-white shadow-lg lg:hidden overflow-y-auto">
+          <div className="fixed top-0 left-0 z-50 h-full w-80 max-w-[80vw] bg-white shadow-xl lg:hidden overflow-y-auto">
             <div className="p-4 flex justify-between items-center border-b">
               <h2 className="text-lg font-bold text-black">Menu</h2>
               <button
@@ -219,6 +231,48 @@ export default function Header() {
                 <a href="#" className="block py-2 font-medium text-black">
                   Home
                 </a>
+              </li>
+              <li>
+                <button
+                  className="flex justify-between items-center w-full py-2 font-medium text-black"
+                  onClick={() => toggleAccordion("categories")}
+                >
+                  <span>Categories</span>
+                  {openAccordion === "categories" ? (
+                    <FiMinus className="text-lg" />
+                  ) : (
+                    <FiPlus className="text-lg" />
+                  )}
+                </button>
+                {openAccordion === "categories" && (
+                  <ul className="pl-4 mt-2 space-y-2 text-black">
+                    <li>
+                      <a href="#" className="block py-1">
+                        All Products
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        New Arrivals
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Best Sellers
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Sale Items
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="block py-1">
+                        Trending
+                      </a>
+                    </li>
+                  </ul>
+                )}
               </li>
               <li>
                 <button
@@ -263,7 +317,7 @@ export default function Header() {
       )}
 
       {/* Bottom Navigation Bar (Mobile Only) */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-black/20 shadow-lg">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-black/20 shadow-xl">
         <div className="flex justify-around items-center py-2 px-4">
           <button
             onClick={() => setMobileMenuOpen(true)}
