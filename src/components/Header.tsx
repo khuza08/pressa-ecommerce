@@ -22,7 +22,6 @@ import {
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
-  const [isBottomNavVisible, setIsBottomNavVisible] = useState(true); // bisa dihide jika perlu
 
   const toggleAccordion = (id: string) => {
     setOpenAccordion(openAccordion === id ? null : id);
@@ -79,41 +78,44 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Main Header */}
-        <div className="container mx-auto py-4 px-4 flex items-center justify-between">
-          <a href="#" className="text-black text-2xl font-bold">PRESSA</a>
+        {/* Main Header — Search Bar + Icons */}
+        <div className="container mx-auto py-3 px-4">
+          <div className="flex items-center justify-between gap-4">
+            {/* Logo */}
+            <a href="#" className="text-black text-xl font-bold">
+              PRESSA
+            </a>
 
-          {/* Desktop Search */}
-          <div className="hidden lg:flex flex-1 max-w-xl mx-8">
-            <input
-              type="search"
-              placeholder="Enter your product name..."
-              className="w-full px-4 py-2 border border-black text-black rounded-lg"
-            />
-            <button className="text-black px-4 transition">
-              <FiSearch className="text-xl" />
-            </button>
+            {/* Search Bar (Centered) */}
+            <div className="flex-1 max-w-lg relative">
+              <div className="flex items-center border border-gray-300 rounded-full overflow-hidden">
+                <span className="pl-4 text-gray-600">
+                  <FiSearch />
+                </span>
+                <input
+                  type="search"
+                  placeholder="Search any....."
+                  className="w-full px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            {/* Heart & Cart Icons (Right Side) */}
+            <div className="flex items-center space-x-4">
+              <button className="text-black relative" aria-label="Wishlist">
+                <FiHeart className="text-xl" />
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  67
+                </span>
+              </button>
+              <button className="text-black relative" aria-label="Cart">
+                <FiShoppingBag className="text-xl" />
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  67
+                </span>
+              </button>
+            </div>
           </div>
-
-          {/* User Actions (Desktop Only) */}
-          <div className="hidden lg:flex items-center space-x-4">
-            <button className="text-black" aria-label="Account">
-              <FiUser className="text-xl" />
-            </button>
-            <button className="text-black relative" aria-label="Wishlist">
-              <FiHeart className="text-xl" />
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                67
-              </span>
-            </button>
-            <button className="text-black relative" aria-label="Cart">
-              <FiShoppingBag className="text-xl" />
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                67
-              </span>
-            </button>
-          </div>
-
         </div>
 
         {/* Desktop Navigation */}
