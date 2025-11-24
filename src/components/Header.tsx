@@ -1,7 +1,7 @@
 // src/components/Header.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   FiFacebook,
   FiTwitter,
@@ -23,6 +23,32 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const [isCategorySidebarOpen, setIsCategorySidebarOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = (menu: string) => {
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    setActiveDropdown(menu);
+  };
+
+  const handleMouseLeave = () => {
+    // Set a timeout to close the dropdown after 300ms
+    timeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 300);
+  };
+
+  // Clear timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const toggleAccordion = (id: string) => {
     setOpenAccordion(openAccordion === id ? null : id);
@@ -105,11 +131,23 @@ export default function Header() {
                   Home
                 </a>
               </li>
-              <li className="relative group">
+              <li 
+                className="relative"
+                onMouseEnter={() => handleMouseEnter("categories")}
+                onMouseLeave={handleMouseLeave}
+              >
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Categories
                 </a>
-                <ul className="absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                <ul 
+                  className={`absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 transition-all duration-300 ${
+                    activeDropdown === "categories" 
+                      ? "opacity-100 visible" 
+                      : "opacity-0 invisible"
+                  }`}
+                  onMouseEnter={() => handleMouseEnter("categories")}
+                  onMouseLeave={handleMouseLeave}
+                >
                   {["All Products", "New Arrivals", "Best Sellers", "Sale Items", "Trending"].map((item, i) => (
                     <li key={i}>
                       <a
@@ -122,11 +160,23 @@ export default function Header() {
                   ))}
                 </ul>
               </li>
-              <li className="relative group">
+              <li 
+                className="relative"
+                onMouseEnter={() => handleMouseEnter("mens")}
+                onMouseLeave={handleMouseLeave}
+              >
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Men's
                 </a>
-                <ul className="absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                <ul 
+                  className={`absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 transition-all duration-300 ${
+                    activeDropdown === "mens" 
+                      ? "opacity-100 visible" 
+                      : "opacity-0 invisible"
+                  }`}
+                  onMouseEnter={() => handleMouseEnter("mens")}
+                  onMouseLeave={handleMouseLeave}
+                >
                   {["Shirt", "Shorts & Jeans", "Safety Shoes", "Wallet"].map((item, i) => (
                     <li key={i}>
                       <a
@@ -139,11 +189,23 @@ export default function Header() {
                   ))}
                 </ul>
               </li>
-              <li className="relative group">
+              <li 
+                className="relative"
+                onMouseEnter={() => handleMouseEnter("womens")}
+                onMouseLeave={handleMouseLeave}
+              >
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Women's
                 </a>
-                <ul className="absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                <ul 
+                  className={`absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 transition-all duration-300 ${
+                    activeDropdown === "womens" 
+                      ? "opacity-100 visible" 
+                      : "opacity-0 invisible"
+                  }`}
+                  onMouseEnter={() => handleMouseEnter("womens")}
+                  onMouseLeave={handleMouseLeave}
+                >
                   {["Dress & Frock", "Earrings", "Necklace", "Makeup Kit"].map((item, i) => (
                     <li key={i}>
                       <a
@@ -156,11 +218,23 @@ export default function Header() {
                   ))}
                 </ul>
               </li>
-              <li className="relative group">
+              <li 
+                className="relative"
+                onMouseEnter={() => handleMouseEnter("jewelry")}
+                onMouseLeave={handleMouseLeave}
+              >
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Jewelry
                 </a>
-                <ul className="absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                <ul 
+                  className={`absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 transition-all duration-300 ${
+                    activeDropdown === "jewelry" 
+                      ? "opacity-100 visible" 
+                      : "opacity-0 invisible"
+                  }`}
+                  onMouseEnter={() => handleMouseEnter("jewelry")}
+                  onMouseLeave={handleMouseLeave}
+                >
                   {["Earrings", "Couple Rings", "Necklace", "Bracelets"].map((item, i) => (
                     <li key={i}>
                       <a
@@ -173,11 +247,23 @@ export default function Header() {
                   ))}
                 </ul>
               </li>
-              <li className="relative group">
+              <li 
+                className="relative"
+                onMouseEnter={() => handleMouseEnter("perfume")}
+                onMouseLeave={handleMouseLeave}
+              >
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Perfume
                 </a>
-                <ul className="absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                <ul 
+                  className={`absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 transition-all duration-300 ${
+                    activeDropdown === "perfume" 
+                      ? "opacity-100 visible" 
+                      : "opacity-0 invisible"
+                  }`}
+                  onMouseEnter={() => handleMouseEnter("perfume")}
+                  onMouseLeave={handleMouseLeave}
+                >
                   {["Clothes Perfume", "Deodorant", "Flower Fragrance", "Air Freshener"].map(
                     (item, i) => (
                       <li key={i}>
