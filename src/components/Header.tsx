@@ -8,7 +8,6 @@ import {
   FiInstagram,
   FiLinkedin,
   FiSearch,
-  FiUser,
   FiHeart,
   FiShoppingCart,
   FiMenu,
@@ -19,19 +18,16 @@ import {
   FiGrid,
 } from "react-icons/fi";
 import CategorySidebar from "./CategorySidebar";
-import CategoryDropdown from "./CategoryDropdown";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const [isCategorySidebarOpen, setIsCategorySidebarOpen] = useState(false);
-  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
 
   const toggleAccordion = (id: string) => {
     setOpenAccordion(openAccordion === id ? null : id);
   };
 
-  // Social icons mapping
   const socialIcons = [
     { icon: <FiFacebook />, href: "#" },
     { icon: <FiTwitter />, href: "#" },
@@ -41,18 +37,13 @@ export default function Header() {
 
   return (
     <>
-
       <header className="sticky top-0 z-50 bg-white">
         {/* Top Bar */}
         <div className="hidden md:block text-black text-sm">
           <div className="container mx-auto flex justify-between items-center py-2 px-4">
             <div className="flex space-x-4">
               {socialIcons.map((item, idx) => (
-                <a
-                  key={idx}
-                  href={item.href}
-                  aria-label="Social link"
-                >
+                <a key={idx} href={item.href} aria-label="Social link">
                   {item.icon}
                 </a>
               ))}
@@ -70,15 +61,12 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Main Header — Search Bar + Icons */}
+        {/* Main Header */}
         <div className="container mx-auto py-3 px-4">
           <div className="flex items-center justify-between gap-4">
-            {/* Logo */}
             <a href="#" className="text-black text-xl font-bold">
               PRESSA
             </a>
-
-            {/* Search Bar (Centered) */}
             <div className="flex-1 max-w-lg relative">
               <div className="flex items-center border border-black rounded-full overflow-hidden">
                 <span className="pl-4 text-black">
@@ -87,12 +75,10 @@ export default function Header() {
                 <input
                   type="search"
                   placeholder="What do you want?"
-                  className="w-full px-3 py-2 outline-none text-black search-input-black-x"
+                  className="w-full px-3 py-2 outline-none text-black"
                 />
               </div>
             </div>
-
-            {/* Heart & Cart Icons (Right Side) */}
             <div className="flex items-center space-x-4">
               <button className="text-black relative" aria-label="Wishlist">
                 <FiHeart className="text-xl" />
@@ -110,43 +96,89 @@ export default function Header() {
           </div>
         </div>
 
-{/* Desktop Navigation */}
-<nav className="hidden lg:block relative"> {/* tambahkan relative */}
-  <div className="container mx-auto px-4 py-2">
-    <ul className="flex flex-wrap justify-center space-x-4 md:space-x-6">
-      <li>
-        <a href="#" className="font-medium text-black hover:text-black transition">
-          Home
-        </a>
-      </li>
-      <li className="relative" onMouseEnter={() => setIsCategoryDropdownOpen(true)} onMouseLeave={() => setIsCategoryDropdownOpen(false)}>
-        <button
-          className="font-medium text-black hover:text-black transition"
-          aria-label="Open categories"
-        >
-          Categories
-        </button>
-        <CategoryDropdown isOpen={isCategoryDropdownOpen} />
-      </li>
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:block relative">
+          <div className="container mx-auto px-4 py-2">
+            <ul className="flex flex-wrap justify-center space-x-4 md:space-x-6">
               <li>
+                <a href="#" className="font-medium text-black hover:text-black transition">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a href="#" className="font-medium text-black hover:text-black transition">
+                  Categories
+                </a>
+              </li>
+              <li className="relative group">
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Men's
                 </a>
+                <ul className="absolute top-full left-0 bg-white shadow-lg rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                  {["Shirt", "Shorts & Jeans", "Safety Shoes", "Wallet"].map((item, i) => (
+                    <li key={i}>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        {item}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </li>
-              <li>
+              <li className="relative group">
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Women's
                 </a>
+                <ul className="absolute top-full left-0 bg-white shadow-lg rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                  {["Dress & Frock", "Earrings", "Necklace", "Makeup Kit"].map((item, i) => (
+                    <li key={i}>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        {item}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </li>
-              <li>
+              <li className="relative group">
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Jewelry
                 </a>
+                <ul className="absolute top-full left-0 bg-white shadow-lg rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                  {["Earrings", "Couple Rings", "Necklace", "Bracelets"].map((item, i) => (
+                    <li key={i}>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        {item}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </li>
-              <li>
+              <li className="relative group">
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Perfume
                 </a>
+                <ul className="absolute top-full left-0 bg-white shadow-lg rounded mt-2 py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                  {["Clothes Perfume", "Deodorant", "Flower Fragrance", "Air Freshener"].map(
+                    (item, i) => (
+                      <li key={i}>
+                        <a
+                          href="#"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          {item}
+                        </a>
+                      </li>
+                    )
+                  )}
+                </ul>
               </li>
               <li>
                 <a href="#" className="font-medium text-black hover:text-black transition">
@@ -163,17 +195,14 @@ export default function Header() {
         </nav>
       </header>
 
-      {/* Mobile Drawer Menu (Sidebar from Left) */}
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <>
-          {/* Blurred Overlay - Only for Header Area */}
           <div
             className="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-sm lg:hidden"
-            style={{ height: 'calc(100vh - 4rem)' }}
+            style={{ height: "calc(100vh - 4rem)" }}
             onClick={() => setMobileMenuOpen(false)}
           ></div>
-
-          {/* Sidebar */}
           <div className="fixed top-0 left-0 z-50 h-full w-80 max-w-[80vw] bg-white shadow-lg lg:hidden overflow-y-auto">
             <div className="p-4 flex justify-between items-center border-b">
               <h2 className="text-lg font-bold text-black">Menu</h2>
@@ -185,15 +214,12 @@ export default function Header() {
                 <FiX className="text-2xl" />
               </button>
             </div>
-
             <ul className="p-4 space-y-4">
               <li>
                 <a href="#" className="block py-2 font-medium text-black">
                   Home
                 </a>
               </li>
-
-              {/* Men's Accordion */}
               <li>
                 <button
                   className="flex justify-between items-center w-full py-2 font-medium text-black"
@@ -231,143 +257,14 @@ export default function Header() {
                   </ul>
                 )}
               </li>
-
-              {/* Women's Accordion */}
-              <li>
-                <button
-                  className="flex justify-between items-center w-full py-2 font-medium text-black"
-                  onClick={() => toggleAccordion("womens")}
-                >
-                  <span>Women's</span>
-                  {openAccordion === "womens" ? (
-                    <FiMinus className="text-lg" />
-                  ) : (
-                    <FiPlus className="text-lg" />
-                  )}
-                </button>
-                {openAccordion === "womens" && (
-                  <ul className="pl-4 mt-2 space-y-2 text-black">
-                    <li>
-                      <a href="#" className="block py-1">
-                        Dress & Frock
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Earrings
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Necklace
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Makeup Kit
-                      </a>
-                    </li>
-                  </ul>
-                )}
-              </li>
-
-              {/* Jewelry Accordion */}
-              <li>
-                <button
-                  className="flex justify-between items-center w-full py-2 font-medium text-black"
-                  onClick={() => toggleAccordion("jewelry")}
-                >
-                  <span>Jewelry</span>
-                  {openAccordion === "jewelry" ? (
-                    <FiMinus className="text-lg" />
-                  ) : (
-                    <FiPlus className="text-lg" />
-                  )}
-                </button>
-                {openAccordion === "jewelry" && (
-                  <ul className="pl-4 mt-2 space-y-2 text-black">
-                    <li>
-                      <a href="#" className="block py-1">
-                        Earrings
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Couple Rings
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Necklace
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Bracelets
-                      </a>
-                    </li>
-                  </ul>
-                )}
-              </li>
-
-              {/* Perfume Accordion */}
-              <li>
-                <button
-                  className="flex justify-between items-center w-full py-2 font-medium text-black"
-                  onClick={() => toggleAccordion("perfume")}
-                >
-                  <span>Perfume</span>
-                  {openAccordion === "perfume" ? (
-                    <FiMinus className="text-lg" />
-                  ) : (
-                    <FiPlus className="text-lg" />
-                  )}
-                </button>
-                {openAccordion === "perfume" && (
-                  <ul className="pl-4 mt-2 space-y-2 text-black">
-                    <li>
-                      <a href="#" className="block py-1">
-                        Clothes Perfume
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Deodorant
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Flower Fragrance
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Air Freshener
-                      </a>
-                    </li>
-                  </ul>
-                )}
-              </li>
-
-              <li>
-                <a href="#" className="block py-2 font-medium text-black">
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a href="#" className="block py-2 font-medium text-black">
-                  Hot Offers
-                </a>
-              </li>
             </ul>
           </div>
         </>
       )}
 
-      {/* BOTTOM NAVIGATION BAR (Mobile Only) */}
+      {/* Bottom Navigation Bar (Mobile Only) */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-black/20 shadow-lg">
         <div className="flex justify-around items-center py-2 px-4">
-          {/* Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(true)}
             className="flex flex-col items-center p-2"
@@ -376,8 +273,6 @@ export default function Header() {
             <FiMenu className="text-xl text-black" />
             <span className="text-xs mt-1 text-black">Menu</span>
           </button>
-
-          {/* Cart */}
           <button className="flex flex-col items-center p-2 relative" aria-label="Cart">
             <FiShoppingCart className="text-xl text-black" />
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -385,14 +280,10 @@ export default function Header() {
             </span>
             <span className="text-xs mt-1 text-black">Cart</span>
           </button>
-
-          {/* Home */}
           <a href="#" className="flex flex-col items-center p-2" aria-label="Home">
             <FiHome className="text-xl text-black" />
             <span className="text-xs mt-1 text-black">Home</span>
           </a>
-
-          {/* Wishlist */}
           <button className="flex flex-col items-center p-2 relative" aria-label="Wishlist">
             <FiHeart className="text-xl text-black" />
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -400,8 +291,6 @@ export default function Header() {
             </span>
             <span className="text-xs mt-1 text-black">Wishlist</span>
           </button>
-
-          {/* Categories / Grid */}
           <button
             onClick={() => setIsCategorySidebarOpen(true)}
             className="flex flex-col items-center p-2"
@@ -413,18 +302,10 @@ export default function Header() {
         </div>
       </div>
 
-      {/* CategorySidebar for Mobile */}
       <CategorySidebar
         isOpen={isCategorySidebarOpen}
         onClose={() => setIsCategorySidebarOpen(false)}
       />
-
-      {/* CategoryDropdown for Desktop */}
-      <CategoryDropdown
-        isOpen={isCategoryDropdownOpen}
-        onClose={() => setIsCategoryDropdownOpen(false)}
-      />
-
     </>
   );
 }
