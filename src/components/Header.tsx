@@ -101,7 +101,7 @@ export default function Header() {
                 <input
                   type="search"
                   placeholder="What do you want?"
-                  className="w-full px-3 py-2 outline-none text-black"
+                  className="w-full px-3 py-2 outline-none text-black search-input-black-x"
                 />
               </div>
             </div>
