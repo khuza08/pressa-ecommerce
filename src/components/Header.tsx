@@ -19,11 +19,13 @@ import {
   FiGrid,
 } from "react-icons/fi";
 import CategorySidebar from "./CategorySidebar";
+import CategoryDropdown from "./CategoryDropdown";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const [isCategorySidebarOpen, setIsCategorySidebarOpen] = useState(false);
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
 
   const toggleAccordion = (id: string) => {
     setOpenAccordion(openAccordion === id ? null : id);
@@ -108,24 +110,24 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:block">
-          <div className="container mx-auto px-4 py-2">
-            <ul className="flex flex-wrap justify-center space-x-4 md:space-x-6">
-              <li>
-                <a href="#" className="font-medium text-black hover:text-black transition">
-                  Home
-                </a>
-              </li>
-              <li>
-                <button
-                  onClick={() => setIsCategorySidebarOpen(true)}
-                  className="font-medium text-black hover:text-black transition"
-                  aria-label="Open categories"
-                >
-                  Categories
-                </button>
-              </li>
+{/* Desktop Navigation */}
+<nav className="hidden lg:block relative"> {/* tambahkan relative */}
+  <div className="container mx-auto px-4 py-2">
+    <ul className="flex flex-wrap justify-center space-x-4 md:space-x-6">
+      <li>
+        <a href="#" className="font-medium text-black hover:text-black transition">
+          Home
+        </a>
+      </li>
+      <li className="relative" onMouseEnter={() => setIsCategoryDropdownOpen(true)} onMouseLeave={() => setIsCategoryDropdownOpen(false)}>
+        <button
+          className="font-medium text-black hover:text-black transition"
+          aria-label="Open categories"
+        >
+          Categories
+        </button>
+        <CategoryDropdown isOpen={isCategoryDropdownOpen} />
+      </li>
               <li>
                 <a href="#" className="font-medium text-black hover:text-black transition">
                   Men's
@@ -411,9 +413,16 @@ export default function Header() {
         </div>
       </div>
 
+      {/* CategorySidebar for Mobile */}
       <CategorySidebar
         isOpen={isCategorySidebarOpen}
         onClose={() => setIsCategorySidebarOpen(false)}
+      />
+
+      {/* CategoryDropdown for Desktop */}
+      <CategoryDropdown
+        isOpen={isCategoryDropdownOpen}
+        onClose={() => setIsCategoryDropdownOpen(false)}
       />
 
     </>
