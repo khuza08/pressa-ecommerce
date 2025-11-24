@@ -161,16 +161,17 @@ export default function Header() {
       </header>
 
       {/* Mobile Drawer Menu (Sidebar from Left) */}
-{mobileMenuOpen && (
-  <>
-    {/* Blurred Overlay */}
-    <div
-      className="fixed inset-0 z-40 bg-opacity-30 backdrop-blur-xl lg:hidden"
-      onClick={() => setMobileMenuOpen(false)}
-    ></div>
+      {mobileMenuOpen && (
+        <>
+          {/* Blurred Overlay - Only for Header Area */}
+          <div
+            className="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-sm lg:hidden"
+            style={{ height: 'calc(100vh - 4rem)' }}
+            onClick={() => setMobileMenuOpen(false)}
+          ></div>
 
-    {/* Sidebar */}
-    <div className="fixed top-0 left-0 z-50 h-full w-80 max-w-[80vw] bg-white shadow-lg lg:hidden overflow-y-auto">
+          {/* Sidebar */}
+          <div className="fixed top-0 left-0 z-50 h-full w-80 max-w-[80vw] bg-white shadow-lg lg:hidden overflow-y-auto">
             <div className="p-4 flex justify-between items-center border-b">
               <h2 className="text-lg font-bold text-black">Menu</h2>
               <button
