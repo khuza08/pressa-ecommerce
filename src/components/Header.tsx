@@ -15,11 +15,14 @@ import {
   FiX,
   FiPlus,
   FiMinus,
+  FiHome,
+  FiGrid,
 } from "react-icons/fi";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+  const [isBottomNavVisible, setIsBottomNavVisible] = useState(true); // bisa dihide jika perlu
 
   const toggleAccordion = (id: string) => {
     setOpenAccordion(openAccordion === id ? null : id);
@@ -92,8 +95,8 @@ export default function Header() {
             </button>
           </div>
 
-          {/* User Actions */}
-          <div className="flex items-center space-x-4">
+          {/* User Actions (Desktop Only) */}
+          <div className="hidden lg:flex items-center space-x-4">
             <button className="text-black" aria-label="Account">
               <FiUser className="text-xl" />
             </button>
@@ -111,7 +114,7 @@ export default function Header() {
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button (Hidden on mobile, replaced by bottom nav) */}
           <button
             className="lg:hidden text-gray-700"
             onClick={() => setMobileMenuOpen(true)}
@@ -122,7 +125,7 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:block b">
+        <nav className="hidden lg:block">
           <div className="container mx-auto px-4 py-2">
             <ul className="flex flex-wrap justify-center space-x-4 md:space-x-6">
               <li>
@@ -170,7 +173,7 @@ export default function Header() {
         </nav>
       </header>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Drawer Menu (Sidebar) */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden bg-white overflow-y-auto pb-16">
           <div className="p-4 flex justify-between items-center border-b">
@@ -360,6 +363,51 @@ export default function Header() {
           </ul>
         </div>
       )}
+
+      {/* BOTTOM NAVIGATION BAR (Mobile Only) */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
+        <div className="flex justify-around items-center py-2 px-4">
+          {/* Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="flex flex-col items-center p-2"
+            aria-label="Menu"
+          >
+            <FiMenu className="text-xl text-gray-700" />
+            <span className="text-xs mt-1 text-gray-700">Menu</span>
+          </button>
+
+          {/* Cart */}
+          <button className="flex flex-col items-center p-2 relative" aria-label="Cart">
+            <FiShoppingBag className="text-xl text-gray-700" />
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              67
+            </span>
+            <span className="text-xs mt-1 text-gray-700">Cart</span>
+          </button>
+
+          {/* Home */}
+          <a href="#" className="flex flex-col items-center p-2" aria-label="Home">
+            <FiHome className="text-xl text-gray-700" />
+            <span className="text-xs mt-1 text-gray-700">Home</span>
+          </a>
+
+          {/* Wishlist */}
+          <button className="flex flex-col items-center p-2 relative" aria-label="Wishlist">
+            <FiHeart className="text-xl text-gray-700" />
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              67
+            </span>
+            <span className="text-xs mt-1 text-gray-700">Wishlist</span>
+          </button>
+
+          {/* Categories / Grid */}
+          <button className="flex flex-col items-center p-2" aria-label="Categories">
+            <FiGrid className="text-xl text-gray-700" />
+            <span className="text-xs mt-1 text-gray-700">Category</span>
+          </button>
+        </div>
+      </div>
     </>
   );
 }
