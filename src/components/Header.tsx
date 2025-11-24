@@ -18,10 +18,12 @@ import {
   FiHome,
   FiGrid,
 } from "react-icons/fi";
+import CategorySidebar from "./CategorySidebar";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+  const [isCategorySidebarOpen, setIsCategorySidebarOpen] = useState(false);
 
   const toggleAccordion = (id: string) => {
     setOpenAccordion(openAccordion === id ? null : id);
@@ -116,9 +118,13 @@ export default function Header() {
                 </a>
               </li>
               <li>
-                <a href="#" className="font-medium text-black hover:text-black transition">
+                <button
+                  onClick={() => setIsCategorySidebarOpen(true)}
+                  className="font-medium text-black hover:text-black transition"
+                  aria-label="Open categories"
+                >
                   Categories
-                </a>
+                </button>
               </li>
               <li>
                 <a href="#" className="font-medium text-black hover:text-black transition">
@@ -394,12 +400,22 @@ export default function Header() {
           </button>
 
           {/* Categories / Grid */}
-          <button className="flex flex-col items-center p-2" aria-label="Categories">
+          <button
+            onClick={() => setIsCategorySidebarOpen(true)}
+            className="flex flex-col items-center p-2"
+            aria-label="Categories"
+          >
             <FiGrid className="text-xl text-black" />
             <span className="text-xs mt-1 text-black">Category</span>
           </button>
         </div>
       </div>
+
+      <CategorySidebar
+        isOpen={isCategorySidebarOpen}
+        onClose={() => setIsCategorySidebarOpen(false)}
+      />
+
     </>
   );
 }
