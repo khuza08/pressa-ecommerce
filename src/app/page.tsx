@@ -2,7 +2,7 @@
 import Header from "@/components/Header";
 import Carousel from "@/components/Carousel";
 import CategorySection from "@/components/Category";
-import ProductGrid from "@/components/ProductGrid";
+import ProductGrid from "@/components/Products";
 import Footer from "@/components/Footer";
 
 export default function Home() {
