@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
@@ -151,8 +152,8 @@ export default function Products() {
 
   // Component untuk small product card
   const SmallProductCard = ({ product }: any) => (
-    <div className="flex gap-3 p-3 border border-black/20 hover:border-black/40 transition-colors rounded-xl  bg-white min-w-[280px]">
-      <div className="w-16 h-16 bg-gray-900 rounded-lg flex items-center justify-center shrink-0">
+    <div className="flex gap-3 p-3 border border-gray-200 rounded-xl hover:shadow-md transition-shadow bg-white min-w-[280px]">
+      <div className="w-16 h-16 bg-gray-900 rounded-lg flex items-center justify-center flex-shrink-0">
         <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-lg" />
       </div>
       <div className="flex flex-col justify-center flex-1 min-w-0">
@@ -196,7 +197,7 @@ export default function Products() {
             <div className="flex gap-4">
               {/* Bagi produk per page */}
               {Array.from({ length: totalPages }).map((_, pageIdx) => (
-                <div key={pageIdx} className="shrink-0 w-full snap-start">
+                <div key={pageIdx} className="flex-shrink-0 w-full snap-start">
                   <div className="flex flex-col gap-3">
                     {products
                       .slice(pageIdx * itemsPerPage, (pageIdx + 1) * itemsPerPage)
@@ -224,7 +225,7 @@ export default function Products() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="w-[80vw] mx-auto py-8">
       {/* Top Section - Three Columns */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
         <ScrollableSection 
@@ -247,30 +248,30 @@ export default function Products() {
       {/* New Products Section */}
       <div>
         <h2 className="text-2xl font-bold mb-6">NEW PRODUCTS</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6">
           {newProducts.map((product, idx) => (
             <div 
               key={idx} 
               className="bg-white rounded-2xl overflow-hidden border border-black/20 hover:border-black/40 transition-colors"
             >
-              <div className="bg-gray-900 h-64 flex items-center justify-center">
+              <div className="bg-gray-900 h-48 md:h-56 lg:h-64 flex items-center justify-center">
                 <img 
                   src={product.image} 
                   alt={product.name} 
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="p-5">
-                <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
-                <p className="text-2xl font-bold mb-2">${product.price}</p>
-                <div className="flex items-center gap-2 text-sm text-gray-600 mb-1">
+              <div className="p-3 md:p-4 lg:p-5">
+                <h3 className="font-semibold text-sm md:text-base lg:text-lg mb-1 md:mb-2 truncate">{product.name}</h3>
+                <p className="text-xl md:text-2xl font-bold mb-1 md:mb-2">${product.price}</p>
+                <div className="flex items-center gap-1 md:gap-2 text-xs md:text-sm text-gray-600 mb-0.5 md:mb-1">
                   <span className="flex items-center">
                     <span className="text-yellow-500">★</span> {product.rating}
                   </span>
                   <span>|</span>
-                  <span>{product.totalSold} total sold here</span>
+                  <span className="truncate">{product.totalSold} sold</span>
                 </div>
-                <p className="text-sm text-gray-500">{product.store}</p>
+                <p className="text-xs md:text-sm text-gray-500 truncate">{product.store}</p>
               </div>
             </div>
           ))}
