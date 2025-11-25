@@ -65,7 +65,7 @@ export default function Category() {
   }, [isPaused]);
 
   return (
-    <div className="py-8 bg-gray-50">
+    <div className="py-8">
       <div className="container mx-auto px-4">
         <div className="relative">
           {/* Desktop/Tablet View - Full Cards */}
