@@ -151,8 +151,8 @@ export default function Products() {
 
   // Component untuk small product card
   const SmallProductCard = ({ product }: any) => (
-    <div className="flex gap-3 p-3 border border-gray-200 rounded-xl hover:shadow-md transition-shadow bg-white min-w-[280px]">
-      <div className="w-16 h-16 bg-gray-900 rounded-lg flex items-center justify-center flex-shrink-0">
+    <div className="flex gap-3 p-3 border border-black/20 hover:border-black/40 transition-colors rounded-xl  bg-white min-w-[280px]">
+      <div className="w-16 h-16 bg-gray-900 rounded-lg flex items-center justify-center shrink-0">
         <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-lg" />
       </div>
       <div className="flex flex-col justify-center flex-1 min-w-0">
@@ -196,7 +196,7 @@ export default function Products() {
             <div className="flex gap-4">
               {/* Bagi produk per page */}
               {Array.from({ length: totalPages }).map((_, pageIdx) => (
-                <div key={pageIdx} className="flex-shrink-0 w-full snap-start">
+                <div key={pageIdx} className="shrink-0 w-full snap-start">
                   <div className="flex flex-col gap-3">
                     {products
                       .slice(pageIdx * itemsPerPage, (pageIdx + 1) * itemsPerPage)
@@ -251,7 +251,7 @@ export default function Products() {
           {newProducts.map((product, idx) => (
             <div 
               key={idx} 
-              className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
+              className="bg-white rounded-2xl overflow-hidden border border-black/20 hover:border-black/40 transition-colors"
             >
               <div className="bg-gray-900 h-64 flex items-center justify-center">
                 <img 

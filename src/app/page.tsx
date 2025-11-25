@@ -11,9 +11,6 @@ export default function Home() {
       <Header />
       <Carousel />
       <CategorySection /> 
-      <div className="container mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold mb-6">New Products</h2>
-      </div>
       <ProductGrid />
       <Footer />
     </div>
