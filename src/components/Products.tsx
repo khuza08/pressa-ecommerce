@@ -46,6 +46,48 @@ export default function Products() {
       rating: 4.4,
       totalSold: '956',
       store: 'Tech World'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=200&h=200&fit=crop',
+      name: 'Camera',
+      rating: 4.4,
+      totalSold: '1.3k',
+      store: 'Photo Pro'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=200&h=200&fit=crop',
+      name: 'Perfume',
+      rating: 4.4,
+      totalSold: '2.4k',
+      store: 'Fragrance Shop'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1584735175315-9d5df23860e6?w=200&h=200&fit=crop',
+      name: 'Desk Lamp',
+      rating: 4.4,
+      totalSold: '780',
+      store: 'Home Decor'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=200&h=200&fit=crop',
+      name: 'Smart Speaker',
+      rating: 4.4,
+      totalSold: '1.9k',
+      store: 'Tech Hub'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=200&h=200&fit=crop',
+      name: 'Fitness Tracker',
+      rating: 4.4,
+      totalSold: '3.1k',
+      store: 'Sport Tech'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1599481238640-4c1288750d7a?w=200&h=200&fit=crop',
+      name: 'Wireless Mouse',
+      rating: 4.4,
+      totalSold: '1.5k',
+      store: 'PC Store'
     }
   ];
 
@@ -126,25 +168,60 @@ export default function Products() {
   );
 
   // Component untuk section dengan scroll horizontal
-  const ScrollableSection = ({ title, products, sectionKey }: any) => (
-    <div className="flex-1 min-w-0">
-      <h2 className="text-xl font-bold mb-4">{title}</h2>
-      <div className="relative">
-        <div className="overflow-x-auto scrollbar-hide pb-2">
-          <div className="flex flex-col gap-3">
-            {products.slice(0, 6).map((product: any, idx: number) => (
-              <SmallProductCard key={idx} product={product} />
+  const ScrollableSection = ({ title, products, sectionKey }: any) => {
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 6;
+    const totalPages = Math.ceil(products.length / itemsPerPage);
+
+    const handleScroll = (e: any) => {
+      const scrollLeft = e.target.scrollLeft;
+      const width = e.target.offsetWidth;
+      const page = Math.round(scrollLeft / width);
+      setCurrentPage(page);
+    };
+
+    return (
+      <div className="flex-1 min-w-0">
+        <h2 className="text-xl font-bold mb-4">{title}</h2>
+        <div className="relative">
+          <div 
+            className="overflow-x-scroll scrollbar-hide pb-2 snap-x snap-mandatory scroll-smooth"
+            onScroll={handleScroll}
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              WebkitOverflowScrolling: 'touch'
+            }}
+          >
+            <div className="flex gap-4">
+              {/* Bagi produk per page */}
+              {Array.from({ length: totalPages }).map((_, pageIdx) => (
+                <div key={pageIdx} className="flex-shrink-0 w-full snap-start">
+                  <div className="flex flex-col gap-3">
+                    {products
+                      .slice(pageIdx * itemsPerPage, (pageIdx + 1) * itemsPerPage)
+                      .map((product: any, idx: number) => (
+                        <SmallProductCard key={idx} product={product} />
+                      ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex justify-center gap-1 mt-3">
+            {Array.from({ length: totalPages }).map((_, idx) => (
+              <span 
+                key={idx}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  idx === currentPage ? 'bg-gray-900' : 'bg-gray-300'
+                }`}
+              ></span>
             ))}
           </div>
         </div>
-        <div className="flex justify-center gap-1 mt-3">
-          <span className="w-2 h-2 rounded-full bg-gray-900"></span>
-          <span className="w-2 h-2 rounded-full bg-gray-300"></span>
-          <span className="w-2 h-2 rounded-full bg-gray-300"></span>
-        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -207,6 +284,12 @@ export default function Products() {
         .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;
+        }
+        
+        /* Pastikan scrollbar benar-benar hidden di semua browser */
+        .scrollbar-hide::-webkit-scrollbar {
+          width: 0 !important;
+          height: 0 !important;
         }
       `}</style>
     </div>
