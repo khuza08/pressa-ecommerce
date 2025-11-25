@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div id="app-container" className="min-h-screen">
+    <div id="app-container" className="min-h-screen mx-auto">
       <Header />
       <Carousel />
       <CategorySection /> 

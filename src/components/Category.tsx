@@ -64,16 +64,56 @@ export default function Category() {
     };
   }, [isPaused]);
 
+  // Update active dot based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      if (carouselRef.current) {
+        const { scrollLeft } = carouselRef.current;
+        const categoryCard = carouselRef.current.querySelector('.category-card') as HTMLElement;
+        if (categoryCard) {
+          const gap = 16;
+          const newIndex = Math.round(scrollLeft / (categoryCard.offsetWidth + gap));
+          setActiveDot(newIndex);
+        }
+      }
+    };
+
+    const carousel = carouselRef.current;
+    if (carousel) {
+      carousel.addEventListener('scroll', handleScroll);
+      return () => carousel.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
+  // Scroll to specific category when dot is clicked
+  const scrollToCategory = (index: number) => {
+    if (carouselRef.current) {
+      const categoryCard = carouselRef.current.querySelector('.category-card') as HTMLElement;
+      if (categoryCard) {
+        carouselRef.current.scrollTo({
+          left: index * (categoryCard.offsetWidth + 16), // 16px for gap
+          behavior: 'smooth'
+        });
+        setActiveDot(index);
+      }
+    }
+  };
+
   return (
     <div className="py-8">
-      <div className="container mx-auto px-4">
+      <div className="w-[80vw] mx-auto">
         <div className="relative">
           {/* Desktop/Tablet View - Full Cards */}
           <div className="hidden md:block">
             <div
               ref={carouselRef}
               className="flex overflow-x-auto gap-4 pb-4 scroll-smooth"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              style={{ 
+                scrollbarWidth: 'none', 
+                msOverflowStyle: 'none',
+                scrollSnapType: 'x mandatory',
+                WebkitOverflowScrolling: 'touch'
+              }}
               onMouseEnter={() => setIsPaused(true)}
               onMouseLeave={() => setIsPaused(false)}
             >
@@ -88,7 +128,8 @@ export default function Category() {
                 return (
                   <div
                     key={category.id}
-                    className="category-card shrink-0 w-full md:w-1/3 lg:w-1/4"
+                    className="category-card shrink-0 w-[calc(25%-12px)]"
+                    style={{ scrollSnapAlign: 'start' }}
                   >
                     <div
                       className="rounded-lg overflow-hidden border-2 border-black/10 cursor-pointer h-24 transition-all duration-300 hover:shadow-lg hover:border-black/20"

@@ -72,7 +72,7 @@ export default function Carousel() {
   };
 
   return (
-    <div className="relative w-full max-w-7xl mx-auto px-6 py-5">
+    <div className="relative w-full mx-auto px-6 py-5">
       <div className="relative overflow-hidden rounded-2xl shadow-2xl">
         {/* Slides Container */}
         <div
