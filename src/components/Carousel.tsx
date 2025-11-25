@@ -72,7 +72,7 @@ export default function Carousel() {
   };
 
   return (
-    <div className="relative w-[80vw] mx-auto px-6 py-5">
+    <div className="relative w-full md:w-[80vw] mx-auto px-4 md:px-6 py-5">
       <div className="relative overflow-hidden rounded-2xl shadow-2xl">
         {/* Slides Container */}
         <div
@@ -84,30 +84,30 @@ export default function Carousel() {
               {/* Gradient Background */}
               <div className={`bg-linear-to-r ${slide.bgColor} relative overflow-hidden`}>
                 {/* Decorative Elements */}
-                <div className="absolute top-8 left-12 text-4xl opacity-70">🌙</div>
-                <div className="absolute top-16 left-24 text-2xl opacity-60">✨</div>
-                <div className="absolute top-12 left-32 text-2xl opacity-50">✨</div>
-                <div className="absolute bottom-20 left-20 text-3xl opacity-40 rotate-12">🍃</div>
-                <div className="absolute top-1/3 right-1/4 text-2xl opacity-30">💳</div>
-                <div className="absolute bottom-32 right-1/3 text-3xl opacity-40 -rotate-12">🍃</div>
+                <div className="top-8 left-12 text-4xl opacity-70 hidden md:block absolute">🌙</div>
+                <div className="top-16 left-24 text-2xl opacity-60 hidden md:block absolute">✨</div>
+                <div className="top-12 left-32 text-2xl opacity-50 hidden md:block absolute">✨</div>
+                <div className="bottom-20 left-20 text-3xl opacity-40 rotate-12 hidden md:block absolute">🍃</div>
+                <div className="top-1/3 right-1/4 text-2xl opacity-30 hidden md:block absolute">💳</div>
+                <div className="bottom-32 right-1/3 text-3xl opacity-40 -rotate-12 hidden md:block absolute">🍃</div>
 
                 {/* Glowing Effects */}
-                <div className="absolute top-0 right-1/4 w-96 h-96 bg-yellow-300 rounded-full blur-3xl opacity-20"></div>
-                <div className="absolute top-1/4 right-1/3 w-72 h-72 bg-green-300 rounded-full blur-3xl opacity-15"></div>
+                <div className="top-0 right-1/4 w-96 h-96 bg-yellow-300 rounded-full blur-3xl opacity-20 hidden md:block absolute"></div>
+                <div className="top-1/4 right-1/3 w-72 h-72 bg-green-300 rounded-full blur-3xl opacity-15 hidden md:block absolute"></div>
 
                 {/* Content */}
-                <div className="relative flex items-center justify-between px-16 py-8 h-96 min-h-[300px]"> {/* Min-h 320px */}
+                <div className="relative flex items-center justify-between px-8 md:px-16 py-4 md:py-8 h-48 md:h-96 min-h-[200px] md:min-h-[300px]">
                   {/* Left Content */}
-                  <div className="flex-1 text-white space-y-4">
-                    <h2 className="text-4xl font-bold drop-shadow-lg">
+                  <div className="flex-1 text-white space-y-2 md:space-y-4">
+                    <h2 className="text-xl md:text-4xl font-bold drop-shadow-lg">
                       {slide.title}
                     </h2>
 
-                    <h3 className="text-3xl font-bold drop-shadow-md">{slide.subtitle}</h3>
+                    <h3 className="text-lg md:text-3xl font-bold drop-shadow-md">{slide.subtitle}</h3>
 
                     <div className="inline-block">
-                      <div className="bg-yellow-300 text-gray-900 px-6 py-3 rounded-xl -rotate-1 shadow-xl">
-                        <p className="text-2xl font-bold">{slide.highlight}</p>
+                      <div className="bg-yellow-300 text-gray-900 px-3 md:px-6 py-2 md:py-3 rounded-xl -rotate-1 shadow-xl">
+                        <p className="text-sm md:text-2xl font-bold">{slide.highlight}</p>
                       </div>
                     </div>
 
@@ -115,7 +115,7 @@ export default function Carousel() {
                   </div>
 
                   {/* Right Content - Image Mockup */}
-                  <div className="flex-1 flex justify-center items-center">
+                  <div className="flex-1 flex justify-center items-center hidden md:block">
                     <div className="relative w-[18rem] h-88">
                       {/* Phone Frame */}
                       <div className="w-full h-full bg-white rounded-3xl shadow-2xl transform rotate-6 hover:rotate-3 transition-transform duration-300 overflow-hidden">
