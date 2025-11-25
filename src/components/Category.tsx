@@ -24,7 +24,7 @@ export default function Category() {
   const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
 
   return (
-    <div className="relative w-[80vw] mx-auto px-6 py-5">
+    <div className="relative w-full md:w-[80vw] mx-auto px-4 md:px-6 py-5">
       <div className="relative overflow-hidden">
         {/* Desktop/Tablet View - Full Cards */}
         <div className="hidden md:block">
@@ -85,7 +85,7 @@ export default function Category() {
         {/* Mobile View - Scrollable Icons */}
         <div className="md:hidden">
           <div 
-            className="flex overflow-x-auto gap-6 scroll-smooth"
+            className="flex overflow-x-auto gap-4 scroll-smooth px-2"
             style={{ 
               scrollbarWidth: 'none', 
               msOverflowStyle: 'none',
