@@ -48,21 +48,33 @@ export default function Category() {
   return (
     <div className="py-8 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        {/* Container untuk horizontal scroll dengan scrollbar tersembunyi */}
+        <div 
+          className="flex overflow-x-auto space-x-4 pb-4"
+          style={{
+            scrollbarWidth: 'none', /* Firefox */
+            msOverflowStyle: 'none', /* Internet Explorer 10+ */
+          }}
+        >
+          <style jsx>{`
+            /* Menyembunyikan scrollbar untuk Chrome, Safari dan Opera */
+            div::-webkit-scrollbar {
+              display: none;
+            }
+          `}</style>
+          
           {categories.map((category) => (
             <div
               key={category.id}
-              className={`bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer ${
-                hoveredCategory === category.id ? "transform -translate-y-1" : ""
-              }`}
+              className={`rounded-lg overflow-hidden border-2 border-black/10 cursor-pointer shrink-0 w-72`}
               onMouseEnter={() => setHoveredCategory(category.id)}
               onMouseLeave={() => setHoveredCategory(null)}
             >
-              {/* Container landscape lebih kecil */}
+              {/* Container landscape */}
               <div className="flex h-24">
                 
                 {/* KOLOM KIRI: Gambar */}
-                <div className="w-1/3 h-full flex-shrink-0">
+                <div className="w-1/3 h-full">
                   <img 
                     src={category.image} 
                     alt={category.name}
@@ -76,15 +88,15 @@ export default function Category() {
                   {/* Nama kategori dengan quantity di sebelah kanan */}
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="font-semibold text-gray-800 text-sm">{category.name}</h3>
-                    <span className="text-xs text-gray-500 whitespace-nowrap">{category.items}</span>
+                    <span className="text-xs text-gray-500 whitespace-nowrap">({category.items})</span>
                   </div>
 
                   {/* Tombol Show All */}
-                  <button className="flex items-center text-xs text-blue-600 hover:text-blue-800 transition font-medium">
+                  <button className="flex items-center text-xs text-black/70 hover:text-black transition font-medium">
                     Show All
                     <FiPlus className="ml-1 w-3 h-3" />
                   </button>
-              
+
                 </div>
               </div>
             </div>
