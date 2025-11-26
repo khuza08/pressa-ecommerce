@@ -152,7 +152,7 @@ export default function Products() {
 
   // Component untuk small product card
   const SmallProductCard = ({ product }: any) => (
-    <div className="flex gap-3 p-4 border border-gray-200 rounded-xl hover:shadow-md transition-shadow bg-white min-w-[280px]">
+    <div className="flex gap-3 p-4 border border-black/20 rounded-xl hover:border-black/40 transition-colors bg-white min-w-[280px]">
       <div className="w-16 h-16 bg-gray-900 rounded-lg flex items-center justify-center shrink-0">
         <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-lg" />
       </div>
@@ -208,16 +208,6 @@ export default function Products() {
                 </div>
               ))}
             </div>
-          </div>
-          <div className="flex justify-center gap-1 mt-3">
-            {Array.from({ length: totalPages }).map((_, idx) => (
-              <span 
-                key={idx}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  idx === currentPage ? 'bg-gray-900' : 'bg-gray-300'
-                }`}
-              ></span>
-            ))}
           </div>
         </div>
       </div>
