@@ -7,6 +7,9 @@ import {
     FaCommentAlt,
     FaChevronRight,
     FaChevronLeft,
+    FaTimes,
+    FaExpand,
+    FaSearchPlus,
 } from "react-icons/fa";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -17,6 +20,9 @@ export default function ProductDetail({ productId }: { productId: string }) {
     const [showNextButton, setShowNextButton] = useState(true);
     const [isHovering, setIsHovering] = useState(false);
     const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
+    const [isFullscreenZoom, setIsFullscreenZoom] = useState(false);
+    const [fullscreenImage, setFullscreenImage] = useState("");
+    const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
 
     // Update tombol berdasarkan scroll position
     const updateScrollButtons = () => {
@@ -60,8 +66,38 @@ export default function ProductDetail({ productId }: { productId: string }) {
             e.currentTarget.getBoundingClientRect();
         const x = ((e.clientX - left) / width) * 100;
         const y = ((e.clientY - top) / height) * 100;
+        
         setZoomPosition({ x, y });
+        setLensPosition({
+            x: e.clientX - left - 50, // 50px = setengah dari lebar lensa
+            y: e.clientY - top - 50  // 50px = setengah dari tinggi lensa
+        });
     };
+
+    // Handler untuk fullscreen zoom
+    const handleFullscreenZoom = (imageUrl: string) => {
+        setFullscreenImage(imageUrl);
+        setIsFullscreenZoom(true);
+        document.body.style.overflow = "hidden"; // Mencegah scroll saat fullscreen
+    };
+
+    // Menutup fullscreen zoom
+    const closeFullscreenZoom = () => {
+        setIsFullscreenZoom(false);
+        document.body.style.overflow = "auto";
+    };
+
+    // Handle keyboard escape
+    useEffect(() => {
+        const handleEsc = (e: KeyboardEvent) => {
+            if (e.key === "Escape" && isFullscreenZoom) {
+                closeFullscreenZoom();
+            }
+        };
+
+        window.addEventListener("keydown", handleEsc);
+        return () => window.removeEventListener("keydown", handleEsc);
+    }, [isFullscreenZoom]);
 
     // 📦 Data Dummy
     const productData = {
@@ -154,8 +190,8 @@ export default function ProductDetail({ productId }: { productId: string }) {
             {/* Changed max-width to responsive width */}
             <div className="w-full lg:w-[80vw] mx-auto px-4 mb-10 bg-gray-50">
                 <div className="flex flex-col lg:flex-row gap-4">
-                    {/* Left Column - Product Images (DIBUNGKUS SEPERTI PURCHASE CARD) */}
-                    <div className="w-[280px]">
+                    {/* Left Column - Product Images */}
+                    <div className="w-[280px] relative">
                         <div className="bg-white rounded-lg overflow-hidden shadow-sm sticky top-[150px] flex flex-col">
                             {/* Main Image with Zoom */}
                             <div
@@ -170,17 +206,46 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     className={`w-full h-full rounded-lg object-cover transition-all duration-200 ${isHovering ? "blur-sm" : ""
                                         }`}
                                 />
-                                {/* Zoom Overlay */}
-                                {isHovering && (
-                                    <div
-                                        className="absolute inset-0 pointer-events-none z-10"
-                                        style={{
-                                            background: `url(${mainImage}) no-repeat`,
-                                            backgroundSize: "200%",
-                                            backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
-                                        }}
-                                    />
+                                
+                                {/* Lens Zoom Overlay */}
+                                {isHovering && !isFullscreenZoom && (
+                                    <>
+                                        {/* Lens (kaca pembesar) */}
+                                        <div
+                                            className="absolute pointer-events-none z-20 border-2 border-white rounded-full shadow-lg"
+                                            style={{
+                                                width: "100px",
+                                                height: "100px",
+                                                left: `${lensPosition.x}px`,
+                                                top: `${lensPosition.y}px`,
+                                                background: `url(${mainImage}) no-repeat`,
+                                                backgroundSize: "200%",
+                                                backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                                                transform: "translate(-50%, -50%)",
+                                            }}
+                                        />
+                                        {/* Kaca pembesar ikon */}
+                                        <div 
+                                            className="absolute z-30 pointer-events-none"
+                                            style={{
+                                                left: `${lensPosition.x}px`,
+                                                top: `${lensPosition.y}px`,
+                                                transform: "translate(-50%, -50%)",
+                                            }}
+                                        >
+                                            <FaSearchPlus className="text-white text-lg" />
+                                        </div>
+                                    </>
                                 )}
+                                
+                                {/* Fullscreen Zoom Button */}
+                                <button
+                                    onClick={() => handleFullscreenZoom(mainImage)}
+                                    className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md transition-all"
+                                    aria-label="Zoom image"
+                                >
+                                    <FaExpand className="text-gray-700" />
+                                </button>
                             </div>
 
                             {/* Thumbnail Container */}
@@ -233,6 +298,38 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 )}
                             </div>
                         </div>
+                        
+                        {/* Preview Zoom Overlay di sebelah gambar produk */}
+                        {isHovering && !isFullscreenZoom && (
+                            <div 
+                                className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-lg shadow-lg p-3 z-10"
+                                style={{ 
+                                    maxHeight: "400px",
+                                    overflowY: "auto"
+                                }}
+                            >
+                                <div className="text-xs text-gray-600 mb-2 font-medium">Preview Zoom</div>
+                                <div 
+                                    className="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden relative mb-3"
+                                    style={{ height: "200px" }}
+                                >
+                                    <div
+                                        className="absolute inset-0"
+                                        style={{
+                                            background: `url(${mainImage}) no-repeat`,
+                                            backgroundSize: "200%",
+                                            backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                                        }}
+                                    />
+                                </div>
+                                <div className="text-sm font-medium text-gray-900 mb-2">
+                                    {variants.find((v) => v.id === activeVariant)?.name || "NATURAL FRESH"}
+                                </div>
+                                <div className="text-xs text-gray-600">
+                                    Stok: <span className="font-semibold">{stock}</span>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Middle Column - Product Info */}
@@ -366,7 +463,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     <div className="font-semibold text-gray-900 text-base">
                                         {variants.find((v) => v.id === activeVariant)?.name ||
                                             "NATURAL FRESH"}
-                                    </div>
+                                    </div>  
                                 </div>
                             </div>
 
@@ -445,6 +542,34 @@ export default function ProductDetail({ productId }: { productId: string }) {
                     </div>
                 </div>
             </div>
+            
+            {/* Fullscreen Zoom Overlay */}
+            {isFullscreenZoom && (
+                <div 
+                    className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4"
+                    onClick={closeFullscreenZoom}
+                >
+                    <button 
+                        className="absolute top-4 right-4 text-white text-2xl z-10"
+                        onClick={closeFullscreenZoom}
+                        aria-label="Close fullscreen"
+                    >
+                        <FaTimes />
+                    </button>
+                    
+                    <div 
+                        className="relative max-w-4xl max-h-[90vh] w-full flex items-center justify-center"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <img 
+                            src={fullscreenImage} 
+                            alt="Fullscreen view" 
+                            className="max-h-[85vh] object-contain"
+                        />
+                    </div>
+                </div>
+            )}
+            
             <Footer />
         </>
     );
