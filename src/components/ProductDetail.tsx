@@ -188,14 +188,14 @@ export default function ProductDetail({ productId }: { productId: string }) {
         <>
             <Header />
             {/* Changed max-width to responsive width */}
-            <div className="w-full lg:w-[80vw] mx-auto px-4 mb-10 bg-gray-50">
+            <div className="w-full lg:w-[80vw] mx-auto px-4 mb-10">
                 <div className="flex flex-col lg:flex-row gap-4">
                     {/* Left Column - Product Images */}
                     <div className="w-[280px] relative">
                         <div className="bg-white rounded-lg overflow-hidden shadow-sm sticky top-[150px] flex flex-col">
                             {/* Main Image with Zoom */}
                             <div
-                                className="aspect-square relative bg-gray-100 overflow-hidden"
+                                className="aspect-square relative overflow-hidden"
                                 onMouseEnter={() => setIsHovering(true)}
                                 onMouseLeave={() => setIsHovering(false)}
                                 onMouseMove={handleMouseMove}
@@ -244,7 +244,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md transition-all"
                                     aria-label="Zoom image"
                                 >
-                                    <FaExpand className="text-gray-700" />
+                                    <FaExpand className="text-black/80" />
                                 </button>
                             </div>
 
@@ -253,10 +253,10 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 {showPrevButton && (
                                     <button
                                         onClick={() => scrollThumbnails("left")}
-                                        className="absolute -left-1 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-gray-50 rounded-full p-1.5 shadow-lg border border-gray-200"
+                                        className="absolute -left-1 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full p-1.5 shadow-lg border"
                                         aria-label="Previous image"
                                     >
-                                        <FaChevronLeft size={16} className="text-gray-700" />
+                                        <FaChevronLeft size={16} className="text-black/80" />
                                     </button>
                                 )}
 
@@ -274,8 +274,8 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                             key={index}
                                             onClick={() => setMainImage(img.url)}
                                             className={`shrink-0 w-16 h-16 rounded border-2 overflow-hidden ${mainImage === img.url
-                                                ? "border-green-500"
-                                                : "border-gray-200"
+                                                ? "border-black/50"
+                                                : "border-black/20"
                                                 }`}
                                         >
                                             <img
@@ -290,10 +290,10 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 {showNextButton && (
                                     <button
                                         onClick={() => scrollThumbnails("right")}
-                                        className="absolute -right-1 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-gray-50 rounded-full p-1.5 shadow-lg border border-gray-200"
+                                        className="absolute -right-1 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full p-1.5 shadow-lg border"
                                         aria-label="Next image"
                                     >
-                                        <FaChevronRight size={16} className="text-gray-700" />
+                                        <FaChevronRight size={16} className="text-black/80" />
                                     </button>
                                 )}
                             </div>
@@ -310,7 +310,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                             >
                                 <div className="text-xs text-gray-600 mb-2 font-medium">Preview Zoom</div>
                                 <div 
-                                    className="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden relative mb-3"
+                                    className="w-full aspect-square rounded-lg overflow-hidden relative mb-3"
                                     style={{ height: "200px" }}
                                 >
                                     <div
@@ -325,7 +325,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 <div className="text-sm font-medium text-gray-900 mb-2">
                                     {variants.find((v) => v.id === activeVariant)?.name || "NATURAL FRESH"}
                                 </div>
-                                <div className="text-xs text-gray-600">
+                                <div className="text-xs text-black/50">
                                     Stok: <span className="font-semibold">{stock}</span>
                                 </div>
                             </div>
@@ -342,7 +342,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     <span className="font-semibold text-sm">{sold}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
-                                    <FaStar className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                    <FaStar className="w-4 h-4 fill-black text-black" />
                                     <span className="font-semibold text-sm">{rating}</span>
                                     <span className="text-gray-500 text-sm">
                                         ({totalReviews})
@@ -369,7 +369,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                             key={variant.id}
                                             onClick={() => setActiveVariant(variant.id)}
                                             className={`px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all flex items-center gap-2 ${activeVariant === variant.id
-                                                ? "border-green-500 bg-green-50 text-green-700"
+                                                ? "border-black/50 text-black/80"
                                                 : "border-gray-200 hover:border-gray-300"
                                                 }`}
                                         >
@@ -385,8 +385,8 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     <button
                                         onClick={() => setActiveTab("detail")}
                                         className={`flex-1 pb-2 text-center font-medium border-b-2 transition-colors ${activeTab === "detail"
-                                            ? "border-green-500 text-green-600"
-                                            : "border-transparent text-gray-500"
+                                            ? "border-black/50 text-black/80"
+                                            : "border-transparent text-black/50"
                                             }`}
                                     >
                                         Detail Produk
@@ -394,8 +394,8 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     <button
                                         onClick={() => setActiveTab("info")}
                                         className={`flex-1 pb-2 text-center font-medium border-b-2 transition-colors ${activeTab === "info"
-                                            ? "border-green-500 text-green-600"
-                                            : "border-transparent text-gray-500"
+                                            ? "border-black/50 text-black/80"
+                                            : "border-transparent text-black/50"
                                             }`}
                                     >
                                         Info Penting
@@ -405,16 +405,16 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 {activeTab === "detail" && (
                                     <div className="space-y-3">
                                         <div className="flex justify-between">
-                                            <span className="text-gray-600">Kondisi:</span>
-                                            <span className="font-semibold">{condition}</span>
+                                            <span className="text-black">Kondisi:</span>
+                                            <span className="font-semibold text-black/50">{condition}</span>
                                         </div>
                                         <div className="flex justify-between">
-                                            <span className="text-gray-600">Min. Pemesanan:</span>
-                                            <span className="font-semibold">{minOrder} Buah</span>
+                                            <span className="text-black ">Min. Pemesanan:</span>
+                                            <span className="font-semibold text-black/50">{minOrder} Buah</span>
                                         </div>
                                         <div className="flex justify-between">
-                                            <span className="text-gray-600">Etalase:</span>
-                                            <span className="font-semibold text-green-600">
+                                            <span className="text-black">Etalase:</span>
+                                            <span className="font-semibold text-black/50">
                                                 {category}
                                             </span>
                                         </div>
@@ -440,7 +440,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 </div>
                                 <button
                                     onClick={() => setShowFullDescription(!showFullDescription)}
-                                    className="text-green-600 font-medium text-sm mt-2 hover:underline"
+                                    className="text-black font-medium text-sm mt-2 hover:underline"
                                 >
                                     {showFullDescription
                                         ? "Lihat Lebih Sedikit"
@@ -514,10 +514,10 @@ export default function ProductDetail({ productId }: { productId: string }) {
                             </div>
 
                             <div className="space-y-3">
-                                <button className="w-full bg-green-600 hover:bg-green-700 text-white font-bold text-base py-2 rounded-xl transition-colors shadow-md">
+                                <button className="w-full bg-black text-white font-bold text-base py-2 rounded-xl transition-colors shadow-md">
                                     + Keranjang
                                 </button>
-                                <button className="w-full border-2 border-green-600 text-green-600 hover:bg-green-50 font-bold text-base py-2 rounded-xl transition-colors">
+                                <button className="w-full border-2 border-black/80 text-black/80 font-bold text-base py-2 rounded-xl transition-colors">
                                     Beli Langsung
                                 </button>
                             </div>
@@ -546,7 +546,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
             {/* Fullscreen Zoom Overlay */}
             {isFullscreenZoom && (
                 <div 
-                    className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4"
+                    className="fixed inset-0 bg-black/90 z-9999 flex items-center justify-center p-4"
                     onClick={closeFullscreenZoom}
                 >
                     <button 

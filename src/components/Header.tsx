@@ -90,7 +90,7 @@ export default function Header() {
         {/* Main Header */}
         <div className="container mx-auto py-3 px-4">
           <div className="flex items-center justify-between gap-4">
-            <a href="#" className="text-black text-xl font-bold">
+            <a href="/" className="text-black text-xl font-bold">
               PRESSA
             </a>
             <div className="flex-1 max-w-lg relative">
