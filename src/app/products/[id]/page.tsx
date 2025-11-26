@@ -1,8 +1,9 @@
 // src/app/products/[id]/page.tsx
 import ProductDetail from '@/components/ProductDetail';
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
+export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   return (
-    <ProductDetail productId={params.id} />
+    <ProductDetail productId={id} />
   );
 }
