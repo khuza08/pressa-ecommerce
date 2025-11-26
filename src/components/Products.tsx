@@ -1,12 +1,15 @@
+// Products.tsx
 'use client';
 
 import { useState } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import Link from 'next/link';
 
 export default function Products() {
   // Data untuk small cards di bagian atas
   const smallCardData = [
     {
+      id: 1,
       image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&h=200&fit=crop',
       name: 'Classic Watch',
       rating: 4.4,
@@ -14,6 +17,7 @@ export default function Products() {
       store: 'Time Store'
     },
     {
+      id: 2,
       image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=200&h=200&fit=crop',
       name: 'Sunglasses',
       rating: 4.4,
@@ -21,6 +25,7 @@ export default function Products() {
       store: 'Fashion Hub'
     },
     {
+      id: 3,
       image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop',
       name: 'Headphones',
       rating: 4.4,
@@ -28,6 +33,7 @@ export default function Products() {
       store: 'Audio Shop'
     },
     {
+      id: 4,
       image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&h=200&fit=crop',
       name: 'Sneakers',
       rating: 4.4,
@@ -35,6 +41,7 @@ export default function Products() {
       store: 'Shoe Palace'
     },
     {
+      id: 5,
       image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=200&h=200&fit=crop',
       name: 'Backpack',
       rating: 4.4,
@@ -42,6 +49,7 @@ export default function Products() {
       store: 'Bag Store'
     },
     {
+      id: 6,
       image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=200&h=200&fit=crop',
       name: 'Laptop',
       rating: 4.4,
@@ -49,6 +57,7 @@ export default function Products() {
       store: 'Tech World'
     },
     {
+      id: 7,
       image: 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=200&h=200&fit=crop',
       name: 'Camera',
       rating: 4.4,
@@ -56,6 +65,7 @@ export default function Products() {
       store: 'Photo Pro'
     },
     {
+      id: 8,
       image: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=200&h=200&fit=crop',
       name: 'Perfume',
       rating: 4.4,
@@ -63,6 +73,7 @@ export default function Products() {
       store: 'Fragrance Shop'
     },
     {
+      id: 9,
       image: 'https://images.unsplash.com/photo-1584735175315-9d5df23860e6?w=200&h=200&fit=crop',
       name: 'Desk Lamp',
       rating: 4.4,
@@ -70,6 +81,7 @@ export default function Products() {
       store: 'Home Decor'
     },
     {
+      id: 10,
       image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=200&h=200&fit=crop',
       name: 'Smart Speaker',
       rating: 4.4,
@@ -77,6 +89,7 @@ export default function Products() {
       store: 'Tech Hub'
     },
     {
+      id: 11,
       image: 'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=200&h=200&fit=crop',
       name: 'Fitness Tracker',
       rating: 4.4,
@@ -84,6 +97,7 @@ export default function Products() {
       store: 'Sport Tech'
     },
     {
+      id: 12,
       image: 'https://images.unsplash.com/photo-1599481238640-4c1288750d7a?w=200&h=200&fit=crop',
       name: 'Wireless Mouse',
       rating: 4.4,
@@ -95,6 +109,7 @@ export default function Products() {
   // Data untuk produk besar di bawah
   const newProducts = [
     {
+      id: 13,
       image: 'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&h=400&fit=crop',
       name: 'Leather Jacket',
       price: 150,
@@ -103,6 +118,7 @@ export default function Products() {
       store: 'Fashion Store'
     },
     {
+      id: 14,
       image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=400&fit=crop',
       name: 'Designer Bag',
       price: 150,
@@ -111,6 +127,7 @@ export default function Products() {
       store: 'Luxury Bags'
     },
     {
+      id: 15,
       image: 'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=400&h=400&fit=crop',
       name: 'Smart Watch',
       price: 150,
@@ -119,6 +136,7 @@ export default function Products() {
       store: 'Tech Store'
     },
     {
+      id: 16,
       image: 'https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=400&h=400&fit=crop',
       name: 'Running Shoes',
       price: 150,
@@ -127,6 +145,7 @@ export default function Products() {
       store: 'Sport Shop'
     },
     {
+      id: 17,
       image: 'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?w=400&h=400&fit=crop',
       name: 'Sunglasses Pro',
       price: 150,
@@ -135,6 +154,7 @@ export default function Products() {
       store: 'Eyewear Co'
     },
     {
+      id: 18,
       image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=400&h=400&fit=crop',
       name: 'Gaming Headset',
       price: 150,
@@ -152,7 +172,7 @@ export default function Products() {
 
   // Component untuk small product card
   const SmallProductCard = ({ product }: any) => (
-    <div className="flex gap-3 p-4 border border-black/20 rounded-xl hover:border-black/40 transition-colors bg-white min-w-[280px]">
+    <Link href={`/products/${product.id}`} className="flex gap-3 p-4 border border-black/20 rounded-xl hover:border-black/40 transition-colors bg-white min-w-[280px]">
       <div className="w-16 h-16 bg-gray-900 rounded-lg flex items-center justify-center shrink-0">
         <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-lg" />
       </div>
@@ -165,7 +185,7 @@ export default function Products() {
         </div>
         <p className="text-xs text-gray-500 mt-0.5">{product.store}</p>
       </div>
-    </div>
+    </Link>
   );
 
   // Component untuk section dengan scroll horizontal
@@ -240,8 +260,9 @@ export default function Products() {
         <h2 className="text-2xl font-bold mb-6 px-4">NEW PRODUCTS</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6 px-4">
           {newProducts.map((product, idx) => (
-            <div 
+            <Link 
               key={idx} 
+              href={`/products/${product.id}`}
               className="bg-white rounded-2xl overflow-hidden border border-black/20 hover:border-black/40 transition-colors"
             >
               <div className="bg-gray-900 h-48 md:h-56 lg:h-64 flex items-center justify-center">
@@ -263,7 +284,7 @@ export default function Products() {
                 </div>
                 <p className="text-xs md:text-sm text-gray-500 truncate">{product.store}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
