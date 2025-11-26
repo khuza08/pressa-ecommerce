@@ -152,8 +152,8 @@ export default function Products() {
 
   // Component untuk small product card
   const SmallProductCard = ({ product }: any) => (
-    <div className="flex gap-3 p-3 border border-gray-200 rounded-xl hover:shadow-md transition-shadow bg-white min-w-[280px]">
-      <div className="w-16 h-16 bg-gray-900 rounded-lg flex items-center justify-center flex-shrink-0">
+    <div className="flex gap-3 p-4 border border-gray-200 rounded-xl hover:shadow-md transition-shadow bg-white min-w-[280px]">
+      <div className="w-16 h-16 bg-gray-900 rounded-lg flex items-center justify-center shrink-0">
         <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-lg" />
       </div>
       <div className="flex flex-col justify-center flex-1 min-w-0">
@@ -194,10 +194,10 @@ export default function Products() {
               WebkitOverflowScrolling: 'touch'
             }}
           >
-            <div className="flex gap-4">
+            <div className="flex gap-4 px-4">
               {/* Bagi produk per page */}
               {Array.from({ length: totalPages }).map((_, pageIdx) => (
-                <div key={pageIdx} className="flex-shrink-0 w-full snap-start">
+                <div key={pageIdx} className="shrink-0 w-full snap-start">
                   <div className="flex flex-col gap-3">
                     {products
                       .slice(pageIdx * itemsPerPage, (pageIdx + 1) * itemsPerPage)
@@ -225,7 +225,7 @@ export default function Products() {
   };
 
   return (
-    <div className="w-[80vw] mx-auto py-8">
+    <div className="w-full md:w-[80vw] mx-auto py-8 px-4">
       {/* Top Section - Three Columns */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
         <ScrollableSection 
@@ -247,8 +247,8 @@ export default function Products() {
 
       {/* New Products Section */}
       <div>
-        <h2 className="text-2xl font-bold mb-6">NEW PRODUCTS</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6">
+        <h2 className="text-2xl font-bold mb-6 px-4">NEW PRODUCTS</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6 px-4">
           {newProducts.map((product, idx) => (
             <div 
               key={idx} 
