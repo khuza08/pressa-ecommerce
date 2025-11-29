@@ -17,7 +17,7 @@ export default function CartPage() {
 
   return (
     <div className="min-h-screen bg-white py-8">
-      <div className="container mx-auto px-4">
+      <div className="w-[80vw] mx-auto">
         <div className="mb-6">
           <Link href="/" className="flex items-center text-gray-600 hover:text-gray-900">
             <FiArrowLeft className="mr-2" />
@@ -25,10 +25,10 @@ export default function CartPage() {
           </Link>
         </div>
 
-        <h1 className="text-2xl font-bold mb-8">Your Cart</h1>
+        <h1 className="text-2xl font-bold mb-8 px-4">Your Cart</h1>
 
         {cart.items.length === 0 ? (
-          <div className="text-center py-12">
+          <div className="text-center py-12 px-4">
             <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
               <FiX className="text-gray-400 text-3xl" />
             </div>
@@ -42,7 +42,7 @@ export default function CartPage() {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-4">
             <div className="lg:col-span-2">
               <ul>
                 {cart.items.map((item) => (

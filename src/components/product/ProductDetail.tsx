@@ -162,7 +162,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
 
     if (loading) {
         return (
-            <div className="w-full lg:w-[80vw] mx-auto px-4 mb-10 flex justify-center items-center h-64">
+            <div className="w-[80vw] mx-auto mb-10 flex justify-center items-center h-64">
                 <p className="text-lg">Loading product...</p>
             </div>
         );
@@ -170,7 +170,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
 
     if (error) {
         return (
-            <div className="w-full lg:w-[80vw] mx-auto px-4 mb-10">
+            <div className="w-[80vw] mx-auto mb-10">
                 <p className="text-lg text-red-500">Error: {error}</p>
             </div>
         );
@@ -178,7 +178,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
 
     if (!product) {
         return (
-            <div className="w-full lg:w-[80vw] mx-auto px-4 mb-10">
+            <div className="w-[80vw] mx-auto mb-10">
                 <p className="text-lg">Product not found</p>
             </div>
         );
@@ -187,7 +187,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
     return (
         <>
             {/* Changed max-width to responsive width */}
-            <div className="w-full lg:w-[80vw] mx-auto px-4 mb-10">
+            <div className="w-[80vw] mx-auto mb-10">
                 <div className="flex flex-col lg:flex-row gap-4">
                     {/* Left Column - Product Images */}
                     <div className="w-[280px] relative">

@@ -93,7 +93,7 @@ export default function Products() {
               WebkitOverflowScrolling: 'touch'
             }}
           >
-            <div className="flex gap-4 px-4">
+            <div className="flex gap-4">
               {/* Bagi produk per page */}
               {Array.from({ length: totalPages }).map((_, pageIdx) => (
                 <div key={pageIdx} className="shrink-0 w-full snap-start">
@@ -118,7 +118,7 @@ export default function Products() {
   const newProducts = products.slice(0, 6); // First 6 products for new products section
 
   return (
-    <div className="w-full md:w-[80vw] mx-auto py-8 px-4">
+    <div className="w-[80vw] mx-auto py-8">
       {/* Top Section - Three Columns */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
         <ScrollableSection
@@ -140,8 +140,8 @@ export default function Products() {
 
       {/* New Products Section */}
       <div>
-        <h2 className="text-2xl font-bold mb-6 px-4">NEW PRODUCTS</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6 px-4">
+        <h2 className="text-2xl font-bold mb-6">NEW PRODUCTS</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6">
           {newProducts.map((product, idx) => (
             <Link
               key={idx}

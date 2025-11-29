@@ -5,7 +5,7 @@ import ProductGrid from "@/components/product/Products";
 
 export default function Home() {
   return (
-    <div id="app-container" className="min-h-screen mx-auto">
+    <div id="app-container" className="w-[80vw] mx-auto">
       <Carousel />
       <CategorySection />
       <ProductGrid />
