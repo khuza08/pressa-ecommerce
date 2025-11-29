@@ -11,9 +11,6 @@ import {
     FaExpand,
     FaSearchPlus,
 } from "react-icons/fa";
-import Footer from "./Footer";
-import Header from "./Header";
-
 export default function ProductDetail({ productId }: { productId: string }) {
     const thumbnailRef = useRef<HTMLDivElement>(null);
     const [showPrevButton, setShowPrevButton] = useState(false);
@@ -186,7 +183,6 @@ export default function ProductDetail({ productId }: { productId: string }) {
 
     return (
         <>
-            <Header />
             {/* Changed max-width to responsive width */}
             <div className="w-full lg:w-[80vw] mx-auto px-4 mb-10">
                 <div className="flex flex-col lg:flex-row gap-4">
@@ -569,8 +565,6 @@ export default function ProductDetail({ productId }: { productId: string }) {
                     </div>
                 </div>
             )}
-            
-            <Footer />
         </>
     );
 }
