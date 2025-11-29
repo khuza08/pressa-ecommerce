@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import {
     FaStar,
     FaHeart,
@@ -11,6 +11,9 @@ import {
     FaExpand,
     FaSearchPlus,
 } from "react-icons/fa";
+import { productService, type Product } from '@/services/productService';
+import { useCart } from '@/context/CartContext';
+
 export default function ProductDetail({ productId }: { productId: string }) {
     const thumbnailRef = useRef<HTMLDivElement>(null);
     const [showPrevButton, setShowPrevButton] = useState(false);
@@ -20,6 +23,10 @@ export default function ProductDetail({ productId }: { productId: string }) {
     const [isFullscreenZoom, setIsFullscreenZoom] = useState(false);
     const [fullscreenImage, setFullscreenImage] = useState("");
     const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
+    const [product, setProduct] = useState<Product | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const { addToCart } = useCart();
 
     // Update tombol berdasarkan scroll position
     const updateScrollButtons = () => {
@@ -96,81 +103,53 @@ export default function ProductDetail({ productId }: { productId: string }) {
         return () => window.removeEventListener("keydown", handleEsc);
     }, [isFullscreenZoom]);
 
-    // 📦 Data Dummy
-    const productData = {
-        title:
-            "Bowin Activ Spray. Parfum Sepatu Kaos Kaki. Parfum Helm Jaket Anti Bau - NATURAL FRESH",
-        price: 15999,
-        rating: 4.9,
-        totalReviews: "11,5rb rating",
-        sold: "10 rb+",
-        stock: 1317,
-        images: [
-            {
-                url: "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800",
-                alt: "Product 1",
-            },
-            {
-                url: "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=800",
-                alt: "Product 2",
-            },
-            {
-                url: "https://images.unsplash.com/photo-1605408499391-6368c628ef42?w=800",
-                alt: "Product 3",
-            },
-            {
-                url: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=800",
-                alt: "Product 4",
-            },
-        ],
-        variants: [
-            { id: "natural", name: "NATURAL FRESH", icon: "🌿" },
-            { id: "coffee", name: "COFFEE MILK", icon: "☕" },
-            { id: "black", name: "BLACK ICE", icon: "❄️" },
-            { id: "laundry", name: "LAUNDRY FRESH", icon: "🧺" },
-            { id: "gelato", name: "GELATO ICECREAM", icon: "🍦" },
-        ],
-        selectedVariant: "natural",
-        condition: "Baru",
-        minOrder: 1,
-        category: "OTOMOTIF",
-        description:
-            "Tahukah anda bakteri merupakan penyebab utama timbulnya bau tidak sedap?",
-        features: [
-            "Teknologi baru, lebih cepat basmi bakteri penyebab bau",
-            "Tahan lebih lama; aroma segar dan nyaman",
-            "Bahan natural, aman untuk ibu hamil & bayi serta hewan peliharaan",
-            "Tidak berbentuk aerosol yang mudah meledak",
-        ],
-    };
+    // Fetch product data
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                setLoading(true);
+                const productData = await productService.getProductById(productId);
+                if (productData) {
+                    setProduct(productData);
+                } else {
+                    setError('Product not found');
+                }
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'Failed to load product');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const {
-        title,
-        price,
-        rating,
-        totalReviews,
-        sold,
-        stock,
-        images,
-        variants,
-        selectedVariant,
-        condition,
-        minOrder,
-        category,
-        description,
-        features,
-    } = productData;
+        fetchProduct();
+    }, [productId]);
 
+    // Initialize state based on product data when available
     const [quantity, setQuantity] = useState(1);
-    const [activeVariant, setActiveVariant] = useState(
-        selectedVariant || variants[0]?.id
-    );
+    const [activeVariant, setActiveVariant] = useState<string>('');
     const [activeTab, setActiveTab] = useState("detail");
-    const [mainImage, setMainImage] = useState(images[0]?.url);
+    const [mainImage, setMainImage] = useState("");
     const [showFullDescription, setShowFullDescription] = useState(false);
 
+    // Set initial values when product loads
+    useEffect(() => {
+        if (product) {
+            // Set initial variant if available
+            if (product.variants && product.variants.length > 0) {
+                setActiveVariant(product.variants[0].id);
+            }
+
+            // Set initial main image if available
+            if (product.image) {
+                setMainImage(product.image);
+            }
+        }
+    }, [product]);
+
     const handleQuantityChange = (type: "increment" | "decrement") => {
-        if (type === "increment" && quantity < stock) {
+        if (!product) return;
+
+        if (type === "increment" && quantity < (product.stock || 999)) {
             setQuantity(quantity + 1);
         } else if (type === "decrement" && quantity > 1) {
             setQuantity(quantity - 1);
@@ -180,6 +159,30 @@ export default function ProductDetail({ productId }: { productId: string }) {
     const formatPrice = (price: number) => {
         return `Rp${price.toLocaleString("id-ID")}`;
     };
+
+    if (loading) {
+        return (
+            <div className="w-full lg:w-[80vw] mx-auto px-4 mb-10 flex justify-center items-center h-64">
+                <p className="text-lg">Loading product...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="w-full lg:w-[80vw] mx-auto px-4 mb-10">
+                <p className="text-lg text-red-500">Error: {error}</p>
+            </div>
+        );
+    }
+
+    if (!product) {
+        return (
+            <div className="w-full lg:w-[80vw] mx-auto px-4 mb-10">
+                <p className="text-lg">Product not found</p>
+            </div>
+        );
+    }
 
     return (
         <>
@@ -198,7 +201,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                             >
                                 <img
                                     src={mainImage}
-                                    alt={title}
+                                    alt={product.name}
                                     className={`w-full h-full rounded-lg object-cover transition-all duration-200 ${isHovering ? "blur-sm" : ""
                                         }`}
                                 />
@@ -265,7 +268,8 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                         WebkitOverflowScrolling: "touch",
                                     }}
                                 >
-                                    {images.map((img, index) => (
+                                    {/* Show main image if no additional images */}
+                                    {(product.images && product.images.length > 0 ? product.images : [{url: product.image, alt: product.name}]).map((img, index) => (
                                         <button
                                             key={index}
                                             onClick={() => setMainImage(img.url)}
@@ -319,10 +323,10 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     />
                                 </div>
                                 <div className="text-sm font-medium text-gray-900 mb-2">
-                                    {variants.find((v) => v.id === activeVariant)?.name || "NATURAL FRESH"}
+                                    {(product.variants && product.variants.find((v) => v.id === activeVariant)?.name) || "NATURAL FRESH"}
                                 </div>
                                 <div className="text-xs text-black/50">
-                                    Stok: <span className="font-semibold">{stock}</span>
+                                    Stok: <span className="font-semibold">{product.stock || 0}</span>
                                 </div>
                             </div>
                         )}
@@ -331,24 +335,24 @@ export default function ProductDetail({ productId }: { productId: string }) {
                     {/* Middle Column - Product Info */}
                     <div className="flex-1 space-y-4">
                         <div className="bg-white rounded-lg p-4 shadow-sm">
-                            <h1 className="text-2xl font-bold text-gray-900 mb-2">{title}</h1>
+                            <h1 className="text-2xl font-bold text-gray-900 mb-2">{product.name}</h1>
                             <div className="flex items-center gap-4 mb-4">
                                 <div className="flex items-center gap-1">
                                     <span className="text-sm">Terjual</span>
-                                    <span className="font-semibold text-sm">{sold}</span>
+                                    <span className="font-semibold text-sm">{product.totalSold}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
                                     <FaStar className="w-4 h-4 fill-black text-black" />
-                                    <span className="font-semibold text-sm">{rating}</span>
+                                    <span className="font-semibold text-sm">{product.rating}</span>
                                     <span className="text-gray-500 text-sm">
-                                        ({totalReviews})
+                                        ({product.totalSold})
                                     </span>
                                 </div>
                             </div>
 
                             <div className="mb-6">
                                 <div className="text-3xl font-bold text-gray-900">
-                                    {formatPrice(price)}
+                                    {formatPrice(product.price)}
                                 </div>
                             </div>
 
@@ -356,11 +360,11 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 <label className="block text-sm font-semibold mb-3">
                                     Pilih aroma:{" "}
                                     <span className="font-normal text-gray-600">
-                                        {variants.find((v) => v.id === activeVariant)?.name}
+                                        {(product.variants && product.variants.find((v) => v.id === activeVariant)?.name) || product.name}
                                     </span>
                                 </label>
                                 <div className="flex flex-wrap gap-2">
-                                    {variants.map((variant) => (
+                                    {product.variants?.map((variant) => (
                                         <button
                                             key={variant.id}
                                             onClick={() => setActiveVariant(variant.id)}
@@ -402,16 +406,16 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     <div className="space-y-3">
                                         <div className="flex justify-between">
                                             <span className="text-black">Kondisi:</span>
-                                            <span className="font-semibold text-black/50">{condition}</span>
+                                            <span className="font-semibold text-black/50">{product.condition || "Baru"}</span>
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-black ">Min. Pemesanan:</span>
-                                            <span className="font-semibold text-black/50">{minOrder} Buah</span>
+                                            <span className="font-semibold text-black/50">{product.minOrder || 1} Buah</span>
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-black">Etalase:</span>
                                             <span className="font-semibold text-black/50">
-                                                {category}
+                                                {product.category || "General"}
                                             </span>
                                         </div>
                                     </div>
@@ -423,10 +427,10 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     className={`text-gray-700 ${!showFullDescription ? "line-clamp-4" : ""
                                         }`}
                                 >
-                                    <p className="mb-3">{description}</p>
-                                    {features.length > 0 && (
+                                    <p className="mb-3">{product.description || ""}</p>
+                                    {product.features && product.features.length > 0 && (
                                         <div className="space-y-2">
-                                            {features.map((feature, index) => (
+                                            {product.features.map((feature, index) => (
                                                 <p key={index} className="text-sm">
                                                     • {feature}
                                                 </p>
@@ -452,14 +456,14 @@ export default function ProductDetail({ productId }: { productId: string }) {
                             <div className="mb-4 flex items-center gap-3">
                                 <div className="w-14 h-14 bg-green-50 rounded-lg flex items-center justify-center">
                                     <span className="text-xl">
-                                        {variants.find((v) => v.id === activeVariant)?.icon || "🌿"}
+                                        {(product.variants && product.variants.find((v) => v.id === activeVariant)?.icon) || "🌿"}
                                     </span>
                                 </div>
                                 <div>
                                     <div className="font-semibold text-gray-900 text-base">
-                                        {variants.find((v) => v.id === activeVariant)?.name ||
-                                            "NATURAL FRESH"}
-                                    </div>  
+                                        {(product.variants && product.variants.find((v) => v.id === activeVariant)?.name) ||
+                                            product.name}
+                                    </div>
                                 </div>
                             </div>
 
@@ -481,21 +485,21 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                             value={quantity}
                                             onChange={(e) => {
                                                 const val = parseInt(e.target.value) || 1;
-                                                if (val >= 1 && val <= stock) setQuantity(val);
+                                                if (val >= 1 && val <= (product.stock || 999)) setQuantity(val);
                                             }}
                                             className="w-14 text-center text-sm border-0 focus:outline-none"
                                         />
                                         <button
                                             onClick={() => handleQuantityChange("increment")}
                                             className="px-3 py-1.5 text-gray-600 hover:bg-gray-50 text-sm disabled:opacity-50"
-                                            disabled={quantity >= stock}
+                                            disabled={quantity >= (product.stock || 999)}
                                         >
                                             +
                                         </button>
                                     </div>
                                     <div className="text-xs text-gray-600">
                                         Stok:{" "}
-                                        <span className="font-semibold text-gray-900">{stock}</span>
+                                        <span className="font-semibold text-gray-900">{product.stock || 0}</span>
                                     </div>
                                 </div>
                             </div>
@@ -504,13 +508,16 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 <div className="flex justify-between items-center">
                                     <span className="text-gray-600 text-md">Subtotal</span>
                                     <span className="text-2xl font-bold text-gray-900">
-                                        {formatPrice(price * quantity)}
+                                        {formatPrice(product.price * quantity)}
                                     </span>
                                 </div>
                             </div>
 
                             <div className="space-y-3">
-                                <button className="w-full bg-black text-white font-bold text-base py-2 rounded-xl transition-colors shadow-md">
+                                <button
+                                    onClick={() => addToCart(product, quantity, undefined, undefined)}
+                                    className="w-full bg-black text-white font-bold text-base py-2 rounded-xl transition-colors shadow-md"
+                                >
                                     + Keranjang
                                 </button>
                                 <button className="w-full border-2 border-black/80 text-black/80 font-bold text-base py-2 rounded-xl transition-colors">

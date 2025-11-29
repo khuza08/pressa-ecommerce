@@ -17,8 +17,8 @@ import {
   FiHome,
   FiGrid,
 } from "react-icons/fi";
-import CategorySidebar from "./CategorySidebar";
-import CartDropdown from "./CartDropdown";
+import CategorySidebar from "../ui/CategorySidebar";
+import CartDropdown from "../ui/CartDropdown";
 import { useCart } from "@/context/CartContext";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';

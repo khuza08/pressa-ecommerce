@@ -1,4 +1,4 @@
-// src/components/Category.tsx
+// src/components/product/Category.tsx
 'use client';
 import { useState } from "react";
 import {
@@ -10,18 +10,20 @@ import {
   FiBook,
   FiGift
 } from "react-icons/fi";
-
-const categories = [
-  { id: 1, name: "Fashion", items: 67, icon: FiShoppingBag },
-  { id: 2, name: "Electronics", items: 67, icon: FiCpu },
-  { id: 3, name: "Home & Living", items: 67, icon: FiHome },
-  { id: 4, name: "Sports", items: 67, icon: FiActivity },
-  { id: 5, name: "Books", items: 67, icon: FiBook },
-  { id: 6, name: "Toys", items: 67, icon: FiGift },
-];
+import { PRODUCT_CATEGORIES } from '@/lib/constants';
 
 export default function Category() {
   const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
+
+  // Map category names to icons
+  const categoryIcons: Record<string, any> = {
+    fashion: FiShoppingBag,
+    electronics: FiCpu,
+    'home & living': FiHome,
+    sports: FiActivity,
+    books: FiBook,
+    toys: FiGift,
+  };
 
   return (
     <div className="relative w-full md:w-[80vw] mx-auto px-4 md:px-6 py-5">
@@ -30,8 +32,8 @@ export default function Category() {
         <div className="hidden md:block">
           <div
             className="flex overflow-x-auto gap-4 pb-4 scroll-smooth"
-            style={{ 
-              scrollbarWidth: 'none', 
+            style={{
+              scrollbarWidth: 'none',
               msOverflowStyle: 'none',
               scrollSnapType: 'x mandatory',
               WebkitOverflowScrolling: 'touch'
@@ -43,8 +45,8 @@ export default function Category() {
               }
             `}</style>
 
-            {categories.map((category) => {
-              const IconComponent = category.icon;
+            {PRODUCT_CATEGORIES.map((category) => {
+              const IconComponent = categoryIcons[category.id] || FiPlus;
               return (
                 <div
                   key={category.id}
@@ -53,7 +55,7 @@ export default function Category() {
                 >
                   <div
                     className="rounded-lg overflow-hidden border-2 border-black/10 cursor-pointer h-24 transition-all duration-300 hover:border-black/20"
-                    onMouseEnter={() => setHoveredCategory(category.id)}
+                    onMouseEnter={() => setHoveredCategory(1)} // Just using a simple counter to trigger hover effect
                     onMouseLeave={() => setHoveredCategory(null)}
                   >
                     <div className="flex h-full">
@@ -66,7 +68,7 @@ export default function Category() {
                             {category.name}
                           </h3>
                           <span className="text-xs text-gray-500 whitespace-nowrap">
-                            ({category.items})
+                            (67)
                           </span>
                         </div>
                         <button className="flex items-center text-xs text-black/70 hover:text-black transition font-medium">
@@ -84,10 +86,10 @@ export default function Category() {
 
         {/* Mobile View - Scrollable Icons */}
         <div className="md:hidden">
-          <div 
+          <div
             className="flex overflow-x-auto gap-4 scroll-smooth px-2"
-            style={{ 
-              scrollbarWidth: 'none', 
+            style={{
+              scrollbarWidth: 'none',
               msOverflowStyle: 'none',
               scrollSnapType: 'x mandatory',
               WebkitOverflowScrolling: 'touch'
@@ -98,10 +100,9 @@ export default function Category() {
                 display: none;
               }
             `}</style>
-            
-            {/* Render semua kategori, bukan hanya 4 */}
-            {categories.map((category) => {
-              const IconComponent = category.icon;
+
+            {PRODUCT_CATEGORIES.map((category) => {
+              const IconComponent = categoryIcons[category.id] || FiPlus;
               return (
                 <div
                   key={category.id}
@@ -110,7 +111,7 @@ export default function Category() {
                 >
                   <div
                     className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center mb-2"
-                    onMouseEnter={() => setHoveredCategory(category.id)}
+                    onMouseEnter={() => setHoveredCategory(1)}
                     onMouseLeave={() => setHoveredCategory(null)}
                   >
                     <IconComponent className="text-2xl text-gray-700" />

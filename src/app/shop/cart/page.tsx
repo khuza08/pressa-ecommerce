@@ -1,7 +1,7 @@
 'use client';
 
 import { FiX, FiPlus, FiMinus, FiArrowLeft } from 'react-icons/fi';
-import { useCart } from '@/context/CartContext';
+import { useCart } from '@/hooks/useCart';
 import Link from 'next/link';
 
 export default function CartPage() {
@@ -24,9 +24,9 @@ export default function CartPage() {
             Back to Home
           </Link>
         </div>
-        
+
         <h1 className="text-2xl font-bold mb-8">Your Cart</h1>
-        
+
         {cart.items.length === 0 ? (
           <div className="text-center py-12">
             <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
@@ -34,8 +34,8 @@ export default function CartPage() {
             </div>
             <h3 className="text-lg font-medium mb-2">Your cart is empty</h3>
             <p className="text-gray-600 mb-6">Looks like you haven't added anything to your cart yet</p>
-            <Link 
-              href="/products" 
+            <Link
+              href="/shop/products"
               className="inline-block bg-black text-white py-3 px-6 rounded-full hover:bg-gray-800 transition"
             >
               Continue Shopping
@@ -46,18 +46,18 @@ export default function CartPage() {
             <div className="lg:col-span-2">
               <ul>
                 {cart.items.map((item) => (
-                  <li 
-                    key={item.id} 
+                  <li
+                    key={item.id}
                     className="py-6 border-b border-gray-200 flex flex-col sm:flex-row"
                   >
                     <div className="w-24 h-24 bg-gray-100 rounded-md overflow-hidden mb-4 sm:mb-0 sm:mr-6 flex-shrink-0">
-                      <img 
-                        src={item.image} 
-                        alt={item.name} 
+                      <img
+                        src={item.image}
+                        alt={item.name}
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    
+
                     <div className="flex-1">
                       <div className="flex justify-between">
                         <div>
@@ -66,8 +66,8 @@ export default function CartPage() {
                           {item.size && <p className="text-gray-500 text-sm mt-1">Size: {item.size}</p>}
                           {item.color && <p className="text-gray-500 text-sm mt-1">Color: {item.color}</p>}
                         </div>
-                        
-                        <button 
+
+                        <button
                           onClick={() => removeItem(item.id)}
                           className="text-gray-400 hover:text-gray-600"
                           aria-label="Remove item"
@@ -75,7 +75,7 @@ export default function CartPage() {
                           <FiX />
                         </button>
                       </div>
-                      
+
                       <div className="mt-4 flex items-center">
                         <div className="flex items-center border border-gray-300 rounded-full">
                           <button
@@ -94,7 +94,7 @@ export default function CartPage() {
                             <FiPlus size={14} />
                           </button>
                         </div>
-                        
+
                         <div className="ml-6 font-medium">
                           ${(item.price * item.quantity).toFixed(2)}
                         </div>
@@ -104,40 +104,40 @@ export default function CartPage() {
                 ))}
               </ul>
             </div>
-            
+
             <div className="lg:col-span-1">
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h2 className="text-lg font-bold mb-4">Order Summary</h2>
-                
+
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
                     <span>${getTotalPrice().toFixed(2)}</span>
                   </div>
-                  
+
                   <div className="flex justify-between">
                     <span>Shipping</span>
                     <span>Free</span>
                   </div>
-                  
+
                   <div className="flex justify-between">
                     <span>Tax</span>
                     <span>${(getTotalPrice() * 0.1).toFixed(2)}</span>
                   </div>
-                  
+
                   <div className="border-t border-gray-300 pt-3 mt-3 flex justify-between font-bold">
                     <span>Total</span>
                     <span>${(getTotalPrice() * 1.1).toFixed(2)}</span>
                   </div>
                 </div>
-                
-                <Link 
-                  href="/checkout" 
+
+                <Link
+                  href="/checkout"
                   className="w-full bg-black text-white py-3 px-4 rounded-full text-center block hover:bg-gray-800 transition"
                 >
                   Proceed to Checkout
                 </Link>
-                
+
                 <button className="w-full mt-3 border border-gray-300 py-3 px-4 rounded-full text-center hover:bg-gray-100 transition">
                   Continue Shopping
                 </button>
