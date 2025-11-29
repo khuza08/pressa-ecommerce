@@ -1,7 +1,7 @@
 // src/components/Header.tsx
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, MouseEvent } from "react";
 import {
   FiFacebook,
   FiTwitter,
@@ -18,13 +18,45 @@ import {
   FiGrid,
 } from "react-icons/fi";
 import CategorySidebar from "./CategorySidebar";
+import CartDropdown from "./CartDropdown";
+import { useCart } from "@/context/CartContext";
+import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const [isCategorySidebarOpen, setIsCategorySidebarOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isCartDropdownOpen, setIsCartDropdownOpen] = useState(false);
+  const [isCartHovered, setIsCartHovered] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const cartButtonRef = useRef<HTMLButtonElement>(null);
+  const router = useRouter();
+
+  // Check screen size to determine mobile/desktop behavior
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobileView(window.innerWidth < 1024);
+    };
+
+    // Check on mount
+    if (typeof window !== 'undefined') {
+      checkScreenSize();
+      window.addEventListener('resize', checkScreenSize);
+    }
+
+    // Clean up listener
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', checkScreenSize);
+      }
+    };
+  }, []);
+
+  // Use cart context to get cart items count
+  const { getTotalItems } = useCart();
 
   const handleMouseEnter = (menu: string) => {
     // Clear any existing timeout
@@ -39,6 +71,47 @@ export default function Header() {
     timeoutRef.current = setTimeout(() => {
       setActiveDropdown(null);
     }, 300);
+  };
+
+  // Handle cart hover
+  const handleCartMouseEnter = () => {
+    setIsCartHovered(true);
+    // Clear any existing timeout for other dropdowns
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
+
+  const handleCartMouseLeave = () => {
+    // Set a timeout to close the cart dropdown after 300ms
+    timeoutRef.current = setTimeout(() => {
+      setIsCartHovered(false);
+      if (!isCartDropdownOpen) {
+        setIsCartDropdownOpen(false);
+      }
+    }, 300);
+  };
+
+  // Handle cart click
+  const handleCartClick = (e: MouseEvent) => {
+    if (isMobileView) {
+      // Mobile behavior - toggle dropdown
+      setIsCartDropdownOpen(!isCartDropdownOpen);
+      if (!isCartDropdownOpen) {
+        setIsCartHovered(true); // Keep it open when clicked
+      }
+      return;
+    }
+
+    // Desktop behavior - if dropdown is open, close it; if closed, navigate to cart
+    if (isCartDropdownOpen) {
+      setIsCartDropdownOpen(false);
+      setIsCartHovered(false);
+      return;
+    }
+
+    // If dropdown is closed, navigate to cart page
+    router.push('/cart');
   };
 
   // Clear timeout on unmount
@@ -112,12 +185,30 @@ export default function Header() {
                   67
                 </span>
               </button>
-              <button className="text-black relative" aria-label="Cart">
-                <FiShoppingCart className="text-xl" />
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  67
-                </span>
-              </button>
+              <div
+                className="relative"
+                onMouseEnter={handleCartMouseEnter}
+                onMouseLeave={handleCartMouseLeave}
+              >
+                <button
+                  ref={cartButtonRef}
+                  onClick={handleCartClick}
+                  className="text-black relative"
+                  aria-label="Cart"
+                >
+                  <FiShoppingCart className="text-xl" />
+                  {getTotalItems() > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {getTotalItems()}
+                    </span>
+                  )}
+                </button>
+                <CartDropdown
+                  isOpen={isCartDropdownOpen || isCartHovered}
+                  onClose={() => setIsCartDropdownOpen(false)}
+                  visible={isCartHovered || isCartDropdownOpen}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -413,11 +504,17 @@ export default function Header() {
             <FiMenu className="text-xl text-black" />
             <span className="text-xs mt-1 text-black">Menu</span>
           </button>
-          <button className="flex flex-col items-center p-2 relative" aria-label="Cart">
+          <button
+            onClick={handleCartClick}
+            className="flex flex-col items-center p-2 relative"
+            aria-label="Cart"
+          >
             <FiShoppingCart className="text-xl text-black" />
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-              67
-            </span>
+            {getTotalItems() > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {getTotalItems()}
+              </span>
+            )}
             <span className="text-xs mt-1 text-black">Cart</span>
           </button>
           <a href="#" className="flex flex-col items-center p-2" aria-label="Home">
