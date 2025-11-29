@@ -111,7 +111,7 @@ export default function Header() {
     }
 
     // If dropdown is closed, navigate to cart page
-    router.push('/cart');
+    router.push('/shop/cart');
   };
 
   // Clear timeout on unmount

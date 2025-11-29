@@ -1,9 +1,9 @@
-// src/components/Footer.tsx
+// src/components/layout/Footer.tsx
 import { FaFacebook, FaInstagram, FaTwitter, FaCcVisa, FaCcMastercard, FaCcPaypal, FaLock } from "react-icons/fa";
 
 export default function Footer() {
   return (
-<footer className="text-black pt-16 pb-24 sm:pb-24 md:pb-12 lg:pb-8">
+<footer className="text-black pt-16 pb-12">
         <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
           {/* Brand/Company Info */}
@@ -29,11 +29,11 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Customer Service</h4>
             <ul className="space-y-2 text-sm text-black/50">
-              <li><a href="#" className="hover:text-black transition">Contact Us</a></li>
-              <li><a href="#" className="hover:text-black transition">FAQs</a></li>
-              <li><a href="#" className="hover:text-black transition">Shipping Policy</a></li>
-              <li><a href="#" className="hover:text-black transition">Returns & Exchanges</a></li>
-              <li><a href="#" className="hover:text-black transition">Privacy Policy</a></li>
+              <li><a href="/contact" className="hover:text-black transition">Contact Us</a></li>
+              <li><a href="/faq" className="hover:text-black transition">FAQs</a></li>
+              <li><a href="/shipping" className="hover:text-black transition">Shipping Policy</a></li>
+              <li><a href="/returns" className="hover:text-black transition">Returns & Exchanges</a></li>
+              <li><a href="/privacy" className="hover:text-black transition">Privacy Policy</a></li>
             </ul>
           </div>
 
@@ -41,10 +41,10 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Categories</h4>
             <ul className="space-y-2 text-sm text-black/50">
-              <li><a href="#" className="hover:text-black transition">New Arrivals</a></li>
-              <li><a href="#" className="hover:text-black transition">Best Sellers</a></li>
-              <li><a href="#" className="hover:text-black transition">Sale Items</a></li>
-              <li><a href="#" className="hover:text-black transition">Featured</a></li>
+              <li><a href="/shop/products" className="hover:text-black transition">New Arrivals</a></li>
+              <li><a href="/shop/products" className="hover:text-black transition">Best Sellers</a></li>
+              <li><a href="/shop/products" className="hover:text-black transition">Sale Items</a></li>
+              <li><a href="/shop/products" className="hover:text-black transition">Featured</a></li>
             </ul>
           </div>
 
