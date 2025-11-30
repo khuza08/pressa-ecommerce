@@ -203,26 +203,6 @@ export default function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 bg-white">
-        {/* Top Bar */}
-        <div className="hidden md:block text-black text-sm">
-          <div className="container mx-auto flex justify-between items-center py-2 px-4">
-            <div className="flex space-x-4">
-              {socialIcons.map((item, idx) => (
-                <a key={idx} href={item.href} aria-label="Social link">
-                  {item.icon}
-                </a>
-              ))}
-            </div>
-            
-            <div className="flex space-x-2">
-              <select className="bg-transparent border-none text-black text-sm">
-                <option>English</option>
-                <option>Español</option>
-                <option>Français</option>
-              </select>
-            </div>
-          </div>
-        </div>
 
         {/* Main Header */}
         <div className="container mx-auto py-3 px-4">
