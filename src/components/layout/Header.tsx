@@ -492,16 +492,71 @@ export default function Header() {
             </div>
             <ul className="p-4 space-y-4">
               <li>
-                <a href="#" className="block py-2 font-medium text-black">
-                  Home
+                <a href="/" className="block py-2 font-medium text-black">
+                  <div className="flex items-center">
+                    <FiHome className="mr-3" />
+                    Home
+                  </div>
                 </a>
+              </li>
+              <li>
+                <button
+                  className="flex justify-between items-center w-full py-2 font-medium text-black"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    router.push('/shop/cart');
+                  }}
+                >
+                  <div className="flex items-center">
+                    <FiShoppingCart className="mr-3" />
+                    Cart
+                    {isClient && getTotalItems() > 0 && (
+                      <span className="ml-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {getTotalItems()}
+                      </span>
+                    )}
+                  </div>
+                </button>
+              </li>
+              <li>
+                <button
+                  className="flex justify-between items-center w-full py-2 font-medium text-black"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    router.push('/favorites');
+                  }}
+                >
+                  <div className="flex items-center">
+                    <FiHeart className="mr-3" />
+                    Wishlist
+                    {isClient && getFavoritesCount() > 0 && (
+                      <span className="ml-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {getFavoritesCount()}
+                      </span>
+                    )}
+                  </div>
+                </button>
+              </li>
+              <li>
+                <button
+                  className="flex justify-between items-center w-full py-2 font-medium text-black"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setIsCategorySidebarOpen(true);
+                  }}
+                >
+                  <div className="flex items-center">
+                    <FiGrid className="mr-3" />
+                    Categories
+                  </div>
+                </button>
               </li>
               <li>
                 <button
                   className="flex justify-between items-center w-full py-2 font-medium text-black"
                   onClick={() => toggleAccordion("categories")}
                 >
-                  <span>Categories</span>
+                  <span>Shop by Category</span>
                   {openAccordion === "categories" ? (
                     <FiMinus className="text-lg" />
                   ) : (
@@ -580,57 +635,6 @@ export default function Header() {
         </>
       )}
 
-      {/* Bottom Navigation Bar (Mobile Only) */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-black/20 shadow-xl">
-        <div className="flex justify-around items-center py-2 px-4">
-          <button
-            onClick={() => setMobileMenuOpen(true)}
-            className="flex flex-col items-center p-2"
-            aria-label="Menu"
-          >
-            <FiMenu className="text-xl text-black" />
-            <span className="text-xs mt-1 text-black">Menu</span>
-          </button>
-          <button
-            onClick={handleCartClick}
-            className="flex flex-col items-center p-2 relative"
-            aria-label="Cart"
-          >
-            <FiShoppingCart className="text-xl text-black" />
-            {isClient && getTotalItems() > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                {getTotalItems()}
-              </span>
-            )}
-            <span className="text-xs mt-1 text-black">Cart</span>
-          </button>
-          <a href="#" className="flex flex-col items-center p-2" aria-label="Home">
-            <FiHome className="text-xl text-black" />
-            <span className="text-xs mt-1 text-black">Home</span>
-          </a>
-          <button
-            onClick={handleFavoriteClick}
-            className="flex flex-col items-center p-2 relative"
-            aria-label="Wishlist"
-          >
-            <FiHeart className="text-xl text-black" />
-            {isClient && getFavoritesCount() > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                {getFavoritesCount()}
-              </span>
-            )}
-            <span className="text-xs mt-1 text-black">Wishlist</span>
-          </button>
-          <button
-            onClick={() => setIsCategorySidebarOpen(true)}
-            className="flex flex-col items-center p-2"
-            aria-label="Categories"
-          >
-            <FiGrid className="text-xl text-black" />
-            <span className="text-xs mt-1 text-black">Category</span>
-          </button>
-        </div>
-      </div>
 
       <CategorySidebar
         isOpen={isCategorySidebarOpen}
