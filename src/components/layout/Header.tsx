@@ -217,7 +217,10 @@ export default function Header() {
                 </button>
                 <CartDropdown
                   isOpen={isCartDropdownOpen || isCartHovered}
-                  onClose={() => setIsCartDropdownOpen(false)}
+                  onClose={() => {
+                    setIsCartDropdownOpen(false);
+                    setIsCartHovered(false);
+                  }}
                   visible={isCartHovered || isCartDropdownOpen}
                 />
               </div>

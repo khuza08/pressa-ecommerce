@@ -45,9 +45,9 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
     >
       <div className="p-4 border-b border-gray-200 flex justify-between items-center">
         <h3 className="font-bold text-lg">Your Cart</h3>
-        <button 
+        <button
           onClick={onClose}
-          className="text-gray-500 hover:text-gray-700"
+          className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100"
           aria-label="Close cart"
         >
           <FiX size={20} />
