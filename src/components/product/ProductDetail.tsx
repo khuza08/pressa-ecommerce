@@ -618,8 +618,8 @@ export default function ProductDetail({ productId }: { productId: string }) {
                         </div>
                     </div>
 
-                    {/* Right Column - Purchase Card */}
-                    <div className="w-full lg:w-[300px] sticky top-36 h-[400px]">
+                    {/* Right Column - Purchase Card - Desktop Only */}
+                    <div className="hidden md:block lg:w-[300px] sticky top-36 h-[400px]">
                         <div className="bg-white rounded-xl p-5 shadow-sm h-full flex flex-col justify-between border border-gray-100">
                             <div className="mb-4 flex items-center gap-3">
                                 <div className="w-14 h-14 bg-green-50 rounded-lg flex items-center justify-center">
@@ -753,8 +753,10 @@ export default function ProductDetail({ productId }: { productId: string }) {
                 <ProductDetailBottomBar
                     product={product}
                     mainImage={mainImage}
-                    quantity={quantity}
-                    activeVariant={activeVariant}
+                    initialQuantity={quantity}
+                    initialVariant={activeVariant}
+                    onVariantChange={setActiveVariant}
+                    onQuantityChange={setQuantity}
                 />
             </div>
         </>
