@@ -128,7 +128,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
     const [quantity, setQuantity] = useState(1);
     const [activeVariant, setActiveVariant] = useState<string>('');
     const [activeTab, setActiveTab] = useState("detail");
-    const [mainImage, setMainImage] = useState("");
+    const [mainImage, setMainImage] = useState<string>("");
     const [showFullDescription, setShowFullDescription] = useState(false);
 
     // Set initial values when product loads
@@ -140,8 +140,12 @@ export default function ProductDetail({ productId }: { productId: string }) {
             }
 
             // Set initial main image if available
-            if (product.image) {
+            if (product.images && product.images.length > 0 && product.images[0].url) {
+                setMainImage(product.images[0].url);
+            } else if (product.image) {
                 setMainImage(product.image);
+            } else {
+                setMainImage("https://placehold.co/600x600?text=Product+Image");
             }
         }
     }, [product]);
@@ -200,10 +204,14 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 onMouseMove={handleMouseMove}
                             >
                                 <img
-                                    src={mainImage}
-                                    alt={product.name}
+                                    src={mainImage || product.image || "https://placehold.co/600x600?text=Product+Image"}
+                                    alt={product.name || "Product image"}
                                     className={`w-full h-full rounded-lg object-cover transition-all duration-200 ${isHovering ? "blur-sm" : ""
                                         }`}
+                                    onError={(e) => {
+                                        const target = e.target as HTMLImageElement;
+                                        target.src = "https://placehold.co/600x600?text=No+Image";
+                                    }}
                                 />
                                 
                                 {/* Lens Zoom Overlay */}
@@ -279,9 +287,13 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                                 }`}
                                         >
                                             <img
-                                                src={img.url}
-                                                alt={img.alt}
+                                                src={img.url || "https://placehold.co/100x100?text=Thumb"}
+                                                alt={img.alt || "Thumbnail"}
                                                 className="w-full h-full object-cover"
+                                                onError={(e) => {
+                                                    const target = e.target as HTMLImageElement;
+                                                    target.src = "https://placehold.co/100x100?text=No+Image";
+                                                }}
                                             />
                                         </button>
                                     ))}

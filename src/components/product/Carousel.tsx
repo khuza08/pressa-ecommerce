@@ -12,21 +12,21 @@ export default function Carousel() {
       title: "Summer Collection",
       subtitle: "New Arrivals",
       description: "Discover our new summer collection",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5cd?w=1200&h=600&fit=crop",
+      image: "https://images.unsplash.com/photo-1552374196-c4e83d929a60?w=1200&h=600&fit=crop&auto=format",
     },
     {
       id: 2,
-      title: "Winter Sale",
-      subtitle: "Up to 50% off",
-      description: "Winter collection with great discounts",
-      image: "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?w=1200&h=600&fit=crop",
+      title: "Exclusive Designs",
+      subtitle: "Limited Edition",
+      description: "Check out our latest exclusive designs",
+      image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1200&h=600&fit=crop&auto=format",
     },
     {
       id: 3,
-      title: "Accessories",
-      subtitle: "Complete Your Look",
-      description: "New accessories to complement your style",
-      image: "https://images.unsplash.com/photo-1591350824014-86ec1aec60a0?w=1200&h=600&fit=crop",
+      title: "Premium Quality",
+      subtitle: "Soft & Comfortable",
+      description: "Experience premium quality fabrics",
+      image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=1200&h=600&fit=crop&auto=format",
     },
   ];
 
@@ -55,7 +55,7 @@ export default function Carousel() {
             }`}
           >
             <div
-              className="w-full h-full bg-cover bg-center"
+              className="w-full h-full bg-cover bg-center bg-gray-200"
               style={{ backgroundImage: `url(${slide.image})` }}
             >
               <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
