@@ -8,12 +8,7 @@ type Category = {
   subcategories?: string[];
 };
 
-const categories: Category[] = [
-  { name: "Home", subcategories: [] },
-  { 
-    name: "Categories", 
-    subcategories: ["All Products", "New Arrivals", "Best Sellers", "Sale Items", "Trending"] 
-  },
+const categories: Category[] = [  
   { 
     name: "Men's", 
     subcategories: ["Shirt", "Shorts & Jeans", "Safety Shoes", "Wallet"] 
@@ -30,8 +25,6 @@ const categories: Category[] = [
     name: "Perfume", 
     subcategories: ["Clothes Perfume", "Deodorant", "Flower Fragrance", "Air Freshener"] 
   },
-  { name: "Blog", subcategories: [] },
-  { name: "Hot Offers", subcategories: [] }
 ];
 
 interface CategoryDropdownProps {
