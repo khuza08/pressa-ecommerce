@@ -304,7 +304,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                 <div className="flex flex-col lg:flex-row gap-4">
                     {/* Left Column - Product Images */}
                     <div className="w-full md:w-[280px] relative">
-                        <div className="bg-white rounded-lg overflow-hidden shadow-sm sticky top-[150px] flex flex-col">
+                        <div className="bg-white overflow-hidden shadow-sm sticky top-[150px] flex flex-col">
                             {/* Main Image with Zoom */}
                             {/* Mobile & Tablet: Image Carousel with Swipe */}
                             <div className="block md:hidden relative overflow-hidden w-full">
@@ -347,7 +347,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
 
                             {/* Desktop: Single Image with Zoom */}
                             <div
-                                className="hidden md:block w-full aspect-square relative overflow-hidden"
+                                className="hidden md:block w-full aspect-square relative overflow-hidden rounded-lg"
                                 onMouseEnter={() => setIsHovering(true)}
                                 onMouseLeave={() => setIsHovering(false)}
                                 onMouseMove={handleMouseMove}
