@@ -64,13 +64,13 @@ export default function ProductDetail({ productId }: { productId: string }) {
         }
     };
 
-    // Update posisi zoom saat hover
+    // Update posisi zoom saat hover (for desktop only)
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         const { left, top, width, height } =
             e.currentTarget.getBoundingClientRect();
         const x = ((e.clientX - left) / width) * 100;
         const y = ((e.clientY - top) / height) * 100;
-        
+
         setZoomPosition({ x, y });
         setLensPosition({
             x: e.clientX - left - 50, // 50px = setengah dari lebar lensa
@@ -117,23 +117,6 @@ export default function ProductDetail({ productId }: { productId: string }) {
         };
     }, [isFullscreenZoom]);
 
-    // Prevent wheel scroll when hover magnifier is active
-    useEffect(() => {
-        const preventDefault = (e: WheelEvent) => {
-            if (isHovering && !isFullscreenZoom) {
-                e.preventDefault();
-            }
-        };
-
-        if (isHovering && !isFullscreenZoom) {
-            window.addEventListener('wheel', preventDefault, { passive: false });
-        }
-
-        return () => {
-            window.removeEventListener('wheel', preventDefault);
-        };
-    }, [isHovering, isFullscreenZoom]);
-
     // Scroll to top when component mounts
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -166,6 +149,47 @@ export default function ProductDetail({ productId }: { productId: string }) {
     const [activeTab, setActiveTab] = useState("detail");
     const [mainImage, setMainImage] = useState<string>("");
     const [showFullDescription, setShowFullDescription] = useState(false);
+
+    // Touch handling for mobile swipe
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+    const minSwipeDistance = 50;
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+
+        if (isLeftSwipe || isRightSwipe) {
+            const images = product.images && product.images.length > 0
+                ? product.images
+                : [{url: product.image, alt: product.name}];
+
+            const currentIndex = images.findIndex(img => img.url === mainImage);
+
+            if (isLeftSwipe && currentIndex < images.length - 1) {
+                // Swipe left - go to next image
+                setMainImage(images[currentIndex + 1].url);
+            } else if (isRightSwipe && currentIndex > 0) {
+                // Swipe right - go to previous image
+                setMainImage(images[currentIndex - 1].url);
+            }
+        }
+
+        setTouchStart(null);
+        setTouchEnd(null);
+    };
 
     // Set initial values when product loads
     useEffect(() => {
@@ -230,11 +254,51 @@ export default function ProductDetail({ productId }: { productId: string }) {
             <div className="w-full md:w-[90vw] lg:w-[80vw] mx-auto mb-10">
                 <div className="flex flex-col lg:flex-row gap-4">
                     {/* Left Column - Product Images */}
-                    <div className="w-[280px] relative">
+                    <div className="w-full md:w-[280px] relative">
                         <div className="bg-white rounded-lg overflow-hidden shadow-sm sticky top-[150px] flex flex-col">
                             {/* Main Image with Zoom */}
+                            {/* Mobile & Tablet: Image Carousel with Swipe */}
+                            <div className="block md:hidden relative overflow-hidden w-full">
+                                <div
+                                    className="relative aspect-square w-full"
+                                    onTouchStart={handleTouchStart}
+                                    onTouchMove={handleTouchMove}
+                                    onTouchEnd={handleTouchEnd}
+                                >
+                                    {(product.images && product.images.length > 0 ? product.images : [{url: product.image, alt: product.name}]).map((img, index) => (
+                                        <div
+                                            key={index}
+                                            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${mainImage === img.url ? 'opacity-100' : 'opacity-0'}`}
+                                        >
+                                            <img
+                                                src={img.url || "https://placehold.co/600x600?text=Product+Image"}
+                                                alt={img.alt || product.name || "Product image"}
+                                                className="w-full h-full object-cover"
+                                                onError={(e) => {
+                                                    const target = e.target as HTMLImageElement;
+                                                    target.src = "https://placehold.co/600x600?text=No+Image";
+                                                }}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Mobile Carousel Indicators */}
+                                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+                                    {(product.images && product.images.length > 0 ? product.images : [{url: product.image, alt: product.name}]).map((img, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => setMainImage(img.url)}
+                                            className={`w-2 h-2 rounded-full ${mainImage === img.url ? 'bg-white' : 'bg-white/50'}`}
+                                            aria-label={`View image ${index + 1}`}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Desktop: Single Image with Zoom */}
                             <div
-                                className="aspect-square relative overflow-hidden"
+                                className="hidden md:block w-full aspect-square relative overflow-hidden"
                                 onMouseEnter={() => setIsHovering(true)}
                                 onMouseLeave={() => setIsHovering(false)}
                                 onMouseMove={handleMouseMove}
@@ -242,46 +306,15 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 <img
                                     src={mainImage || product.image || "https://placehold.co/600x600?text=Product+Image"}
                                     alt={product.name || "Product image"}
-                                    className={`w-full h-full rounded-lg object-cover transition-all duration-200 ${isHovering ? "blur-sm" : ""
+                                    className={`w-full h-full object-cover rounded-lg transition-all duration-200 ${isHovering ? "blur-sm" : ""
                                         }`}
                                     onError={(e) => {
                                         const target = e.target as HTMLImageElement;
                                         target.src = "https://placehold.co/600x600?text=No+Image";
                                     }}
                                 />
-                                
-                                {/* Lens Zoom Overlay */}
-                                {isHovering && !isFullscreenZoom && (
-                                    <>
-                                        {/* Lens (kaca pembesar) */}
-                                        <div
-                                            className="absolute pointer-events-none z-20 border-2 border-white rounded-full shadow-lg"
-                                            style={{
-                                                width: "100px",
-                                                height: "100px",
-                                                left: `${lensPosition.x}px`,
-                                                top: `${lensPosition.y}px`,
-                                                background: `url(${mainImage}) no-repeat`,
-                                                backgroundSize: "200%",
-                                                backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
-                                                transform: "translate(-50%, -50%)",
-                                            }}
-                                        />
-                                        {/* Kaca pembesar ikon */}
-                                        <div 
-                                            className="absolute z-30 pointer-events-none"
-                                            style={{
-                                                left: `${lensPosition.x}px`,
-                                                top: `${lensPosition.y}px`,
-                                                transform: "translate(-50%, -50%)",
-                                            }}
-                                        >
-                                            <FaSearchPlus className="text-white text-lg" />
-                                        </div>
-                                    </>
-                                )}
-                                
-                                {/* Fullscreen Zoom Button */}
+
+                                {/* Fullscreen Zoom Button - Desktop only */}
                                 <button
                                     onClick={() => handleFullscreenZoom(mainImage)}
                                     className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md transition-all"
@@ -292,7 +325,8 @@ export default function ProductDetail({ productId }: { productId: string }) {
                             </div>
 
                             {/* Thumbnail Container */}
-                            <div className="relative p-2">
+                            {/* Thumbnail Container - Hidden on mobile */}
+                            <div className="hidden md:block relative p-2">
                                 {showPrevButton && (
                                     <button
                                         onClick={() => scrollThumbnails("left")}
@@ -347,37 +381,39 @@ export default function ProductDetail({ productId }: { productId: string }) {
                             </div>
                         </div>
                         
-                        {/* Preview Zoom Overlay di sebelah gambar produk */}
-                        {isHovering && !isFullscreenZoom && (
-                            <div 
-                                className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-lg shadow-lg p-3 z-10"
-                                style={{ 
-                                    maxHeight: "400px",
-                                    overflowY: "auto"
-                                }}
-                            >
-                                <div className="text-xs text-gray-600 mb-2 font-medium">Preview Zoom</div>
-                                <div 
-                                    className="w-full aspect-square rounded-lg overflow-hidden relative mb-3"
-                                    style={{ height: "200px" }}
+                        {/* Preview Zoom Overlay - Desktop Only */}
+                        <div className="hidden md:block">
+                            {isHovering && !isFullscreenZoom && (
+                                <div
+                                    className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-lg shadow-lg p-3 z-10"
+                                    style={{
+                                        maxHeight: "400px",
+                                        overflowY: "auto"
+                                    }}
                                 >
+                                    <div className="text-xs text-gray-600 mb-2 font-medium">Preview Zoom</div>
                                     <div
-                                        className="absolute inset-0"
-                                        style={{
-                                            background: `url(${mainImage}) no-repeat`,
-                                            backgroundSize: "200%",
-                                            backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
-                                        }}
-                                    />
+                                        className="w-full aspect-square rounded-lg overflow-hidden relative mb-3"
+                                        style={{ height: "200px" }}
+                                    >
+                                        <div
+                                            className="absolute inset-0"
+                                            style={{
+                                                background: `url(${mainImage}) no-repeat`,
+                                                backgroundSize: "200%",
+                                                backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="text-sm font-medium text-gray-900 mb-2">
+                                        {(product.variants && product.variants.find((v) => v.id === activeVariant)?.name) || "NATURAL FRESH"}
+                                    </div>
+                                    <div className="text-xs text-black/50">
+                                        Stok: <span className="font-semibold">{product.stock || 0}</span>
+                                    </div>
                                 </div>
-                                <div className="text-sm font-medium text-gray-900 mb-2">
-                                    {(product.variants && product.variants.find((v) => v.id === activeVariant)?.name) || "NATURAL FRESH"}
-                                </div>
-                                <div className="text-xs text-black/50">
-                                    Stok: <span className="font-semibold">{product.stock || 0}</span>
-                                </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
 
                     {/* Middle Column - Product Info */}
