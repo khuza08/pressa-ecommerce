@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa";
 import { productService, type Product } from '@/services/productService';
 import { useCart } from '@/context/CartContext';
+import { useFavorites } from '@/context/FavoriteContext';
 
 export default function ProductDetail({ productId }: { productId: string }) {
     const thumbnailRef = useRef<HTMLDivElement>(null);
@@ -198,6 +199,8 @@ export default function ProductDetail({ productId }: { productId: string }) {
     const [activeTab, setActiveTab] = useState("detail");
     const [mainImage, setMainImage] = useState<string>("");
     const [showFullDescription, setShowFullDescription] = useState(false);
+    const { addToFavorites, removeFromFavorites, isFavorite: checkIsFavorite } = useFavorites();
+    const [localIsFavorite, setLocalIsFavorite] = useState(false);
 
     // Touch handling for mobile swipe
     const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -256,8 +259,13 @@ export default function ProductDetail({ productId }: { productId: string }) {
             } else {
                 setMainImage("https://placehold.co/600x600?text=Product+Image");
             }
+
+            // Check if product is already in favorites
+            if (product.id) {
+                setLocalIsFavorite(checkIsFavorite(product.id));
+            }
         }
-    }, [product]);
+    }, [product, checkIsFavorite]);
 
     const handleQuantityChange = (type: "increment" | "decrement") => {
         if (!product) return;
@@ -468,7 +476,33 @@ export default function ProductDetail({ productId }: { productId: string }) {
                     {/* Middle Column - Product Info */}
                     <div className="flex-1 space-y-4">
                         <div className="bg-white rounded-lg p-4 shadow-sm">
-                            <h1 className="text-2xl font-bold text-gray-900 mb-2">{product?.name}</h1>
+                            <div className="flex items-center justify-between mb-2">
+                                <h1 className="text-2xl font-bold text-gray-900 flex-1">{product?.name}</h1>
+                                <button
+                                    onClick={() => {
+                                        if (product) {
+                                            if (localIsFavorite) {
+                                                removeFromFavorites(product.id);
+                                                setLocalIsFavorite(false);
+                                            } else {
+                                                addToFavorites({
+                                                    id: product.id,
+                                                    name: product.name,
+                                                    price: product.price,
+                                                    image: product.image || ""
+                                                });
+                                                setLocalIsFavorite(true);
+                                            }
+                                        }
+                                    }}
+                                    className="ml-4 flex-shrink-0"
+                                    aria-label={localIsFavorite ? "Remove from favorites" : "Add to favorites"}
+                                >
+                                    <FaHeart
+                                        className={`${localIsFavorite ? 'text-red-500 fill-red-500' : 'text-gray-400'} w-6 h-6`}
+                                    />
+                                </button>
+                            </div>
                             <div className="flex items-center gap-4 mb-4">
                                 <div className="flex items-center gap-1">
                                     <span className="text-sm">Terjual</span>
