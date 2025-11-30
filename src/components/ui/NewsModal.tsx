@@ -7,7 +7,7 @@ export default function NewsletterModal({ open, onClose }: { open: boolean; onCl
       <div className="bg-white rounded-xl max-w-md w-full p-6 relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          className="absolute top-4 right-4 text-black/50 hover:text-black"
           aria-label="Close modal"
         >
           <FiX className="text-2xl" />
@@ -20,7 +20,7 @@ export default function NewsletterModal({ open, onClose }: { open: boolean; onCl
           />
         </div>
         <h3 className="text-xl font-bold text-center">Subscribe Newsletter.</h3>
-        <p className="text-gray-600 text-center mt-2">
+        <p className="text-black/60 text-center mt-2">
           Subscribe the <b>Anon</b> to get latest products and discount updates.
         </p>
         <form className="mt-4">
@@ -28,7 +28,7 @@ export default function NewsletterModal({ open, onClose }: { open: boolean; onCl
             type="email"
             placeholder="Email Address"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-black/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             type="submit"

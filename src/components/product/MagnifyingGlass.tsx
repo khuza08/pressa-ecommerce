@@ -92,7 +92,7 @@ export default function MagnifyingGlass({
       {/* Preview Zoom Overlay next to product image */}
       {enabled && (
         <div
-          className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-xl shadow-2xl p-4 z-30 border border-gray-200"
+          className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-xl shadow-2xl p-4 z-30 border border-black/20"
           style={{
             maxHeight: "400px",
             overflowY: "auto"
@@ -100,7 +100,7 @@ export default function MagnifyingGlass({
         >
           <div className="text-xs text-blue-600 mb-2 font-medium uppercase tracking-wide">Preview Zoom</div>
           <div
-            className="w-full aspect-square rounded-lg overflow-hidden relative mb-3 border border-gray-300"
+            className="w-full aspect-square rounded-lg overflow-hidden relative mb-3 border border-black/30"
             style={{ height: "200px" }}
           >
             <div
@@ -112,10 +112,10 @@ export default function MagnifyingGlass({
               }}
             />
           </div>
-          <div className="text-sm font-medium text-gray-900 mb-1">
+          <div className="text-sm font-medium text-black mb-1">
             {product?.name || "Product Detail"}
           </div>
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-black/50">
             Stok: <span className="font-semibold">{product?.stock || 0}</span>
           </div>
         </div>

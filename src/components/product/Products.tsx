@@ -52,17 +52,17 @@ export default function Products() {
   // Component untuk small product card
   const SmallProductCard = ({ product }: { product: Product }) => (
     <Link href={`/shop/products/${product.id}`} className="flex gap-4 p-4 border border-black/20 rounded-xl hover:border-black/40 transition-colors bg-white min-w-[280px]">
-      <div className="w-16 h-16 bg-gray-900 rounded-lg flex items-center justify-center shrink-0">
+      <div className="w-16 h-16 bg-black rounded-lg flex items-center justify-center shrink-0">
         <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-lg" />
       </div>
       <div className="flex flex-col justify-center flex-1 min-w-0">
         <h4 className="font-medium text-sm truncate">{product.name}</h4>
-        <div className="flex items-center gap-1 text-xs text-gray-600 mt-0.5">
+        <div className="flex items-center gap-1 text-xs text-black/60 mt-0.5">
           <span>★ {product.rating}</span>
           <span>|</span>
           <span>{product.totalSold} total sold here</span>
         </div>
-        <p className="text-xs text-gray-500 mt-0.5">{product.store}</p>
+        <p className="text-xs text-black/50 mt-0.5">{product.store}</p>
       </div>
     </Link>
   );
@@ -148,7 +148,7 @@ export default function Products() {
               href={`/shop/products/${product.id}`}
               className="bg-white rounded-2xl overflow-hidden border border-black/20 hover:border-black/40 transition-colors"
             >
-              <div className="bg-gray-900 h-48 md:h-56 lg:h-64 flex items-center justify-center">
+              <div className="bg-black h-48 md:h-56 lg:h-64 flex items-center justify-center">
                 <img
                   src={product.image}
                   alt={product.name}
@@ -158,14 +158,14 @@ export default function Products() {
               <div className="px-2 py-3 md:px-2 md:py-4 lg:px-2 lg:py-5">
                 <h3 className="font-semibold text-sm md:text-base lg:text-lg mb-1 md:mb-2 truncate">{product.name}</h3>
                 <p className="text-xl md:text-2xl font-bold mb-1 md:mb-2">${product.price}</p>
-                <div className="flex items-center gap-1 md:gap-2 text-xs md:text-sm text-gray-600 mb-0.5 md:mb-1">
+                <div className="flex items-center gap-1 md:gap-2 text-xs md:text-sm text-black/60 mb-0.5 md:mb-1">
                   <span className="flex items-center">
                     <span className="text-yellow-500">★</span> {product.rating}
                   </span>
                   <span>|</span>
                   <span className="truncate">{product.totalSold} sold</span>
                 </div>
-                <p className="text-xs md:text-sm text-gray-500 truncate">{product.store}</p>
+                <p className="text-xs md:text-sm text-black/50 truncate">{product.store}</p>
               </div>
             </Link>
           ))}

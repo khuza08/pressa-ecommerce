@@ -330,7 +330,7 @@ export default function Header() {
                     <li key={i}>
                       <a
                         href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-2 text-sm text-black/70 hover:bg-black/10"
                       >
                         {item}
                       </a>
@@ -359,7 +359,7 @@ export default function Header() {
                     <li key={i}>
                       <a
                         href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-2 text-sm text-black/70 hover:bg-black/10"
                       >
                         {item}
                       </a>
@@ -388,7 +388,7 @@ export default function Header() {
                     <li key={i}>
                       <a
                         href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-2 text-sm text-black/70 hover:bg-black/10"
                       >
                         {item}
                       </a>
@@ -417,7 +417,7 @@ export default function Header() {
                     <li key={i}>
                       <a
                         href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-2 text-sm text-black/70 hover:bg-black/10"
                       >
                         {item}
                       </a>
@@ -447,7 +447,7 @@ export default function Header() {
                       <li key={i}>
                         <a
                           href="#"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          className="block px-4 py-2 text-sm text-black/70 hover:bg-black/10"
                         >
                           {item}
                         </a>

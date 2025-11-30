@@ -39,15 +39,15 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
   return (
     <div 
       ref={dropdownRef}
-      className={`absolute top-full right-0 mt-2 w-80 bg-white shadow-xl rounded-lg border border-gray-200 z-50 transition-all duration-300 ${
+      className={`absolute top-full right-0 mt-2 w-80 bg-white shadow-xl rounded-lg border border-black/20 z-50 transition-all duration-300 ${
         isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
       }`}
     >
-      <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+      <div className="p-4 border-b border-black/20 flex justify-between items-center">
         <h3 className="font-bold text-lg">Your Cart</h3>
         <button
           onClick={onClose}
-          className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100"
+          className="text-black/50 hover:text-black p-1 rounded-full hover:bg-black/10"
           aria-label="Close cart"
         >
           <FiX size={20} />
@@ -56,8 +56,8 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
       
       <div className="max-h-96 overflow-y-auto">
         {cart.items.length === 0 ? (
-          <div className="p-6 text-center text-gray-500">
-            <FiShoppingCart size={48} className="mx-auto text-gray-300 mb-3" />
+          <div className="p-6 text-center text-black/50">
+            <FiShoppingCart size={48} className="mx-auto text-black/30 mb-3" />
             <p>Your cart is empty</p>
             <Link 
               href="/products" 
@@ -72,9 +72,9 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
             {cart.items.map((item) => (
               <li 
                 key={item.id} 
-                className="p-4 border-b border-gray-100 flex items-center gap-3 hover:bg-gray-50"
+                className="p-4 border-b border-black/10 flex items-center gap-3 hover:bg-black/5"
               >
-                <div className="w-16 h-16 bg-gray-200 rounded-md overflow-hidden flex-shrink-0">
+                <div className="w-16 h-16 bg-black/20 rounded-md overflow-hidden flex-shrink-0">
                   <img 
                     src={item.image} 
                     alt={item.name} 
@@ -83,9 +83,9 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="font-medium text-sm truncate">{item.name}</h4>
-                  <p className="text-gray-600 text-sm">${item.price.toFixed(2)} x {item.quantity}</p>
-                  {item.size && <p className="text-gray-500 text-xs">Size: {item.size}</p>}
-                  {item.color && <p className="text-gray-500 text-xs">Color: {item.color}</p>}
+                  <p className="text-black/60 text-sm">${item.price.toFixed(2)} x {item.quantity}</p>
+                  {item.size && <p className="text-black/50 text-xs">Size: {item.size}</p>}
+                  {item.color && <p className="text-black/50 text-xs">Color: {item.color}</p>}
                 </div>
                 <div className="text-right">
                   <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
@@ -97,7 +97,7 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
       </div>
       
       {cart.items.length > 0 && (
-        <div className="p-4 border-t border-gray-200">
+        <div className="p-4 border-t border-black/20">
           <div className="flex justify-between items-center mb-4">
             <span className="font-bold">Total:</span>
             <span className="font-bold">${getTotalPrice().toFixed(2)}</span>
@@ -105,7 +105,7 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
           <div className="flex gap-2">
             <Link
               href="/shop/cart"
-              className="flex-1 bg-black text-white py-2 px-4 rounded-full text-center hover:bg-gray-800 transition"
+              className="flex-1 bg-black text-white py-2 px-4 rounded-full text-center hover:bg-black/90 transition"
               onClick={(e) => {
                 e.preventDefault();
                 onClose();
@@ -117,7 +117,7 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
             >
               View Cart
             </Link>
-            <button className="flex-1 bg-gray-800 text-white py-2 px-4 rounded-full hover:bg-gray-700 transition">
+            <button className="flex-1 bg-black/90 text-white py-2 px-4 rounded-full hover:bg-black/80 transition">
               Checkout
             </button>
           </div>

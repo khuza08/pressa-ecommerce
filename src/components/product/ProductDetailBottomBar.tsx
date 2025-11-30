@@ -49,10 +49,10 @@ export default function ProductDetailBottomBar({
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 flex">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-black/20 z-40 flex">
         <button
           onClick={() => router.push('/')}
-          className="flex-1 py-3 px-4 bg-white border-r border-gray-200 flex flex-col items-center justify-center"
+          className="flex-1 py-3 px-4 bg-white border-r border-black/20 flex flex-col items-center justify-center"
         >
           <FiMessageSquare className="text-xl mb-1" />
           <span className="text-xs">Chat</span>

@@ -55,7 +55,7 @@ export default function Carousel() {
             }`}
           >
             <div
-              className="w-full h-full bg-cover bg-center bg-gray-200"
+              className="w-full h-full bg-cover bg-center bg-black/20"
               style={{ backgroundImage: `url(${slide.image})` }}
             >
               <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
@@ -65,7 +65,7 @@ export default function Carousel() {
                   </h2>
                   <p className="text-lg md:text-xl mb-2">{slide.subtitle}</p>
                   <p className="text-base md:text-lg mb-6">{slide.description}</p>
-                  <button className="bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition-colors">
+                  <button className="bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-colors">
                     Shop Now
                   </button>
                 </div>

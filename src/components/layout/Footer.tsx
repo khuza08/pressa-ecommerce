@@ -9,7 +9,7 @@ export default function Footer() {
           {/* Brand/Company Info */}
           <div className="lg:col-span-2">
             <h3 className="font-bold text-xl mb-4">PRESSA</h3>
-            <p className="text-gray-400 text-sm mb-4 max-w-md">
+            <p className="text-black/40 text-sm mb-4 max-w-md">
               Elevate your shopping experience with premium products and exceptional service.
             </p>
             <div className="flex space-x-4">

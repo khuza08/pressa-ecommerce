@@ -449,7 +449,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                         overflowY: "auto"
                                     }}
                                 >
-                                    <div className="text-xs text-gray-600 mb-2 font-medium">Preview Zoom</div>
+                                    <div className="text-xs text-black/60 mb-2 font-medium">Preview Zoom</div>
                                     <div
                                         className="w-full aspect-square rounded-lg overflow-hidden relative mb-3"
                                         style={{ height: "200px" }}
@@ -463,7 +463,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                             }}
                                         />
                                     </div>
-                                    <div className="text-sm font-medium text-gray-900 mb-2">
+                                    <div className="text-sm font-medium text-black mb-2">
                                         {(product?.variants && product?.variants.find((v) => v.id === activeVariant)?.name) || "NATURAL FRESH"}
                                     </div>
                                     <div className="text-xs text-black/50">
@@ -478,7 +478,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                     <div className="flex-1 space-y-4">
                         <div className="bg-white rounded-lg p-4 shadow-sm">
                             <div className="flex items-center justify-between mb-2">
-                                <h1 className="text-2xl font-bold text-gray-900 flex-1">{product?.name}</h1>
+                                <h1 className="text-2xl font-bold text-black flex-1">{product?.name}</h1>
                                 <button
                                     onClick={() => {
                                         if (product) {
@@ -500,7 +500,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     aria-label={localIsFavorite ? "Remove from favorites" : "Add to favorites"}
                                 >
                                     <FaHeart
-                                        className={`${localIsFavorite ? 'text-red-500 fill-red-500' : 'text-gray-400'} w-6 h-6`}
+                                        className={`${localIsFavorite ? 'text-red-500 fill-red-500' : 'text-black/40'} w-6 h-6`}
                                     />
                                 </button>
                             </div>
@@ -512,14 +512,14 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 <div className="flex items-center gap-1">
                                     <FaStar className="w-4 h-4 fill-black text-black" />
                                     <span className="font-semibold text-sm">{product?.rating}</span>
-                                    <span className="text-gray-500 text-sm">
+                                    <span className="text-black/50 text-sm">
                                         ({product?.totalSold})
                                     </span>
                                 </div>
                             </div>
 
                             <div className="mb-6">
-                                <div className="text-3xl font-bold text-gray-900">
+                                <div className="text-3xl font-bold text-black">
                                     {product?.price ? formatPrice(product.price) : "N/A"}
                                 </div>
                             </div>
@@ -527,7 +527,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                             <div className="mb-6">
                                 <label className="block text-sm font-semibold mb-3">
                                     Pilihan:{" "}
-                                    <span className="font-normal text-gray-600">
+                                    <span className="font-normal text-black/60">
                                         {(product?.variants && product?.variants.find((v) => v.id === activeVariant)?.name) || product?.name}
                                     </span>
                                 </label>
@@ -538,7 +538,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                             onClick={() => setActiveVariant(variant.id)}
                                             className={`px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all flex items-center gap-2 ${activeVariant === variant.id
                                                 ? "border-black/50 text-black/80"
-                                                : "border-gray-200 hover:border-gray-300"
+                                                : "border-black/20 hover:border-black/30"
                                                 }`}
                                         >
                                             {variant.icon && <span>{variant.icon}</span>}
@@ -592,7 +592,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
 
                             <div className="mt-6 pt-6 border-t">
                                 <div
-                                    className={`text-gray-700 ${!showFullDescription ? "line-clamp-4" : ""
+                                    className={`text-black/70 ${!showFullDescription ? "line-clamp-4" : ""
                                         }`}
                                 >
                                     <p className="mb-3">{product?.description || ""}</p>
@@ -620,7 +620,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
 
                     {/* Right Column - Purchase Card - Desktop Only */}
                     <div className="hidden md:block lg:w-[300px] sticky top-36 h-[400px]">
-                        <div className="bg-white rounded-xl p-5 shadow-sm h-full flex flex-col justify-between border border-gray-100">
+                        <div className="bg-white rounded-xl p-5 shadow-sm h-full flex flex-col justify-between border border-black/10">
                             <div className="mb-4 flex items-center gap-3">
                                 <div className="w-14 h-14 bg-green-50 rounded-lg flex items-center justify-center">
                                     <span className="text-xl">
@@ -628,7 +628,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     </span>
                                 </div>
                                 <div>
-                                    <div className="font-semibold text-gray-900 text-base">
+                                    <div className="font-semibold text-black text-base">
                                         {(product?.variants && product?.variants.find((v) => v.id === activeVariant)?.name) ||
                                             product?.name}
                                     </div>
@@ -636,14 +636,14 @@ export default function ProductDetail({ productId }: { productId: string }) {
                             </div>
 
                             <div className="mb-5">
-                                <label className="block text-xs text-gray-600 mb-1 font-medium">
+                                <label className="block text-xs text-black/60 mb-1 font-medium">
                                     Atur jumlah dan catatan
                                 </label>
                                 <div className="flex items-center gap-2">
-                                    <div className="flex items-center border-2 border-gray-200 rounded-lg">
+                                    <div className="flex items-center border-2 border-black/20 rounded-lg">
                                         <button
                                             onClick={() => handleQuantityChange("decrement")}
-                                            className="px-3 py-1.5 text-gray-600 hover:bg-gray-50 text-sm disabled:opacity-50"
+                                            className="px-3 py-1.5 text-black/60 hover:bg-black/5 text-sm disabled:opacity-50"
                                             disabled={quantity <= 1}
                                         >
                                             −
@@ -659,23 +659,23 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                         />
                                         <button
                                             onClick={() => handleQuantityChange("increment")}
-                                            className="px-3 py-1.5 text-gray-600 hover:bg-gray-50 text-sm disabled:opacity-50"
+                                            className="px-3 py-1.5 text-black/60 hover:bg-black/5 text-sm disabled:opacity-50"
                                             disabled={quantity >= (product.stock || 999)}
                                         >
                                             +
                                         </button>
                                     </div>
-                                    <div className="text-xs text-gray-600">
+                                    <div className="text-xs text-black/60">
                                         Stok:{" "}
-                                        <span className="font-semibold text-gray-900">{product?.stock || 0}</span>
+                                        <span className="font-semibold text-black">{product?.stock || 0}</span>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="mb-5 pt-3 border-t">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-gray-600 text-md">Subtotal</span>
-                                    <span className="text-2xl font-bold text-gray-900">
+                                    <span className="text-black/60 text-md">Subtotal</span>
+                                    <span className="text-2xl font-bold text-black">
                                         {product?.price ? formatPrice(product.price * quantity) : "N/A"}
                                     </span>
                                 </div>
@@ -695,22 +695,22 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 >
                                     + Keranjang
                                 </button>
-                                <button className="w-full border-2 border-black/80 text-black/80 font-bold text-base py-2 rounded-xl transition-colors">
+                                <button className="w-full border-2 border-black/90 text-black/90 font-bold text-base py-2 rounded-xl transition-colors">
                                     Beli Langsung
                                 </button>
                             </div>
 
                             <div className="pt-4 border-t mt-auto">
                                 <div className="flex gap-4">
-                                    <button className="flex items-center gap-1 text-gray-600 hover:text-gray-900 text-xs">
+                                    <button className="flex items-center gap-1 text-black/60 hover:text-black text-xs">
                                         <FaCommentAlt className="w-4 h-4" />
                                         <span>Chat</span>
                                     </button>
-                                    <button className="flex items-center gap-1 text-gray-600 hover:text-gray-900 text-xs">
+                                    <button className="flex items-center gap-1 text-black/60 hover:text-black text-xs">
                                         <FaHeart className="w-4 h-4" />
                                         <span>Wishlist</span>
                                     </button>
-                                    <button className="flex items-center gap-1 text-gray-600 hover:text-gray-900 text-xs">
+                                    <button className="flex items-center gap-1 text-black/60 hover:text-black text-xs">
                                         <FaShareAlt className="w-4 h-4" />
                                         <span>Share</span>
                                     </button>

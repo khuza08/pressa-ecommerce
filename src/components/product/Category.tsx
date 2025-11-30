@@ -59,15 +59,15 @@ export default function Category() {
                     onMouseLeave={() => setHoveredCategory(null)}
                   >
                     <div className="flex h-full">
-                      <div className="w-1/3 h-full bg-gray-100 flex items-center justify-center">
-                        <IconComponent className="text-3xl text-gray-700" />
+                      <div className="w-1/3 h-full bg-black/10 flex items-center justify-center">
+                        <IconComponent className="text-3xl text-black/70" />
                       </div>
                       <div className="flex-1 p-3 flex flex-col justify-between">
                         <div className="flex items-center justify-between gap-2">
-                          <h3 className="font-semibold text-gray-800 text-sm truncate">
+                          <h3 className="font-semibold text-black text-sm truncate">
                             {category.name}
                           </h3>
-                          <span className="text-xs text-gray-500 whitespace-nowrap">
+                          <span className="text-xs text-black/50 whitespace-nowrap">
                             (67)
                           </span>
                         </div>
@@ -110,13 +110,13 @@ export default function Category() {
                   style={{ scrollSnapAlign: 'start' }}
                 >
                   <div
-                    className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center mb-2"
+                    className="w-16 h-16 rounded-lg bg-black/10 flex items-center justify-center mb-2"
                     onMouseEnter={() => setHoveredCategory(1)}
                     onMouseLeave={() => setHoveredCategory(null)}
                   >
-                    <IconComponent className="text-2xl text-gray-700" />
+                    <IconComponent className="text-2xl text-black/70" />
                   </div>
-                  <span className="text-xs text-gray-700 text-center w-16">{category.name}</span>
+                  <span className="text-xs text-black/70 text-center w-16">{category.name}</span>
                 </div>
               );
             })}

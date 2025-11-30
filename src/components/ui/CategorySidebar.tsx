@@ -130,7 +130,7 @@ export default function CategorySidebar({ isOpen, onClose }: { isOpen: boolean; 
             } else if (i === Math.ceil(rating) && rating % 1 !== 0) {
                 stars.push(<BsStarHalf key={i} className="text-yellow-400" />);
             } else {
-                stars.push(<FiStar key={i} className="text-gray-300" />);
+                stars.push(<FiStar key={i} className="text-black/30" />);
             }
         }
         return stars;
@@ -165,7 +165,7 @@ export default function CategorySidebar({ isOpen, onClose }: { isOpen: boolean; 
                             )}
                         </button>
                         {expanded[cat.name] && cat.subcategories && (
-                            <ul className="pl-6 mt-2 space-y-1 text-sm text-gray-600">
+                            <ul className="pl-6 mt-2 space-y-1 text-sm text-black/60">
                                 {cat.subcategories.map((sub) => (
                                     <li key={sub}>
                                         <a href="#" className="block py-1 hover:text-black">
@@ -196,7 +196,7 @@ export default function CategorySidebar({ isOpen, onClose }: { isOpen: boolean; 
                                     {renderStars(item.rating)}
                                 </div>
                                 <div className="flex items-center space-x-2 mt-1">
-                                    <span className="text-sm line-through text-gray-500">${item.originalPrice}</span>
+                                    <span className="text-sm line-through text-black/50">${item.originalPrice}</span>
                                     <span className="text-sm font-bold text-green-600">${item.price}</span>
                                 </div>
                             </div>

@@ -39,15 +39,15 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
   return (
     <div
       ref={dropdownRef}
-      className={`absolute top-full right-0 mt-2 w-80 bg-white shadow-xl rounded-lg border border-gray-200 z-50 transition-all duration-300 ${
+      className={`absolute top-full right-0 mt-2 w-80 bg-white shadow-xl rounded-lg border border-black/20 z-50 transition-all duration-300 ${
         isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
       }`}
     >
-      <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+      <div className="p-4 border-b border-black/20 flex justify-between items-center">
         <h3 className="font-bold text-lg">Favorites</h3>
         <button
           onClick={onClose}
-          className="text-gray-500 hover:text-gray-700"
+          className="text-black/50 hover:text-black"
           aria-label="Close favorites"
         >
           <FiX size={20} />
@@ -56,8 +56,8 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
 
       <div className="max-h-96 overflow-y-auto">
         {getFavoritesCount() === 0 ? (
-          <div className="p-6 text-center text-gray-500">
-            <FiHeart size={48} className="mx-auto text-gray-300 mb-3" />
+          <div className="p-6 text-center text-black/50">
+            <FiHeart size={48} className="mx-auto text-black/30 mb-3" />
             <p>Your favorites list is empty</p>
             <Link
               href="/products"
@@ -72,9 +72,9 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
             {favorites.map((item) => (
               <li
                 key={item.id}
-                className="p-4 border-b border-gray-100 flex items-center gap-3 hover:bg-gray-50"
+                className="p-4 border-b border-black/10 flex items-center gap-3 hover:bg-black/5"
               >
-                <div className="w-16 h-16 bg-gray-200 rounded-md overflow-hidden flex-shrink-0">
+                <div className="w-16 h-16 bg-black/20 rounded-md overflow-hidden flex-shrink-0">
                   <img
                     src={item.image}
                     alt={item.name}
@@ -83,7 +83,7 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="font-medium text-sm truncate">{item.name}</h4>
-                  <p className="text-gray-600 text-sm">${item.price.toFixed(2)}</p>
+                  <p className="text-black/60 text-sm">${item.price.toFixed(2)}</p>
                 </div>
                 <button
                   onClick={() => removeFromFavorites(item.id)}
@@ -99,17 +99,17 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
       </div>
 
       {getFavoritesCount() > 0 && (
-        <div className="p-4 border-t border-gray-200">
+        <div className="p-4 border-t border-black/20">
           <div className="flex gap-2">
             <Link
               href="/favorites"
-              className="flex-1 bg-black text-white py-2 px-4 rounded-full text-center hover:bg-gray-800 transition"
+              className="flex-1 bg-black text-white py-2 px-4 rounded-full text-center hover:bg-black/90 transition"
               onClick={onClose}
             >
               View Favorites
             </Link>
             <button
-              className="flex-1 bg-gray-800 text-white py-2 px-4 rounded-full hover:bg-gray-700 transition"
+              className="flex-1 bg-black/90 text-white py-2 px-4 rounded-full hover:bg-black/80 transition"
               onClick={onClose}
             >
               Close
