@@ -20,6 +20,7 @@ import {
 import CategorySidebar from "../ui/CategorySidebar";
 import CartDropdown from "../ui/CartDropdown";
 import FavoriteDropdown from "../ui/FavoriteDropdown";
+import CategoryDropdown from "../ui/CategoryDropdown";
 import { useCart } from "@/context/CartContext";
 import { useFavorites } from "@/context/FavoriteContext";
 import Link from "next/link";
@@ -212,9 +213,7 @@ export default function Header() {
                 </a>
               ))}
             </div>
-            <p className="text-black">
-              <b>Free Shipping</b> This Week Order Over - $55
-            </p>
+            
             <div className="flex space-x-2">
               <select className="bg-transparent border-none text-black text-sm">
                 <option>English</option>
@@ -228,9 +227,12 @@ export default function Header() {
         {/* Main Header */}
         <div className="container mx-auto py-3 px-4">
           <div className="flex items-center justify-between gap-4">
-            <a href="/" className="text-black text-xl font-bold">
-              PRESSA
-            </a>
+            <div className="flex items-center space-x-6">
+              <a href="/" className="text-black text-xl font-bold">
+                PRESSA
+              </a>
+              <CategoryDropdown />
+            </div>
             <div className="flex-1 max-w-lg relative">
               <form onSubmit={(e) => {
                 e.preventDefault();
@@ -307,176 +309,6 @@ export default function Header() {
             </div>
           </div>
         </div>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:block relative">
-          <div className="container mx-auto px-4 py-2">
-            <ul className="flex flex-wrap justify-center space-x-4 md:space-x-6">
-              <li>
-                <a href="#" className="font-medium text-black hover:text-black transition">
-                  Home
-                </a>
-              </li>
-              <li 
-                className="relative"
-                onMouseEnter={() => handleMouseEnter("categories")}
-                onMouseLeave={handleMouseLeave}
-              >
-                <a href="#" className="font-medium text-black hover:text-black transition">
-                  Categories
-                </a>
-                <ul 
-                  className={`absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 transition-all duration-300 ${
-                    activeDropdown === "categories" 
-                      ? "opacity-100 visible" 
-                      : "opacity-0 invisible"
-                  }`}
-                  onMouseEnter={() => handleMouseEnter("categories")}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  {["All Products", "New Arrivals", "Best Sellers", "Sale Items", "Trending"].map((item, i) => (
-                    <li key={i}>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-black/70 hover:bg-black/10"
-                      >
-                        {item}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-              <li 
-                className="relative"
-                onMouseEnter={() => handleMouseEnter("mens")}
-                onMouseLeave={handleMouseLeave}
-              >
-                <a href="#" className="font-medium text-black hover:text-black transition">
-                  Men's
-                </a>
-                <ul 
-                  className={`absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 transition-all duration-300 ${
-                    activeDropdown === "mens" 
-                      ? "opacity-100 visible" 
-                      : "opacity-0 invisible"
-                  }`}
-                  onMouseEnter={() => handleMouseEnter("mens")}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  {["Shirt", "Shorts & Jeans", "Safety Shoes", "Wallet"].map((item, i) => (
-                    <li key={i}>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-black/70 hover:bg-black/10"
-                      >
-                        {item}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-              <li 
-                className="relative"
-                onMouseEnter={() => handleMouseEnter("womens")}
-                onMouseLeave={handleMouseLeave}
-              >
-                <a href="#" className="font-medium text-black hover:text-black transition">
-                  Women's
-                </a>
-                <ul 
-                  className={`absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 transition-all duration-300 ${
-                    activeDropdown === "womens" 
-                      ? "opacity-100 visible" 
-                      : "opacity-0 invisible"
-                  }`}
-                  onMouseEnter={() => handleMouseEnter("womens")}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  {["Dress & Frock", "Earrings", "Necklace", "Makeup Kit"].map((item, i) => (
-                    <li key={i}>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-black/70 hover:bg-black/10"
-                      >
-                        {item}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-              <li 
-                className="relative"
-                onMouseEnter={() => handleMouseEnter("jewelry")}
-                onMouseLeave={handleMouseLeave}
-              >
-                <a href="#" className="font-medium text-black hover:text-black transition">
-                  Jewelry
-                </a>
-                <ul 
-                  className={`absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 transition-all duration-300 ${
-                    activeDropdown === "jewelry" 
-                      ? "opacity-100 visible" 
-                      : "opacity-0 invisible"
-                  }`}
-                  onMouseEnter={() => handleMouseEnter("jewelry")}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  {["Earrings", "Couple Rings", "Necklace", "Bracelets"].map((item, i) => (
-                    <li key={i}>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-black/70 hover:bg-black/10"
-                      >
-                        {item}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-              <li 
-                className="relative"
-                onMouseEnter={() => handleMouseEnter("perfume")}
-                onMouseLeave={handleMouseLeave}
-              >
-                <a href="#" className="font-medium text-black hover:text-black transition">
-                  Perfume
-                </a>
-                <ul 
-                  className={`absolute top-full left-0 bg-white shadow-xl rounded mt-2 py-2 w-48 transition-all duration-300 ${
-                    activeDropdown === "perfume" 
-                      ? "opacity-100 visible" 
-                      : "opacity-0 invisible"
-                  }`}
-                  onMouseEnter={() => handleMouseEnter("perfume")}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  {["Clothes Perfume", "Deodorant", "Flower Fragrance", "Air Freshener"].map(
-                    (item, i) => (
-                      <li key={i}>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-sm text-black/70 hover:bg-black/10"
-                        >
-                          {item}
-                        </a>
-                      </li>
-                    )
-                  )}
-                </ul>
-              </li>
-              <li>
-                <a href="#" className="font-medium text-black hover:text-black transition">
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a href="#" className="font-medium text-black hover:text-black transition">
-                  Hot Offers
-                </a>
-              </li>
-            </ul>
-          </div>
-        </nav>
       </header>
 
       {/* Mobile Menu */}
