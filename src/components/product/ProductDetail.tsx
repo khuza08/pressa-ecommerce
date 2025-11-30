@@ -214,7 +214,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
     };
 
     const handleTouchEnd = () => {
-        if (!touchStart || !touchEnd) return;
+        if (!touchStart || !touchEnd || !product) return;
 
         const distance = touchStart - touchEnd;
         const isLeftSwipe = distance > minSwipeDistance;
@@ -223,7 +223,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
         if (isLeftSwipe || isRightSwipe) {
             const images = product.images && product.images.length > 0
                 ? product.images
-                : [{url: product.image, alt: product.name}];
+                : product.image ? [{url: product.image, alt: product.name}] : [];
 
             const currentIndex = images.findIndex(img => img.url === mainImage);
 
@@ -314,14 +314,14 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     onTouchMove={handleTouchMove}
                                     onTouchEnd={handleTouchEnd}
                                 >
-                                    {(product.images && product.images.length > 0 ? product.images : [{url: product.image, alt: product.name}]).map((img, index) => (
+                                    {(product?.images && product?.images?.length > 0 ? product.images : product?.image ? [{url: product.image, alt: product.name}] : []).map((img, index) => (
                                         <div
                                             key={index}
                                             className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${mainImage === img.url ? 'opacity-100' : 'opacity-0'}`}
                                         >
                                             <img
                                                 src={img.url || "https://placehold.co/600x600?text=Product+Image"}
-                                                alt={img.alt || product.name || "Product image"}
+                                                alt={img.alt || product?.name || "Product image"}
                                                 className="w-full h-full object-cover"
                                                 onError={(e) => {
                                                     const target = e.target as HTMLImageElement;
@@ -334,7 +334,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
 
                                 {/* Mobile Carousel Indicators */}
                                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
-                                    {(product.images && product.images.length > 0 ? product.images : [{url: product.image, alt: product.name}]).map((img, index) => (
+                                    {(product?.images && product?.images?.length > 0 ? product.images : product?.image ? [{url: product.image, alt: product.name}] : []).map((img, index) => (
                                         <button
                                             key={index}
                                             onClick={() => setMainImage(img.url)}
@@ -353,8 +353,8 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 onMouseMove={handleMouseMove}
                             >
                                 <img
-                                    src={mainImage || product.image || "https://placehold.co/600x600?text=Product+Image"}
-                                    alt={product.name || "Product image"}
+                                    src={mainImage || product?.image || "https://placehold.co/600x600?text=Product+Image"}
+                                    alt={product?.name || "Product image"}
                                     className={`w-full h-full object-cover rounded-lg transition-all duration-200 ${isHovering ? "blur-sm" : ""
                                         }`}
                                     onError={(e) => {
@@ -396,7 +396,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     }}
                                 >
                                     {/* Show main image if no additional images */}
-                                    {(product.images && product.images.length > 0 ? product.images : [{url: product.image, alt: product.name}]).map((img, index) => (
+                                    {(product?.images && product?.images?.length > 0 ? product.images : product?.image ? [{url: product.image, alt: product.name}] : []).map((img, index) => (
                                         <button
                                             key={index}
                                             onClick={() => setMainImage(img.url)}
@@ -455,10 +455,10 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                         />
                                     </div>
                                     <div className="text-sm font-medium text-gray-900 mb-2">
-                                        {(product.variants && product.variants.find((v) => v.id === activeVariant)?.name) || "NATURAL FRESH"}
+                                        {(product?.variants && product?.variants.find((v) => v.id === activeVariant)?.name) || "NATURAL FRESH"}
                                     </div>
                                     <div className="text-xs text-black/50">
-                                        Stok: <span className="font-semibold">{product.stock || 0}</span>
+                                        Stok: <span className="font-semibold">{product?.stock || 0}</span>
                                     </div>
                                 </div>
                             )}
@@ -468,24 +468,24 @@ export default function ProductDetail({ productId }: { productId: string }) {
                     {/* Middle Column - Product Info */}
                     <div className="flex-1 space-y-4">
                         <div className="bg-white rounded-lg p-4 shadow-sm">
-                            <h1 className="text-2xl font-bold text-gray-900 mb-2">{product.name}</h1>
+                            <h1 className="text-2xl font-bold text-gray-900 mb-2">{product?.name}</h1>
                             <div className="flex items-center gap-4 mb-4">
                                 <div className="flex items-center gap-1">
                                     <span className="text-sm">Terjual</span>
-                                    <span className="font-semibold text-sm">{product.totalSold}</span>
+                                    <span className="font-semibold text-sm">{product?.totalSold}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
                                     <FaStar className="w-4 h-4 fill-black text-black" />
-                                    <span className="font-semibold text-sm">{product.rating}</span>
+                                    <span className="font-semibold text-sm">{product?.rating}</span>
                                     <span className="text-gray-500 text-sm">
-                                        ({product.totalSold})
+                                        ({product?.totalSold})
                                     </span>
                                 </div>
                             </div>
 
                             <div className="mb-6">
                                 <div className="text-3xl font-bold text-gray-900">
-                                    {formatPrice(product.price)}
+                                    {product?.price ? formatPrice(product.price) : "N/A"}
                                 </div>
                             </div>
 
@@ -493,11 +493,11 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 <label className="block text-sm font-semibold mb-3">
                                     Pilih aroma:{" "}
                                     <span className="font-normal text-gray-600">
-                                        {(product.variants && product.variants.find((v) => v.id === activeVariant)?.name) || product.name}
+                                        {(product?.variants && product?.variants.find((v) => v.id === activeVariant)?.name) || product?.name}
                                     </span>
                                 </label>
                                 <div className="flex flex-wrap gap-2">
-                                    {product.variants?.map((variant) => (
+                                    {product?.variants?.map((variant) => (
                                         <button
                                             key={variant.id}
                                             onClick={() => setActiveVariant(variant.id)}
@@ -539,16 +539,16 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     <div className="space-y-3">
                                         <div className="flex justify-between">
                                             <span className="text-black">Kondisi:</span>
-                                            <span className="font-semibold text-black/50">{product.condition || "Baru"}</span>
+                                            <span className="font-semibold text-black/50">{product?.condition || "Baru"}</span>
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-black ">Min. Pemesanan:</span>
-                                            <span className="font-semibold text-black/50">{product.minOrder || 1} Buah</span>
+                                            <span className="font-semibold text-black/50">{product?.minOrder || 1} Buah</span>
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-black">Etalase:</span>
                                             <span className="font-semibold text-black/50">
-                                                {product.category || "General"}
+                                                {product?.category || "General"}
                                             </span>
                                         </div>
                                     </div>
@@ -560,8 +560,8 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     className={`text-gray-700 ${!showFullDescription ? "line-clamp-4" : ""
                                         }`}
                                 >
-                                    <p className="mb-3">{product.description || ""}</p>
-                                    {product.features && product.features.length > 0 && (
+                                    <p className="mb-3">{product?.description || ""}</p>
+                                    {product?.features && product?.features.length > 0 && (
                                         <div className="space-y-2">
                                             {product.features.map((feature, index) => (
                                                 <p key={index} className="text-sm">
@@ -589,13 +589,13 @@ export default function ProductDetail({ productId }: { productId: string }) {
                             <div className="mb-4 flex items-center gap-3">
                                 <div className="w-14 h-14 bg-green-50 rounded-lg flex items-center justify-center">
                                     <span className="text-xl">
-                                        {(product.variants && product.variants.find((v) => v.id === activeVariant)?.icon) || "🌿"}
+                                        {(product?.variants && product?.variants.find((v) => v.id === activeVariant)?.icon) || "🌿"}
                                     </span>
                                 </div>
                                 <div>
                                     <div className="font-semibold text-gray-900 text-base">
-                                        {(product.variants && product.variants.find((v) => v.id === activeVariant)?.name) ||
-                                            product.name}
+                                        {(product?.variants && product?.variants.find((v) => v.id === activeVariant)?.name) ||
+                                            product?.name}
                                     </div>
                                 </div>
                             </div>
@@ -618,7 +618,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                             value={quantity}
                                             onChange={(e) => {
                                                 const val = parseInt(e.target.value) || 1;
-                                                if (val >= 1 && val <= (product.stock || 999)) setQuantity(val);
+                                                if (val >= 1 && val <= (product?.stock || 999)) setQuantity(val);
                                             }}
                                             className="w-14 text-center text-sm border-0 focus:outline-none"
                                         />
@@ -632,7 +632,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                     </div>
                                     <div className="text-xs text-gray-600">
                                         Stok:{" "}
-                                        <span className="font-semibold text-gray-900">{product.stock || 0}</span>
+                                        <span className="font-semibold text-gray-900">{product?.stock || 0}</span>
                                     </div>
                                 </div>
                             </div>
@@ -641,14 +641,21 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                 <div className="flex justify-between items-center">
                                     <span className="text-gray-600 text-md">Subtotal</span>
                                     <span className="text-2xl font-bold text-gray-900">
-                                        {formatPrice(product.price * quantity)}
+                                        {product?.price ? formatPrice(product.price * quantity) : "N/A"}
                                     </span>
                                 </div>
                             </div>
 
                             <div className="space-y-3">
                                 <button
-                                    onClick={() => addToCart(product, quantity, undefined, undefined)}
+                                    onClick={() => product && addToCart({
+                                        id: product.id,
+                                        name: product.name,
+                                        price: product.price,
+                                        image: mainImage,
+                                        quantity,
+                                        size: activeVariant,
+                                    })}
                                     className="w-full bg-black text-white font-bold text-base py-2 rounded-xl transition-colors shadow-md"
                                 >
                                     + Keranjang
