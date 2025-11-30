@@ -525,7 +525,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
 
                             <div className="mb-6">
                                 <label className="block text-sm font-semibold mb-3">
-                                    Pilih aroma:{" "}
+                                    Pilihan:{" "}
                                     <span className="font-normal text-gray-600">
                                         {(product?.variants && product?.variants.find((v) => v.id === activeVariant)?.name) || product?.name}
                                     </span>

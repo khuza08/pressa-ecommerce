@@ -254,7 +254,7 @@ export default function Header() {
                   aria-label="Wishlist"
                 >
                   <FiHeart className="text-xl" />
-                  {getFavoritesCount() > 0 && (
+                  {isClient && getFavoritesCount() > 0 && (
                     <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                       {getFavoritesCount()}
                     </span>
@@ -614,7 +614,7 @@ export default function Header() {
             aria-label="Wishlist"
           >
             <FiHeart className="text-xl text-black" />
-            {getFavoritesCount() > 0 && (
+            {isClient && getFavoritesCount() > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                 {getFavoritesCount()}
               </span>
