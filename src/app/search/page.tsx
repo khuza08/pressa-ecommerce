@@ -20,6 +20,103 @@ export default function SearchPage() {
     }
   }, [initialQuery]);
 
+  // Improved fuzzy search algorithm with better precision
+  const fuzzyMatch = (text: string, query: string, threshold: number = 0.9): boolean => {
+    if (!text || !query) return false;
+
+    const textLower = text.toLowerCase();
+    const queryLower = query.toLowerCase();
+
+    // Exact substring match (highest priority)
+    if (textLower.includes(queryLower)) {
+      return true;
+    }
+
+    // Plural/singular variation check (for cases like "shoe" vs "shoes")
+    if (checkPluralSingularVariation(textLower, queryLower)) {
+      return true;
+    }
+
+    // Token-based matching for multi-word queries
+    const textTokens = textLower.split(/\s+/);
+    const queryTokens = queryLower.split(/\s+/);
+
+    // Each query token must have a good match in text tokens
+    for (const queryToken of queryTokens) {
+      let hasGoodMatch = false;
+
+      for (const textToken of textTokens) {
+        // High similarity check
+        if (calculateSimilarity(queryToken, textToken) >= threshold) {
+          hasGoodMatch = true;
+          break;
+        }
+        // Plural/singular check
+        if (checkPluralSingularVariation(queryToken, textToken)) {
+          hasGoodMatch = true;
+          break;
+        }
+      }
+
+      if (!hasGoodMatch) {
+        return false; // Every query token must have a match
+      }
+    }
+
+    return true;
+  };
+
+  // Calculate similarity between two strings using a simple algorithm
+  const calculateSimilarity = (str1: string, str2: string): number => {
+    // Calculate Levenshtein Distance normalized similarity
+    const longer = str1.length > str2.length ? str1 : str2;
+    const shorter = str1.length > str2.length ? str2 : str1;
+
+    if (longer.length === 0) return 1.0;
+
+    // Simple character inclusion check for substring similarity
+    if (longer.includes(shorter) || shorter.includes(longer)) {
+      // If one string is contained in another, return higher similarity
+      return Math.max(0.8, shorter.length / longer.length);
+    }
+
+    // Check for partial matches
+    const commonChars = new Set([...str1].filter(char => str2.includes(char)));
+    const maxPossibleCommon = Math.min(str1.length, str2.length);
+
+    if (maxPossibleCommon === 0) return 0;
+
+    const baseSimilarity = commonChars.size / maxPossibleCommon;
+
+    // Boost similarity if the characters appear in sequence
+    let sequenceMatches = 0;
+    let minLength = Math.min(str1.length, str2.length);
+
+    for (let i = 0; i < minLength; i++) {
+      if (str1[i] === str2[i]) sequenceMatches++;
+    }
+
+    const sequenceBonus = sequenceMatches / minLength * 0.1; // Small bonus for positional similarity
+
+    return baseSimilarity + sequenceBonus;
+  };
+
+  // Helper function to check plural/singular variations
+  const checkPluralSingularVariation = (str1: string, str2: string): boolean => {
+    // Remove common plural endings and compare
+    const removeCommonPlurals = (word: string): string => {
+      if (word.endsWith('ies')) return word.slice(0, -3) + 'y';
+      if (word.endsWith('es') && !['cases', 'bases', 'focus', 'shoes', 'glasses'].includes(word)) return word.slice(0, -2);
+      if (word.endsWith('s') && !['gas', 'class', 'mass', 'glass', 'grass', 'pass', 'boss', 'meat', 'head', 'food'].includes(word)) return word.slice(0, -1);
+      return word;
+    };
+
+    const baseStr1 = removeCommonPlurals(str1);
+    const baseStr2 = removeCommonPlurals(str2);
+
+    return baseStr1 === baseStr2 || str1 === baseStr2 || baseStr1 === str2;
+  };
+
   const performSearch = async (query: string) => {
     if (!query.trim()) {
       setSearchResults([]);
@@ -32,9 +129,9 @@ export default function SearchPage() {
     try {
       const allProducts = await productService.getAllProducts();
       const filteredResults = allProducts.filter(product =>
-        product.name.toLowerCase().includes(query.toLowerCase()) ||
-        product.description?.toLowerCase().includes(query.toLowerCase()) ||
-        product.category?.toLowerCase().includes(query.toLowerCase())
+        fuzzyMatch(product.name, query) ||
+        fuzzyMatch(product.description || '', query) ||
+        fuzzyMatch(product.category || '', query)
       );
       setSearchResults(filteredResults);
     } catch (err) {
