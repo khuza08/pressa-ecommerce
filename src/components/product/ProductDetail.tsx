@@ -14,6 +14,7 @@ import {
 import { productService, type Product } from '@/services/productService';
 import { useCart } from '@/context/CartContext';
 import { useFavorites } from '@/context/FavoriteContext';
+import ProductDetailBottomBar from './ProductDetailBottomBar';
 
 export default function ProductDetail({ productId }: { productId: string }) {
     const thumbnailRef = useRef<HTMLDivElement>(null);
@@ -308,7 +309,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
     return (
         <>
             {/* Changed max-width to responsive width */}
-            <div className="w-full md:w-[90vw] lg:w-[80vw] mx-auto mb-10">
+            <div className="w-full md:w-[90vw] lg:w-[80vw] mx-auto mb-20 md:mb-10">
                 <div className="flex flex-col lg:flex-row gap-4">
                     {/* Left Column - Product Images */}
                     <div className="w-full md:w-[280px] relative">
@@ -719,33 +720,43 @@ export default function ProductDetail({ productId }: { productId: string }) {
                     </div>
                 </div>
             </div>
-            
+
             {/* Fullscreen Zoom Overlay */}
             {isFullscreenZoom && (
-                <div 
+                <div
                     className="fixed inset-0 bg-black/90 z-9999 flex items-center justify-center p-4"
                     onClick={closeFullscreenZoom}
                 >
-                    <button 
+                    <button
                         className="absolute top-4 right-4 text-white text-2xl z-10"
                         onClick={closeFullscreenZoom}
                         aria-label="Close fullscreen"
                     >
                         <FaTimes />
                     </button>
-                    
-                    <div 
+
+                    <div
                         className="relative max-w-4xl max-h-[90vh] w-full flex items-center justify-center"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <img 
-                            src={fullscreenImage} 
-                            alt="Fullscreen view" 
+                        <img
+                            src={fullscreenImage}
+                            alt="Fullscreen view"
                             className="max-h-[85vh] object-contain"
                         />
                     </div>
                 </div>
             )}
+
+            {/* Product Detail Bottom Bar - Mobile Only */}
+            <div className="md:hidden">
+                <ProductDetailBottomBar
+                    product={product}
+                    mainImage={mainImage}
+                    quantity={quantity}
+                    activeVariant={activeVariant}
+                />
+            </div>
         </>
     );
 }
