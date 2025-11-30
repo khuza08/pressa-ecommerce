@@ -103,6 +103,37 @@ export default function ProductDetail({ productId }: { productId: string }) {
         return () => window.removeEventListener("keydown", handleEsc);
     }, [isFullscreenZoom]);
 
+    // Prevent scrolling when magnifier is active
+    useEffect(() => {
+        if (isFullscreenZoom) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+
+        // Cleanup function
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [isFullscreenZoom]);
+
+    // Prevent wheel scroll when hover magnifier is active
+    useEffect(() => {
+        const preventDefault = (e: WheelEvent) => {
+            if (isHovering && !isFullscreenZoom) {
+                e.preventDefault();
+            }
+        };
+
+        if (isHovering && !isFullscreenZoom) {
+            window.addEventListener('wheel', preventDefault, { passive: false });
+        }
+
+        return () => {
+            window.removeEventListener('wheel', preventDefault);
+        };
+    }, [isHovering, isFullscreenZoom]);
+
     // Fetch product data
     useEffect(() => {
         const fetchProduct = async () => {
