@@ -71,7 +71,7 @@ export default function PreCheckoutModal({
 
         {/* Product Info */}
         <div className="p-4 flex gap-4">
-          <div className="w-16 h-16 bg-black/10 rounded flex-shrink-0">
+          <div className="w-16 h-16 bg-black/10 rounded shrink-0">
             <img
               src={mainImage}
               alt={product?.name}

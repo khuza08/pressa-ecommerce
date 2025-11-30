@@ -46,6 +46,7 @@ export default function Header() {
   const [isFavoriteDropdownOpen, setIsFavoriteDropdownOpen] = useState(false);
   const [isFavoriteHovered, setIsFavoriteHovered] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const isClient = useIsClient();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const cartButtonRef = useRef<HTMLButtonElement>(null);
@@ -231,16 +232,23 @@ export default function Header() {
               PRESSA
             </a>
             <div className="flex-1 max-w-lg relative">
-              <div className="flex items-center border border-black rounded-full overflow-hidden">
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                if (searchQuery.trim()) {
+                  router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+                }
+              }} className="flex items-center border border-black rounded-full overflow-hidden w-full max-w-lg">
                 <span className="pl-4 text-black">
                   <FiSearch />
                 </span>
                 <input
                   type="search"
                   placeholder="What do you want?"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full px-3 py-2 outline-none text-black search-input-black-x"
                 />
-              </div>
+              </form>
             </div>
             <div className="flex items-center space-x-4">
               <div

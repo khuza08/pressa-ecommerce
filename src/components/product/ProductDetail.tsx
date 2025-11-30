@@ -496,7 +496,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                             }
                                         }
                                     }}
-                                    className="ml-4 flex-shrink-0"
+                                    className="ml-4 shrink-0"
                                     aria-label={localIsFavorite ? "Remove from favorites" : "Add to favorites"}
                                 >
                                     <FaHeart

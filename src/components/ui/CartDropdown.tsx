@@ -74,7 +74,7 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
                 key={item.id} 
                 className="p-4 border-b border-black/10 flex items-center gap-3 hover:bg-black/5"
               >
-                <div className="w-16 h-16 bg-black/20 rounded-md overflow-hidden flex-shrink-0">
+                <div className="w-16 h-16 bg-black/20 rounded-md overflow-hidden shrink-0">
                   <img 
                     src={item.image} 
                     alt={item.name} 
