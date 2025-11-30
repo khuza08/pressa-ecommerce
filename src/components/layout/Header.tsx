@@ -23,6 +23,17 @@ import { useCart } from "@/context/CartContext";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 
+// Custom hook to detect client-side rendering
+function useIsClient() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  return isClient;
+}
+
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
@@ -31,6 +42,7 @@ export default function Header() {
   const [isCartDropdownOpen, setIsCartDropdownOpen] = useState(false);
   const [isCartHovered, setIsCartHovered] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
+  const isClient = useIsClient();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const cartButtonRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
@@ -197,7 +209,7 @@ export default function Header() {
                   aria-label="Cart"
                 >
                   <FiShoppingCart className="text-xl" />
-                  {getTotalItems() > 0 && (
+                  {isClient && getTotalItems() > 0 && (
                     <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                       {getTotalItems()}
                     </span>
@@ -510,7 +522,7 @@ export default function Header() {
             aria-label="Cart"
           >
             <FiShoppingCart className="text-xl text-black" />
-            {getTotalItems() > 0 && (
+            {isClient && getTotalItems() > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                 {getTotalItems()}
               </span>

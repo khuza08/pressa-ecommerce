@@ -109,10 +109,10 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
               onClick={(e) => {
                 e.preventDefault();
                 onClose();
-                // Navigate to cart page after closing dropdown
+                // Use setTimeout to allow dropdown to close before navigation
                 setTimeout(() => {
                   router.push('/shop/cart');
-                }, 150); // Wait for dropdown to close
+                }, 0); // Use 0 timeout to schedule after current event loop
               }}
             >
               View Cart
