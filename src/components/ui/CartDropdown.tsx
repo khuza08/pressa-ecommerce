@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { FiShoppingCart, FiX } from 'react-icons/fi';
 import { useCart } from '@/context/CartContext';
 import Link from 'next/link';
@@ -13,6 +14,7 @@ interface CartDropdownProps {
 
 export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownProps) {
   const { cart, getTotalPrice } = useCart();
+  const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
@@ -102,16 +104,14 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
           </div>
           <div className="flex gap-2">
             <Link
-              href="/cart"
+              href="/shop/cart"
               className="flex-1 bg-black text-white py-2 px-4 rounded-full text-center hover:bg-gray-800 transition"
               onClick={(e) => {
                 e.preventDefault();
                 onClose();
                 // Navigate to cart page after closing dropdown
                 setTimeout(() => {
-                  if (typeof window !== 'undefined') {
-                    window.location.href = '/cart';
-                  }
+                  router.push('/shop/cart');
                 }, 150); // Wait for dropdown to close
               }}
             >
