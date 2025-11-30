@@ -56,14 +56,14 @@ export default function ProductDetailBottomBar({
       </button>
       <button
         onClick={handleAddToCart}
-        className="flex-1 py-3 px-4 bg-yellow-400 text-black flex flex-col items-center justify-center"
+        className="flex-1 py-3 px-4 bg-black/20 text-black flex flex-col items-center justify-center"
       >
         <FiShoppingCart className="text-xl mb-1" />
         <span className="text-xs">Tambahkan</span>
       </button>
       <button
         onClick={handleBuyNow}
-        className="flex-1 py-3 px-4 bg-red-500 text-white flex flex-col items-center justify-center"
+        className="flex-1 py-3 px-4 bg-black text-white flex flex-col items-center justify-center"
       >
         <FiShoppingBag className="text-xl mb-1" />
         <span className="text-xs">Beli</span>
