@@ -35,7 +35,7 @@ export default function CartPage() {
             <h3 className="text-lg font-medium mb-2">Your cart is empty</h3>
             <p className="text-gray-600 mb-6">Looks like you haven't added anything to your cart yet</p>
             <Link
-              href="/shop/products"
+              href="/"
               className="inline-block bg-black text-white py-3 px-6 rounded-full hover:bg-gray-800 transition"
             >
               Continue Shopping
@@ -138,9 +138,9 @@ export default function CartPage() {
                   Proceed to Checkout
                 </Link>
 
-                <button className="w-full mt-3 border border-gray-300 py-3 px-4 rounded-full text-center hover:bg-gray-100 transition">
+                <Link href="/" className="w-full mt-3 border border-gray-300 py-3 px-4 rounded-full text-center hover:bg-gray-100 transition block">
                   Continue Shopping
-                </button>
+                </Link>
               </div>
             </div>
           </div>
