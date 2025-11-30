@@ -78,6 +78,55 @@ export default function ProductDetail({ productId }: { productId: string }) {
         });
     };
 
+    // Custom hook to detect screen size
+    const useMediaQuery = (query: string) => {
+        const [matches, setMatches] = useState(false);
+
+        useEffect(() => {
+            const media = window.matchMedia(query);
+            if (media.matches !== matches) {
+                setMatches(media.matches);
+            }
+            const listener = () => setMatches(media.matches);
+            media.addEventListener('change', listener);
+            return () => media.removeEventListener('change', listener);
+        }, [matches, query]);
+
+        return matches;
+    };
+
+    // Disable scroll only when hovering on product image on desktop (for zoom effect) while keeping zoom functionality
+    const isDesktop = useMediaQuery('(min-width: 768px)'); // md breakpoint and above
+
+    useEffect(() => {
+        if (isDesktop && isHovering && !isFullscreenZoom) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [isDesktop, isHovering, isFullscreenZoom]);
+
+    // Prevent wheel scroll when hover magnifier is active on desktop
+    useEffect(() => {
+        const preventDefault = (e: WheelEvent) => {
+            if (isDesktop && isHovering && !isFullscreenZoom) {
+                e.preventDefault();
+            }
+        };
+
+        if (isDesktop && isHovering && !isFullscreenZoom) {
+            window.addEventListener('wheel', preventDefault, { passive: false });
+        }
+
+        return () => {
+            window.removeEventListener('wheel', preventDefault);
+        };
+    }, [isDesktop, isHovering, isFullscreenZoom]);
+
     // Handler untuk fullscreen zoom
     const handleFullscreenZoom = (imageUrl: string) => {
         setFullscreenImage(imageUrl);

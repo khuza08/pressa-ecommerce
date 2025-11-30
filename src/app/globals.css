@@ -36,3 +36,7 @@ body {
 .search-input-black-x::-webkit-search-decoration {
   -webkit-appearance: none;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
