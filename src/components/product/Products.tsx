@@ -156,8 +156,8 @@ export default function Products() {
                 />
               </div>
               <div className="px-2 py-3 md:px-2 md:py-4 lg:px-2 lg:py-5">
-                <h3 className="font-semibold text-sm md:text-base lg:text-lg mb-1 md:mb-2 truncate">{product.name}</h3>
-                <p className="text-xl md:text-2xl font-bold mb-1 md:mb-2">${product.price}</p>
+                <h3 className="font-semibold text-sm md:text-base lg:text-lg truncate">{product.name}</h3>
+                <p className="text-xl md:text-2xl font-bold">${product.price}</p>
                 <div className="flex items-center gap-1 md:gap-2 text-xs md:text-sm text-black/60 mb-0.5 md:mb-1">
                   <span className="flex items-center">
                     <span className="text-yellow-500">★</span> {product.rating}
