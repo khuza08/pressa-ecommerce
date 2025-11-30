@@ -93,6 +93,9 @@ export default function Header() {
   // Handle cart hover
   const handleCartMouseEnter = () => {
     setIsCartHovered(true);
+    // Close favorite dropdown when cart is hovered
+    setIsFavoriteHovered(false);
+    setIsFavoriteDropdownOpen(false);
     // Clear any existing timeout for other dropdowns
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -134,6 +137,9 @@ export default function Header() {
   // Handle favorite hover
   const handleFavoriteMouseEnter = () => {
     setIsFavoriteHovered(true);
+    // Close cart dropdown when favorite is hovered
+    setIsCartHovered(false);
+    setIsCartDropdownOpen(false);
     // Clear any existing timeout for other dropdowns
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
