@@ -35,7 +35,7 @@ export default function Products() {
 
   if (loading) {
     return (
-      <div className="w-full md:w-[80vw] mx-auto py-8 px-4 flex justify-center items-center">
+      <div className="w-full md:w-[90vw] lg:w-[80vw] mx-auto py-8 flex justify-center items-center">
         <p>Loading products...</p>
       </div>
     );
@@ -43,7 +43,7 @@ export default function Products() {
 
   if (error) {
     return (
-      <div className="w-full md:w-[80vw] mx-auto py-8 px-4">
+      <div className="w-full md:w-[90vw] lg:w-[80vw] mx-auto py-8">
         <p className="text-red-500">Error: {error}</p>
       </div>
     );
@@ -51,7 +51,7 @@ export default function Products() {
 
   // Component untuk small product card
   const SmallProductCard = ({ product }: { product: Product }) => (
-    <Link href={`/shop/products/${product.id}`} className="flex gap-3 p-4 border border-black/20 rounded-xl hover:border-black/40 transition-colors bg-white min-w-[280px]">
+    <Link href={`/shop/products/${product.id}`} className="flex gap-4 p-4 border border-black/20 rounded-xl hover:border-black/40 transition-colors bg-white min-w-[280px]">
       <div className="w-16 h-16 bg-gray-900 rounded-lg flex items-center justify-center shrink-0">
         <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-lg" />
       </div>
@@ -81,8 +81,8 @@ export default function Products() {
     };
 
     return (
-      <div className="flex-1 min-w-0">
-        <h2 className="text-xl font-bold mb-4">{title}</h2>
+      <div className="flex-1 min-w-0 px-4 sm:px-0">
+        <h2 className="text-xl font-bold mb-4 px-2 sm:px-0">{title}</h2>
         <div className="relative">
           <div
             className="overflow-x-scroll scrollbar-hide pb-2 snap-x snap-mandatory scroll-smooth"
@@ -118,7 +118,7 @@ export default function Products() {
   const newProducts = products.slice(0, 6); // First 6 products for new products section
 
   return (
-    <div className="w-[80vw] mx-auto py-8">
+    <div className="w-full md:w-[90vw] lg:w-[80vw] mx-auto py-8 px-4">
       {/* Top Section - Three Columns */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
         <ScrollableSection
@@ -140,8 +140,8 @@ export default function Products() {
 
       {/* New Products Section */}
       <div>
-        <h2 className="text-2xl font-bold mb-6">NEW PRODUCTS</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6">
+        <h2 className="text-2xl font-bold mb-6 px-2 sm:px-0">NEW PRODUCTS</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-6">
           {newProducts.map((product, idx) => (
             <Link
               key={idx}
@@ -155,7 +155,7 @@ export default function Products() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="p-3 md:p-4 lg:p-5">
+              <div className="px-2 py-3 md:px-2 md:py-4 lg:px-2 lg:py-5">
                 <h3 className="font-semibold text-sm md:text-base lg:text-lg mb-1 md:mb-2 truncate">{product.name}</h3>
                 <p className="text-xl md:text-2xl font-bold mb-1 md:mb-2">${product.price}</p>
                 <div className="flex items-center gap-1 md:gap-2 text-xs md:text-sm text-gray-600 mb-0.5 md:mb-1">

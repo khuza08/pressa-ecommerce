@@ -26,7 +26,7 @@ export default function Category() {
   };
 
   return (
-    <div className="relative w-[80vw] mx-auto py-5">
+    <div className="relative w-full md:w-[90vw] lg:w-[80vw] mx-auto py-5">
       <div className="relative overflow-hidden">
         {/* Desktop/Tablet View - Full Cards */}
         <div className="hidden md:block">
