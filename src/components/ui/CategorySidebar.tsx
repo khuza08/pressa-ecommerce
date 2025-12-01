@@ -137,7 +137,7 @@ export default function CategorySidebar({ isOpen, onClose }: { isOpen: boolean; 
     };
 
     return (
-        <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-white w-full h-full overflow-y-auto">
             {/* Header */}
             <div className="p-4 flex justify-between items-center border-b">
                 <h2 className="text-lg font-bold text-black">CATEGORY</h2>
