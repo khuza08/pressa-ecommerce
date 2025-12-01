@@ -21,6 +21,7 @@ import CategorySidebar from "../ui/CategorySidebar";
 import CartDropdown from "../ui/CartDropdown";
 import FavoriteDropdown from "../ui/FavoriteDropdown";
 import CategoryDropdown from "../ui/CategoryDropdown";
+import SearchModal from "../ui/SearchModal";
 import { useCart } from "@/context/CartContext";
 import { useFavorites } from "@/context/FavoriteContext";
 import Link from "next/link";
@@ -48,6 +49,7 @@ export default function Header() {
   const [isFavoriteHovered, setIsFavoriteHovered] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
   const isClient = useIsClient();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const cartButtonRef = useRef<HTMLButtonElement>(null);
@@ -206,20 +208,22 @@ export default function Header() {
 
         {/* Main Header */}
         <div className="container mx-auto py-3 px-4">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center justify-between w-full">
             <div className="flex items-center space-x-6">
               <a href="/" className="text-black text-xl font-bold">
                 PRESSA
               </a>
               <CategoryDropdown />
             </div>
-            <div className="flex-1 max-w-lg relative">
+
+            {/* Desktop Search Bar - Only visible on desktop - Centered properly */}
+            <div className="hidden lg:block flex-1 max-w-lg mx-4">
               <form onSubmit={(e) => {
                 e.preventDefault();
                 if (searchQuery.trim()) {
                   router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
                 }
-              }} className="flex items-center border border-black rounded-full overflow-hidden w-full max-w-lg">
+              }} className="flex items-center border border-black rounded-full overflow-hidden w-full">
                 <span className="pl-4 text-black">
                   <FiSearch />
                 </span>
@@ -232,7 +236,19 @@ export default function Header() {
                 />
               </form>
             </div>
+
+            {/* Right side - Mobile search icon + Cart icons */}
             <div className="flex items-center space-x-4">
+              {/* Mobile Search Icon - Only visible on mobile */}
+              <div className="lg:hidden">
+                <button
+                  onClick={() => setSearchModalOpen(true)}
+                  className="text-black"
+                  aria-label="Open search"
+                >
+                  <FiSearch className="text-xl" />
+                </button>
+              </div>
               <div
                 className="relative"
                 onMouseEnter={handleFavoriteMouseEnter}
@@ -290,6 +306,12 @@ export default function Header() {
           </div>
         </div>
       </header>
+
+      {/* Search Modal */}
+      <SearchModal
+        isOpen={searchModalOpen}
+        onClose={() => setSearchModalOpen(false)}
+      />
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
