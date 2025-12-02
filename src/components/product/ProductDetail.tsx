@@ -493,7 +493,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
 
                     {/* Middle Column - Product Info */}
                     <div className="middle-column flex-1 space-y-4">
-                        <div className="bg-white rounded-lg p-4 border border-black/20">
+                        <div className="bg-white rounded-lg p-4">
                             <div className="flex items-center justify-between mb-2">
                                 <h1 className="text-2xl font-bold text-black flex-1">{product?.name}</h1>
                                 <button
