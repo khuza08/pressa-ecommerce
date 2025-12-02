@@ -16,6 +16,8 @@ import {
   FiMinus,
   FiHome,
   FiGrid,
+  FiUser,
+  FiLogOut,
 } from "react-icons/fi";
 import CategorySidebar from "../ui/CategorySidebar";
 import CartDropdown from "../ui/CartDropdown";
@@ -23,6 +25,9 @@ import FavoriteDropdown from "../ui/FavoriteDropdown";
 import CategoryDropdown from "../ui/CategoryDropdown";
 import SearchModal from "../ui/SearchModal";
 import MobileMenu from "./MobileMenu";
+import { useAuth } from "@/context/AuthContext";
+import LoginModal from "../ui/LoginModal";
+import RegisterModal from "../ui/RegisterModal";
 import { useCart } from "@/context/CartContext";
 import { useFavorites } from "@/context/FavoriteContext";
 import Link from "next/link";
@@ -51,10 +56,37 @@ export default function Header() {
   const [isMobileView, setIsMobileView] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchModalOpen, setSearchModalOpen] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
   const isClient = useIsClient();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const cartButtonRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
+  const { user, logout } = useAuth();
+
+  // Handle login/logout functionality
+  const handleLoginClick = () => {
+    setShowLoginModal(true);
+  };
+
+  const handleRegisterClick = () => {
+    setShowRegisterModal(true);
+  };
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  // Handle modal switching
+  const switchToRegister = () => {
+    setShowLoginModal(false);
+    setTimeout(() => setShowRegisterModal(true), 300); // Allow time for fade out
+  };
+
+  const switchToLogin = () => {
+    setShowRegisterModal(false);
+    setTimeout(() => setShowLoginModal(true), 300); // Allow time for fade out
+  };
 
   // Check screen size to determine mobile/desktop behavior
   useEffect(() => {
@@ -308,6 +340,40 @@ export default function Header() {
                 />
               </div>
 
+              {/* User Profile / Auth Button - Visible on desktop, in mobile menu on mobile */}
+              <div className="hidden md:block ml-4 relative">
+                {user ? (
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center">
+                      <FiUser className="text-xl mr-1" />
+                      <span className="hidden md:inline text-sm">{user.name}</span>
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="text-black hover:text-red-600"
+                      aria-label="Logout"
+                    >
+                      <FiLogOut className="text-xl" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center space-x-3">
+                    <button
+                      onClick={handleLoginClick}
+                      className="text-black hover:text-black/80 text-sm font-medium"
+                    >
+                      Sign In
+                    </button>
+                    <button
+                      onClick={handleRegisterClick}
+                      className="bg-black text-white px-4 py-1.5 rounded-full text-sm font-medium hover:bg-black/90"
+                    >
+                      Sign Up
+                    </button>
+                  </div>
+                )}
+              </div>
+
               {/* Mobile Menu Button - Only visible on mobile */}
               <div className="lg:hidden ml-4">
                 <button
@@ -337,6 +403,16 @@ export default function Header() {
       />
 
 
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onSwitchToRegister={switchToRegister}
+      />
+      <RegisterModal
+        isOpen={showRegisterModal}
+        onClose={() => setShowRegisterModal(false)}
+        onSwitchToLogin={switchToLogin}
+      />
       <CategorySidebar
         isOpen={isCategorySidebarOpen}
         onClose={() => setIsCategorySidebarOpen(false)}

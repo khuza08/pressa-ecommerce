@@ -1,9 +1,10 @@
 'use client';
 
-import { FiHome, FiShoppingCart, FiHeart, FiGrid, FiPlus, FiMinus, FiX } from 'react-icons/fi';
+import { FiHome, FiShoppingCart, FiHeart, FiGrid, FiPlus, FiMinus, FiX, FiUser, FiLogOut } from 'react-icons/fi';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useFavorites } from '@/context/FavoriteContext';
+import { useAuth } from '@/context/AuthContext';
 import { useState, useEffect } from 'react';
 
 interface MobileMenuProps {
@@ -16,7 +17,13 @@ const MobileMenu = ({ isOpen, onClose, onOpenCategorySidebar }: MobileMenuProps)
   const router = useRouter();
   const { getTotalItems } = useCart();
   const { getFavoritesCount } = useFavorites();
+  const { user, logout } = useAuth();
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+
+  const handleLogout = () => {
+    logout();
+    onClose(); // Close the menu after logout
+  };
 
   // Disable body scroll when menu is open
   useEffect(() => {
@@ -68,6 +75,66 @@ const MobileMenu = ({ isOpen, onClose, onOpenCategorySidebar }: MobileMenuProps)
               </div>
             </a>
           </li>
+
+          {/* User Profile / Auth Menu Items - Only visible when not logged in */}
+          {!user && (
+            <>
+              <li>
+                <button
+                  className="flex justify-between items-center w-full py-2 font-medium text-black"
+                  onClick={() => {
+                    onClose();
+                    // In a real app, you might want to open a login modal from the mobile menu
+                    // For now, we'll navigate to a login page or trigger the header's login modal
+                    // You can customize this behavior as needed
+                  }}
+                >
+                  <div className="flex items-center">
+                    <FiUser className="mr-3" />
+                    Sign In
+                  </div>
+                </button>
+              </li>
+              <li>
+                <button
+                  className="flex justify-between items-center w-full py-2 font-medium text-black"
+                  onClick={() => {
+                    onClose();
+                    // You might want to navigate to register page
+                  }}
+                >
+                  <div className="flex items-center">
+                    <FiUser className="mr-3" />
+                    Sign Up
+                  </div>
+                </button>
+              </li>
+            </>
+          )}
+
+          {/* User Profile - Only visible when logged in */}
+          {user && (
+            <>
+              <li>
+                <div className="flex items-center py-2 font-medium text-black">
+                  <FiUser className="mr-3" />
+                  <span>Hello, {user.name}</span>
+                </div>
+              </li>
+              <li>
+                <button
+                  className="flex justify-between items-center w-full py-2 font-medium text-black"
+                  onClick={handleLogout}
+                >
+                  <div className="flex items-center">
+                    <FiLogOut className="mr-3" />
+                    Logout
+                  </div>
+                </button>
+              </li>
+            </>
+          )}
+
           <li>
             <button
               className="flex justify-between items-center w-full py-2 font-medium text-black"
