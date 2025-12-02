@@ -4,7 +4,7 @@ import { FiHome, FiShoppingCart, FiHeart, FiGrid, FiPlus, FiMinus, FiX } from 'r
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useFavorites } from '@/context/FavoriteContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -17,6 +17,20 @@ const MobileMenu = ({ isOpen, onClose, onOpenCategorySidebar }: MobileMenuProps)
   const { getTotalItems } = useCart();
   const { getFavoritesCount } = useFavorites();
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+
+  // Disable body scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    // Cleanup function
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isOpen]);
 
   const toggleAccordion = (id: string) => {
     setOpenAccordion(openAccordion === id ? null : id);

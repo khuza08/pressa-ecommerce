@@ -35,7 +35,7 @@ export default function Products() {
 
   if (loading) {
     return (
-      <div className="w-full md:w-[90vw] lg:w-[80vw] mx-auto py-8 flex justify-center items-center">
+      <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto py-8 flex justify-center items-center">
         <p>Loading products...</p>
       </div>
     );
@@ -43,7 +43,7 @@ export default function Products() {
 
   if (error) {
     return (
-      <div className="w-full md:w-[90vw] lg:w-[80vw] mx-auto py-8">
+      <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto py-8">
         <p className="text-red-500">Error: {error}</p>
       </div>
     );
@@ -118,7 +118,7 @@ export default function Products() {
   const newProducts = products && Array.isArray(products) ? products.slice(0, 6) : []; // First 6 products for new products section
 
   return (
-    <div className="w-full md:w-[90vw] lg:w-[80vw] mx-auto py-8 px-4">
+    <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto py-8 px-4">
       {/* Top Section - Three Columns */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
         <ScrollableSection

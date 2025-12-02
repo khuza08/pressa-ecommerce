@@ -142,7 +142,7 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="w-full md:w-[90vw] lg:w-[80vw] mx-auto py-8">
+    <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto py-8">
       {/* Results */}
       <div>
         {loading && (

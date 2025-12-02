@@ -17,7 +17,7 @@ export default function CartPage() {
 
   return (
     <div className="min-h-screen bg-white py-8">
-      <div className="w-full md:w-[90vw] lg:w-[80vw] mx-auto">
+      <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto">
         <div className="mb-6">
           <Link href="/" className="flex items-center text-black/60 hover:text-black">
             <FiArrowLeft className="mr-2" />
