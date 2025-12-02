@@ -114,8 +114,8 @@ export default function Products() {
   };
 
   // Split products into categories for the different sections
-  const smallCardData = products.slice(0, 12); // First 12 products
-  const newProducts = products.slice(0, 6); // First 6 products for new products section
+  const smallCardData = products && Array.isArray(products) ? products.slice(0, 12) : []; // First 12 products
+  const newProducts = products && Array.isArray(products) ? products.slice(0, 6) : []; // First 6 products for new products section
 
   return (
     <div className="w-full md:w-[90vw] lg:w-[80vw] mx-auto py-8 px-4">

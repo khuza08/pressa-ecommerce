@@ -3,7 +3,7 @@ import { Product } from './productService';
 
 export interface CartItem {
   id: string;
-  productId: string;
+  productId: number;
   name: string;
   price: number;
   image: string;
@@ -28,7 +28,7 @@ export const cartService = {
 
   addToCart: (product: Product, quantity: number = 1, size?: string, color?: string): Cart => {
     const cart = cartService.getCart();
-    const existingItemIndex = cart.items.findIndex(item => 
+    const existingItemIndex = cart.items.findIndex(item =>
       item.productId === product.id && item.size === size && item.color === color
     );
 
@@ -49,17 +49,17 @@ export const cartService = {
     }
 
     cart.total = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    
+
     if (typeof window !== 'undefined') {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
-    
+
     return cart;
   },
 
   updateQuantity: (itemId: string, quantity: number): Cart => {
     const cart = cartService.getCart();
-    
+
     const itemIndex = cart.items.findIndex(item => item.id === itemId);
     if (itemIndex >= 0) {
       if (quantity <= 0) {
@@ -70,11 +70,11 @@ export const cartService = {
     }
 
     cart.total = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    
+
     if (typeof window !== 'undefined') {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
-    
+
     return cart;
   },
 
@@ -82,11 +82,11 @@ export const cartService = {
     const cart = cartService.getCart();
     cart.items = cart.items.filter(item => item.id !== itemId);
     cart.total = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    
+
     if (typeof window !== 'undefined') {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
-    
+
     return cart;
   },
 
