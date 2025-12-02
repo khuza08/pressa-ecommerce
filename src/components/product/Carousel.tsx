@@ -4,7 +4,9 @@
 import { useState } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
-export default function Carousel() {
+import { memo } from 'react';
+
+const Carousel = memo(() => {
   // Sample data - in a real app, this would come from props or state
   const slides = [
     {
@@ -106,4 +108,8 @@ export default function Carousel() {
       </div>
     </div>
   );
-}
+});
+
+Carousel.displayName = 'Carousel';
+
+export default Carousel;

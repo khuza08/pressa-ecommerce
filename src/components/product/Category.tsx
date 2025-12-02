@@ -1,6 +1,6 @@
 // src/components/product/Category.tsx
 'use client';
-import { useState } from "react";
+import { useState, memo } from "react";
 import {
   FiPlus,
   FiShoppingBag,
@@ -12,7 +12,7 @@ import {
 } from "react-icons/fi";
 import { PRODUCT_CATEGORIES } from '@/lib/constants';
 
-export default function Category() {
+const Category = memo(() => {
   const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
 
   // Map category names to icons
@@ -125,4 +125,8 @@ export default function Category() {
       </div>
     </div>
   );
-}
+});
+
+Category.displayName = 'Category';
+
+export default Category;

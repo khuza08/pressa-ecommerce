@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
 import { productService, type Product } from '@/services/productService';
+import ProductCard from './ProductCard';
+import SmallProductCard from './SmallProductCard';
 
 export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -49,24 +51,6 @@ export default function Products() {
     );
   }
 
-  // Component untuk small product card
-  const SmallProductCard = ({ product }: { product: Product }) => (
-    <Link href={`/shop/products/${product.id}`} className="flex gap-4 p-4 border border-black/20 rounded-xl hover:border-black/40 transition-colors bg-white min-w-[280px]">
-      <div className="w-16 h-16 bg-black rounded-lg flex items-center justify-center shrink-0">
-        <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-lg" />
-      </div>
-      <div className="flex flex-col justify-center flex-1 min-w-0">
-        <h4 className="font-medium text-sm truncate">{product.name}</h4>
-        <div className="flex items-center gap-1 text-xs text-black/60 mt-0.5">
-          <span>★ {product.rating}</span>
-          <span>|</span>
-          <span>{product.totalSold} total sold here</span>
-        </div>
-        <p className="text-xs text-black/50 mt-0.5">{product.store}</p>
-      </div>
-    </Link>
-  );
-
   // Component untuk section dengan scroll horizontal
   const ScrollableSection = ({ title, products, sectionKey }: { title: string, products: Product[], sectionKey: string }) => {
     const [currentPage, setCurrentPage] = useState(0);
@@ -100,8 +84,8 @@ export default function Products() {
                   <div className="flex flex-col gap-3">
                     {products
                       .slice(pageIdx * itemsPerPage, (pageIdx + 1) * itemsPerPage)
-                      .map((product, idx) => (
-                        <SmallProductCard key={idx} product={product} />
+                      .map((product) => (
+                        <SmallProductCard key={product.id} product={product} />
                       ))}
                   </div>
                 </div>
@@ -142,32 +126,8 @@ export default function Products() {
       <div>
         <h2 className="text-2xl font-bold mb-6 px-2 sm:px-0">NEW PRODUCTS</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-6">
-          {newProducts.map((product, idx) => (
-            <Link
-              key={idx}
-              href={`/shop/products/${product.id}`}
-              className="bg-white rounded-2xl overflow-hidden border border-black/20 hover:border-black/40 transition-colors"
-            >
-              <div className="bg-black h-48 md:h-56 lg:h-64 flex items-center justify-center">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="px-2 py-3 md:px-2 md:py-4 lg:px-2 lg:py-5">
-                <h3 className="font-semibold text-sm md:text-base lg:text-lg truncate">{product.name}</h3>
-                <p className="text-xl md:text-2xl font-bold">${product.price}</p>
-                <div className="flex items-center gap-1 md:gap-2 text-xs md:text-sm text-black/60 mb-0.5 md:mb-1">
-                  <span className="flex items-center">
-                    <span className="text-yellow-500">★</span> {product.rating}
-                  </span>
-                  <span>|</span>
-                  <span className="truncate">{product.totalSold} sold</span>
-                </div>
-                <p className="text-xs md:text-sm text-black/50 truncate">{product.store}</p>
-              </div>
-            </Link>
+          {newProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </div>

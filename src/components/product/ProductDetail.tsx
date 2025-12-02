@@ -16,7 +16,9 @@ import { useCart } from '@/context/CartContext';
 import { useFavorites } from '@/context/FavoriteContext';
 import ProductDetailBottomBar from './ProductDetailBottomBar';
 
-export default function ProductDetail({ productId }: { productId: string }) {
+import { memo } from 'react';
+
+const ProductDetail = memo(({ productId }: { productId: string }) => {
     const thumbnailRef = useRef<HTMLDivElement>(null);
     const [isHovering, setIsHovering] = useState(false);
     const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
@@ -491,7 +493,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
 
                     {/* Middle Column - Product Info */}
                     <div className="middle-column flex-1 space-y-4">
-                        <div className="bg-white rounded-lg p-4 shadow-sm">
+                        <div className="bg-white rounded-lg p-4 border border-black/20">
                             <div className="flex items-center justify-between mb-2">
                                 <h1 className="text-2xl font-bold text-black flex-1">{product?.name}</h1>
                                 <button
@@ -779,4 +781,8 @@ export default function ProductDetail({ productId }: { productId: string }) {
             </div>
         </>
     );
-}
+});
+
+ProductDetail.displayName = 'ProductDetail';
+
+export default ProductDetail;
