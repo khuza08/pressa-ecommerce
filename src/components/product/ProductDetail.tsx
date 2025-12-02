@@ -186,42 +186,66 @@ export default function ProductDetail({ productId }: { productId: string }) {
     });
 
     useEffect(() => {
-        const handleScroll = () => {
-            const header = document.querySelector('header');
-            if (!header) return;
+        let animationFrameId: number;
 
-            const headerHeight = header.clientHeight;
+        const updateSnapState = () => {
+            animationFrameId = requestAnimationFrame(() => {
+                const header = document.querySelector('header');
+                if (!header) return;
 
-            // Check if product images container should snap to header
-            const productImagesContainer = document.querySelector('.product-images-container');
-            if (productImagesContainer) {
-                const imgRect = productImagesContainer.getBoundingClientRect();
-                // If the product images container reaches the header, snap to it
-                setSnapToHeader(prev => ({
-                    ...prev,
-                    productImages: imgRect.top <= headerHeight + 10  // 10px buffer
-                }));
-            }
+                const headerHeight = header.clientHeight;
 
-            // Check if purchase card container should snap to header
-            const purchaseCardContainer = document.querySelector('.purchase-card-container');
-            if (purchaseCardContainer) {
-                const cardRect = purchaseCardContainer.getBoundingClientRect();
-                // If the purchase card container reaches the header, snap to it
-                setSnapToHeader(prev => ({
-                    ...prev,
-                    purchaseCard: cardRect.top <= headerHeight + 10  // 10px buffer
-                }));
-            }
+                // Check if product images container should snap to header
+                const productImagesContainer = document.querySelector('.product-images-container');
+                if (productImagesContainer) {
+                    const imgRect = productImagesContainer.getBoundingClientRect();
+                    // If the product images container reaches the header, snap to it
+                    const shouldSnapProductImages = imgRect.top <= headerHeight + 10;
+
+                    // Only update state if it has actually changed
+                    setSnapToHeader(prev => {
+                        if (prev.productImages !== shouldSnapProductImages) {
+                            return { ...prev, productImages: shouldSnapProductImages };
+                        }
+                        return prev;
+                    });
+                }
+
+                // Check if purchase card container should snap to header
+                const purchaseCardContainer = document.querySelector('.purchase-card-container');
+                if (purchaseCardContainer) {
+                    const cardRect = purchaseCardContainer.getBoundingClientRect();
+                    // If the purchase card container reaches the header, snap to it
+                    const shouldSnapPurchaseCard = cardRect.top <= headerHeight + 10;
+
+                    // Only update state if it has actually changed
+                    setSnapToHeader(prev => {
+                        if (prev.purchaseCard !== shouldSnapPurchaseCard) {
+                            return { ...prev, purchaseCard: shouldSnapPurchaseCard };
+                        }
+                        return prev;
+                    });
+                }
+            });
         };
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        // Add slight delay to ensure DOM is fully rendered before calculating
+        const timer = setTimeout(() => {
+            updateSnapState();
+        }, 50); // Small delay to ensure proper rendering
 
-        // Initial check
-        handleScroll();
+        window.addEventListener('scroll', updateSnapState, { passive: true });
+
+        // Add resize listener in case header size changes
+        window.addEventListener('resize', updateSnapState, { passive: true });
 
         return () => {
-            window.removeEventListener('scroll', handleScroll);
+            clearTimeout(timer);
+            window.removeEventListener('scroll', updateSnapState);
+            window.removeEventListener('resize', updateSnapState);
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
         };
     }, []);
 
@@ -366,7 +390,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                     {/* Left Column - Product Images */}
                     <div className="product-images-container w-full md:w-[280px] relative">
                         <div
-                            className={`bg-white overflow-hidden shadow-sm sticky flex flex-col border border-black/10 rounded-lg h-[400px] ${snapToHeader.productImages ? 'top-0' : 'top-[150px]'}`}
+                            className="bg-white overflow-hidden shadow-sm sticky flex flex-col border border-black/10 rounded-lg h-[400px]"
                             style={snapToHeader.productImages ? { top: '70px' } : { top: '150px' }}
                         >
                             {/* Main Image with Zoom */}
@@ -675,8 +699,8 @@ export default function ProductDetail({ productId }: { productId: string }) {
 
                     {/* Right Column - Purchase Card - Desktop Only */}
                     <div
-                        className={`hidden md:block purchase-card-container lg:w-[300px] sticky ${snapToHeader.purchaseCard ? 'top-0' : 'top-36'} h-[400px]`}
-                        style={snapToHeader.purchaseCard ? { top: '70px' } : {}}
+                        className="hidden md:block purchase-card-container lg:w-[300px] sticky h-[400px]"
+                        style={snapToHeader.purchaseCard ? { top: '70px' } : { top: '36px' }}
                     >
                         <div className="bg-white rounded-xl p-5 shadow-sm h-full flex flex-col justify-between border border-black/10">
                             <div className="mb-4 flex items-center gap-3">
