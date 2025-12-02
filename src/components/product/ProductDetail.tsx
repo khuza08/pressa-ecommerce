@@ -156,79 +156,52 @@ export default function ProductDetail({ productId }: { productId: string }) {
         window.scrollTo(0, 0);
     }, []);
 
-    // Track scroll position for sticky elements
-    const [isSticky, setIsSticky] = useState({
-        productImages: false,
-        purchaseCard: false
-    });
-
     // Track state for when elements should become fixed at header bottom
     const [snapToHeader, setSnapToHeader] = useState({
-        productImages: false,
-        purchaseCard: false
+        productImages: true, // Start in snapped position
+        purchaseCard: true  // Start in snapped position
     });
 
+    // Simple scroll detection to update snap state when scrolling
     useEffect(() => {
-        let animationFrameId: number;
+        const handleScroll = () => {
+            const header = document.querySelector('header');
+            if (!header) return;
 
-        const updateSnapState = () => {
-            animationFrameId = requestAnimationFrame(() => {
-                const header = document.querySelector('header');
-                if (!header) return;
+            const headerHeight = header.clientHeight;
 
-                const headerHeight = header.clientHeight;
+            // Check if product images container should snap to header
+            const productImagesContainer = document.querySelector('.product-images-container');
+            if (productImagesContainer) {
+                const imgRect = productImagesContainer.getBoundingClientRect();
+                const shouldSnapProductImages = imgRect.top <= headerHeight + 10;
 
-                // Check if product images container should snap to header
-                const productImagesContainer = document.querySelector('.product-images-container');
-                if (productImagesContainer) {
-                    const imgRect = productImagesContainer.getBoundingClientRect();
-                    // If the product images container reaches the header, snap to it
-                    const shouldSnapProductImages = imgRect.top <= headerHeight + 10;
+                setSnapToHeader(prev => ({
+                    ...prev,
+                    productImages: shouldSnapProductImages
+                }));
+            }
 
-                    // Only update state if it has actually changed
-                    setSnapToHeader(prev => {
-                        if (prev.productImages !== shouldSnapProductImages) {
-                            return { ...prev, productImages: shouldSnapProductImages };
-                        }
-                        return prev;
-                    });
-                }
+            // Check if purchase card container should snap to header
+            const purchaseCardContainer = document.querySelector('.purchase-card-container');
+            if (purchaseCardContainer) {
+                const cardRect = purchaseCardContainer.getBoundingClientRect();
+                const shouldSnapPurchaseCard = cardRect.top <= headerHeight + 10;
 
-                // Check if purchase card container should snap to header
-                const purchaseCardContainer = document.querySelector('.purchase-card-container');
-                if (purchaseCardContainer) {
-                    const cardRect = purchaseCardContainer.getBoundingClientRect();
-                    // If the purchase card container reaches the header, snap to it
-                    const shouldSnapPurchaseCard = cardRect.top <= headerHeight + 10;
-
-                    // Only update state if it has actually changed
-                    setSnapToHeader(prev => {
-                        if (prev.purchaseCard !== shouldSnapPurchaseCard) {
-                            return { ...prev, purchaseCard: shouldSnapPurchaseCard };
-                        }
-                        return prev;
-                    });
-                }
-            });
+                setSnapToHeader(prev => ({
+                    ...prev,
+                    purchaseCard: shouldSnapPurchaseCard
+                }));
+            }
         };
 
-        // Add slight delay to ensure DOM is fully rendered before calculating
-        const timer = setTimeout(() => {
-            updateSnapState();
-        }, 50); // Small delay to ensure proper rendering
+        // Initial check
+        handleScroll();
 
-        window.addEventListener('scroll', updateSnapState, { passive: true });
-
-        // Add resize listener in case header size changes
-        window.addEventListener('resize', updateSnapState, { passive: true });
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
         return () => {
-            clearTimeout(timer);
-            window.removeEventListener('scroll', updateSnapState);
-            window.removeEventListener('resize', updateSnapState);
-            if (animationFrameId) {
-                cancelAnimationFrame(animationFrameId);
-            }
+            window.removeEventListener('scroll', handleScroll);
         };
     }, []);
 

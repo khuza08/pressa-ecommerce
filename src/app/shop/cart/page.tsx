@@ -1,7 +1,7 @@
 'use client';
 
 import { FiX, FiPlus, FiMinus, FiArrowLeft } from 'react-icons/fi';
-import { useCart } from '@/hooks/useCart';
+import { useCart } from '@/context/CartContext';
 import Link from 'next/link';
 
 export default function CartPage() {
