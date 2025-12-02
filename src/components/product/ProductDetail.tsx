@@ -18,8 +18,6 @@ import ProductDetailBottomBar from './ProductDetailBottomBar';
 
 export default function ProductDetail({ productId }: { productId: string }) {
     const thumbnailRef = useRef<HTMLDivElement>(null);
-    const [showPrevButton, setShowPrevButton] = useState(false);
-    const [showNextButton, setShowNextButton] = useState(true);
     const [isHovering, setIsHovering] = useState(false);
     const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
     const [isFullscreenZoom, setIsFullscreenZoom] = useState(false);
@@ -33,19 +31,14 @@ export default function ProductDetail({ productId }: { productId: string }) {
     // Update tombol berdasarkan scroll position
     const updateScrollButtons = () => {
         if (!thumbnailRef.current) return;
-        const { scrollLeft, scrollWidth, clientWidth } = thumbnailRef.current;
-        setShowPrevButton(scrollLeft > 0);
-        setShowNextButton(scrollLeft + clientWidth < scrollWidth - 1);
     };
 
     useEffect(() => {
         const ref = thumbnailRef.current;
         if (!ref) return;
 
-        updateScrollButtons();
-
         const handleScroll = () => {
-            updateScrollButtons();
+            // Update any scroll-dependent logic here if needed
         };
 
         ref.addEventListener("scroll", handleScroll);
@@ -55,16 +48,6 @@ export default function ProductDetail({ productId }: { productId: string }) {
         };
     }, []);
 
-    const scrollThumbnails = (direction: "left" | "right") => {
-        if (thumbnailRef.current) {
-            const scrollAmount = 120;
-            thumbnailRef.current.scrollBy({
-                left: direction === "left" ? -scrollAmount : scrollAmount,
-                behavior: "smooth",
-            });
-            setTimeout(updateScrollButtons, 300);
-        }
-    };
 
     // Update posisi zoom saat hover (for desktop only)
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -464,16 +447,6 @@ export default function ProductDetail({ productId }: { productId: string }) {
                             {/* Thumbnail Container */}
                             {/* Thumbnail Container - Hidden on mobile */}
                             <div className="hidden md:block relative p-2">
-                                {showPrevButton && (
-                                    <button
-                                        onClick={() => scrollThumbnails("left")}
-                                        className="absolute -left-1 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full p-1.5 shadow-lg border"
-                                        aria-label="Previous image"
-                                    >
-                                        <FaChevronLeft size={16} className="text-black/80" />
-                                    </button>
-                                )}
-
                                 <div
                                     ref={thumbnailRef}
                                     className="flex gap-2 overflow-x-auto scrollbar-hide"
@@ -505,16 +478,6 @@ export default function ProductDetail({ productId }: { productId: string }) {
                                         </button>
                                     ))}
                                 </div>
-
-                                {showNextButton && (
-                                    <button
-                                        onClick={() => scrollThumbnails("right")}
-                                        className="absolute -right-1 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full p-1.5 shadow-lg border"
-                                        aria-label="Next image"
-                                    >
-                                        <FaChevronRight size={16} className="text-black/80" />
-                                    </button>
-                                )}
                             </div>
                         </div>
                         
