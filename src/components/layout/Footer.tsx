@@ -4,7 +4,7 @@ import { FaFacebook, FaInstagram, FaTwitter, FaCcVisa, FaCcMastercard, FaCcPaypa
 export default function Footer() {
   return (
 <footer className="text-black pt-16 pb-12">
-        <div className="container mx-auto px-4">
+        <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
           {/* Brand/Company Info */}
           <div className="lg:col-span-2">
