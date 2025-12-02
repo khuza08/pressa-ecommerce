@@ -88,7 +88,7 @@ export default function CategoryDropdown({ isVisible = true }: CategoryDropdownP
 
       {/* Desktop View - Dropdown */}
       <div 
-        className="relative hidden lg:block" 
+        className="relative hidden sm:hidden md:hidden lg:block" 
         ref={dropdownRef}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}

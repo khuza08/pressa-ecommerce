@@ -22,6 +22,7 @@ import CartDropdown from "../ui/CartDropdown";
 import FavoriteDropdown from "../ui/FavoriteDropdown";
 import CategoryDropdown from "../ui/CategoryDropdown";
 import SearchModal from "../ui/SearchModal";
+import MobileMenu from "./MobileMenu";
 import { useCart } from "@/context/CartContext";
 import { useFavorites } from "@/context/FavoriteContext";
 import Link from "next/link";
@@ -213,7 +214,9 @@ export default function Header() {
               <a href="/" className="text-black text-xl font-bold">
                 PRESSA
               </a>
-              <CategoryDropdown />
+              <div className="hidden lg:block">
+                <CategoryDropdown isVisible={true} />
+              </div>
             </div>
 
             {/* Desktop Search Bar - Only visible on desktop - Centered properly */}
@@ -237,7 +240,7 @@ export default function Header() {
               </form>
             </div>
 
-            {/* Right side - Mobile search icon + Cart icons */}
+            {/* Right side - Mobile search icon + Category + Cart icons */}
             <div className="flex items-center space-x-4">
               {/* Mobile Search Icon - Only visible on mobile */}
               <div className="lg:hidden">
@@ -249,6 +252,8 @@ export default function Header() {
                   <FiSearch className="text-xl" />
                 </button>
               </div>
+
+
               <div
                 className="relative"
                 onMouseEnter={handleFavoriteMouseEnter}
@@ -302,6 +307,17 @@ export default function Header() {
                   visible={isCartHovered || isCartDropdownOpen}
                 />
               </div>
+
+              {/* Mobile Menu Button - Only visible on mobile */}
+              <div className="lg:hidden ml-4">
+                <button
+                  onClick={() => setMobileMenuOpen(true)}
+                  className="text-black"
+                  aria-label="Open menu"
+                >
+                  <FiMenu className="text-xl" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -314,168 +330,11 @@ export default function Header() {
       />
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <>
-          <div
-            className="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-sm lg:hidden"
-            style={{ height: "calc(100vh - 4rem)" }}
-            onClick={() => setMobileMenuOpen(false)}
-          ></div>
-          <div className="fixed top-0 left-0 z-50 h-full w-80 max-w-[80vw] bg-white shadow-xl lg:hidden overflow-y-auto">
-            <div className="p-4 flex justify-between items-center border-b">
-              <h2 className="text-lg font-bold text-black">Menu</h2>
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-black"
-                aria-label="Close menu"
-              >
-                <FiX className="text-2xl" />
-              </button>
-            </div>
-            <ul className="p-4 space-y-4">
-              <li>
-                <a href="/" className="block py-2 font-medium text-black">
-                  <div className="flex items-center">
-                    <FiHome className="mr-3" />
-                    Home
-                  </div>
-                </a>
-              </li>
-              <li>
-                <button
-                  className="flex justify-between items-center w-full py-2 font-medium text-black"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    router.push('/shop/cart');
-                  }}
-                >
-                  <div className="flex items-center">
-                    <FiShoppingCart className="mr-3" />
-                    Cart
-                    {isClient && getTotalItems() > 0 && (
-                      <span className="ml-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                        {getTotalItems()}
-                      </span>
-                    )}
-                  </div>
-                </button>
-              </li>
-              <li>
-                <button
-                  className="flex justify-between items-center w-full py-2 font-medium text-black"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    router.push('/favorites');
-                  }}
-                >
-                  <div className="flex items-center">
-                    <FiHeart className="mr-3" />
-                    Wishlist
-                    {isClient && getFavoritesCount() > 0 && (
-                      <span className="ml-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                        {getFavoritesCount()}
-                      </span>
-                    )}
-                  </div>
-                </button>
-              </li>
-              <li>
-                <button
-                  className="flex justify-between items-center w-full py-2 font-medium text-black"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    setIsCategorySidebarOpen(true);
-                  }}
-                >
-                  <div className="flex items-center">
-                    <FiGrid className="mr-3" />
-                    Categories
-                  </div>
-                </button>
-              </li>
-              <li>
-                <button
-                  className="flex justify-between items-center w-full py-2 font-medium text-black"
-                  onClick={() => toggleAccordion("categories")}
-                >
-                  <span>Shop by Category</span>
-                  {openAccordion === "categories" ? (
-                    <FiMinus className="text-lg" />
-                  ) : (
-                    <FiPlus className="text-lg" />
-                  )}
-                </button>
-                {openAccordion === "categories" && (
-                  <ul className="pl-4 mt-2 space-y-2 text-black">
-                    <li>
-                      <a href="#" className="block py-1">
-                        All Products
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        New Arrivals
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Best Sellers
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Sale Items
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Trending
-                      </a>
-                    </li>
-                  </ul>
-                )}
-              </li>
-              <li>
-                <button
-                  className="flex justify-between items-center w-full py-2 font-medium text-black"
-                  onClick={() => toggleAccordion("mens")}
-                >
-                  <span>Men's</span>
-                  {openAccordion === "mens" ? (
-                    <FiMinus className="text-lg" />
-                  ) : (
-                    <FiPlus className="text-lg" />
-                  )}
-                </button>
-                {openAccordion === "mens" && (
-                  <ul className="pl-4 mt-2 space-y-2 text-black">
-                    <li>
-                      <a href="#" className="block py-1">
-                        Shirt
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Shorts & Jeans
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Safety Shoes
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="block py-1">
-                        Wallet
-                      </a>
-                    </li>
-                  </ul>
-                )}
-              </li>
-            </ul>
-          </div>
-        </>
-      )}
+      <MobileMenu
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        onOpenCategorySidebar={() => setIsCategorySidebarOpen(true)}
+      />
 
 
       <CategorySidebar
