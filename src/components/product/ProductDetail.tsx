@@ -173,6 +173,58 @@ export default function ProductDetail({ productId }: { productId: string }) {
         window.scrollTo(0, 0);
     }, []);
 
+    // Track scroll position for sticky elements
+    const [isSticky, setIsSticky] = useState({
+        productImages: false,
+        purchaseCard: false
+    });
+
+    // Track state for when elements should become fixed at header bottom
+    const [snapToHeader, setSnapToHeader] = useState({
+        productImages: false,
+        purchaseCard: false
+    });
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const header = document.querySelector('header');
+            if (!header) return;
+
+            const headerHeight = header.clientHeight;
+
+            // Check if product images container should snap to header
+            const productImagesContainer = document.querySelector('.product-images-container');
+            if (productImagesContainer) {
+                const imgRect = productImagesContainer.getBoundingClientRect();
+                // If the product images container reaches the header, snap to it
+                setSnapToHeader(prev => ({
+                    ...prev,
+                    productImages: imgRect.top <= headerHeight + 10  // 10px buffer
+                }));
+            }
+
+            // Check if purchase card container should snap to header
+            const purchaseCardContainer = document.querySelector('.purchase-card-container');
+            if (purchaseCardContainer) {
+                const cardRect = purchaseCardContainer.getBoundingClientRect();
+                // If the purchase card container reaches the header, snap to it
+                setSnapToHeader(prev => ({
+                    ...prev,
+                    purchaseCard: cardRect.top <= headerHeight + 10  // 10px buffer
+                }));
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
+        // Initial check
+        handleScroll();
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     // Fetch product data
     useEffect(() => {
         const fetchProduct = async () => {
@@ -312,8 +364,11 @@ export default function ProductDetail({ productId }: { productId: string }) {
             <div className="w-full md:w-[90vw] lg:w-[80vw] mx-auto mb-20 md:mb-10">
                 <div className="flex flex-col lg:flex-row gap-4">
                     {/* Left Column - Product Images */}
-                    <div className="w-full md:w-[280px] relative">
-                        <div className="bg-white overflow-hidden shadow-sm sticky top-[150px] flex flex-col">
+                    <div className="product-images-container w-full md:w-[280px] relative">
+                        <div
+                            className={`bg-white overflow-hidden shadow-sm sticky flex flex-col border border-black/10 rounded-lg h-[400px] ${snapToHeader.productImages ? 'top-0' : 'top-[150px]'}`}
+                            style={snapToHeader.productImages ? { top: '70px' } : { top: '150px' }}
+                        >
                             {/* Main Image with Zoom */}
                             {/* Mobile & Tablet: Image Carousel with Swipe */}
                             <div className="block md:hidden relative overflow-hidden w-full">
@@ -475,7 +530,7 @@ export default function ProductDetail({ productId }: { productId: string }) {
                     </div>
 
                     {/* Middle Column - Product Info */}
-                    <div className="flex-1 space-y-4">
+                    <div className="middle-column flex-1 space-y-4">
                         <div className="bg-white rounded-lg p-4 shadow-sm">
                             <div className="flex items-center justify-between mb-2">
                                 <h1 className="text-2xl font-bold text-black flex-1">{product?.name}</h1>
@@ -619,7 +674,10 @@ export default function ProductDetail({ productId }: { productId: string }) {
                     </div>
 
                     {/* Right Column - Purchase Card - Desktop Only */}
-                    <div className="hidden md:block lg:w-[300px] sticky top-36 h-[400px]">
+                    <div
+                        className={`hidden md:block purchase-card-container lg:w-[300px] sticky ${snapToHeader.purchaseCard ? 'top-0' : 'top-36'} h-[400px]`}
+                        style={snapToHeader.purchaseCard ? { top: '70px' } : {}}
+                    >
                         <div className="bg-white rounded-xl p-5 shadow-sm h-full flex flex-col justify-between border border-black/10">
                             <div className="mb-4 flex items-center gap-3">
                                 <div className="w-14 h-14 bg-green-50 rounded-lg flex items-center justify-center">
