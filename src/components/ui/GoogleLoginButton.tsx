@@ -2,13 +2,15 @@
 
 import { FcGoogle } from 'react-icons/fc';
 import { useAuth } from '@/context/AuthContext';
+import { googleAuthService } from '@/services/googleAuthService';
 
 export default function GoogleLoginButton() {
   const { loginWithGoogle, loading } = useAuth();
 
   const handleGoogleLogin = async () => {
     try {
-      await loginWithGoogle();
+      // Use the real Google OAuth service to initiate the flow
+      googleAuthService.initiateGoogleLogin();
     } catch (error) {
       console.error('Google login failed:', error);
     }
