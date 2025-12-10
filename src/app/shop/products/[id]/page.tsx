@@ -1,5 +1,5 @@
 // src/app/shop/products/[id]/page.tsx
-import ProductDetail from '@/components/product/ProductDetail';
+import ProductDetailWrapper from '@/components/product/ProductDetailWrapper';
 
 interface ProductDetailPageProps {
   params: Promise<{ id: string }>;
@@ -8,7 +8,5 @@ interface ProductDetailPageProps {
 export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
   const { id } = await params;
 
-  return (
-    <ProductDetail productId={id} />
-  );
+  return <ProductDetailWrapper productId={id} />;
 }

@@ -2,6 +2,7 @@
 
 import { memo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { FiStar } from 'react-icons/fi';
 
 interface Product {
@@ -21,12 +22,14 @@ interface SmallProductCardProps {
 const SmallProductCard = memo(({ product }: SmallProductCardProps) => {
   return (
     <Link href={`/shop/products/${product.id}`} className="flex gap-4 p-4 border border-black/20 rounded-xl hover:border-black/40 transition-colors bg-white min-w-[280px]">
-      <div className="w-16 h-16 bg-black rounded-lg flex items-center justify-center shrink-0">
-        <img
+      <div className="w-16 h-16 bg-black rounded-lg flex items-center justify-center shrink-0 relative">
+        <Image
           src={product.image}
           alt={product.name}
+          fill
           className="w-full h-full object-cover rounded-lg"
-          loading="lazy"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+          priority={false}
         />
       </div>
       <div className="flex flex-col justify-center flex-1 min-w-0">

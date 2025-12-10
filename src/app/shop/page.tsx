@@ -1,7 +1,7 @@
 // src/app/page.tsx
 import Carousel from "@/components/product/Carousel";
 import CategorySection from "@/components/product/Category";
-import ProductGrid from "@/components/product/Products";
+import ProductGrid from "@/components/product/ProductGrid";
 
 export default function Home() {
   return (

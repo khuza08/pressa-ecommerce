@@ -1,14 +1,14 @@
 // Products.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useMemo } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
 import { productService, type Product } from '@/services/productService';
 import ProductCard from './ProductCard';
 import SmallProductCard from './SmallProductCard';
 
-export default function Products() {
+const ProductsComponent = memo(function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -34,6 +34,21 @@ export default function Products() {
     topRated: 0,
     trendings: 0
   });
+
+  // Memoize processed data
+  const memoizedProductData = useMemo(() => {
+    if (!products || !Array.isArray(products)) {
+      return {
+        smallCardData: [],
+        newProducts: []
+      };
+    }
+
+    return {
+      smallCardData: products.slice(0, 12),
+      newProducts: products.slice(0, 6)
+    };
+  }, [products]);
 
   if (loading) {
     return (
@@ -97,27 +112,23 @@ export default function Products() {
     );
   };
 
-  // Split products into categories for the different sections
-  const smallCardData = products && Array.isArray(products) ? products.slice(0, 12) : []; // First 12 products
-  const newProducts = products && Array.isArray(products) ? products.slice(0, 6) : []; // First 6 products for new products section
-
   return (
     <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto py-8 px-4">
       {/* Top Section - Three Columns */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
         <ScrollableSection
           title="NEW ARRIVALS"
-          products={smallCardData}
+          products={memoizedProductData.smallCardData}
           sectionKey="newArrivals"
         />
         <ScrollableSection
           title="TOP RATED"
-          products={smallCardData}
+          products={memoizedProductData.smallCardData}
           sectionKey="topRated"
         />
         <ScrollableSection
           title="TRENDINGS"
-          products={smallCardData}
+          products={memoizedProductData.smallCardData}
           sectionKey="trendings"
         />
       </div>
@@ -126,7 +137,7 @@ export default function Products() {
       <div>
         <h2 className="text-2xl font-bold mb-6 px-2 sm:px-0">NEW PRODUCTS</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-6">
-          {newProducts.map((product) => (
+          {memoizedProductData.newProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
@@ -149,4 +160,9 @@ export default function Products() {
       `}</style>
     </div>
   );
-}
+});
+
+// Set a display name for the memoized component
+ProductsComponent.displayName = 'Products';
+
+export default ProductsComponent;

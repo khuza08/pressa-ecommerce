@@ -3,6 +3,7 @@
 import { memo } from 'react';
 import { FiStar, FiHeart } from 'react-icons/fi';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useFavorites } from '@/context/FavoriteContext';
 
 interface Product {
@@ -20,11 +21,11 @@ interface ProductCardProps {
 
 const ProductCard = memo(({ product }: ProductCardProps) => {
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
-  
+
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (isFavorite(product.id)) {
       removeFromFavorites(product.id);
     } else {
@@ -51,11 +52,13 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
     >
       <div className="relative">
         <div className="aspect-square w-full overflow-hidden rounded-md">
-          <img
+          <Image
             src={product.image}
             alt={product.name}
+            fill
             className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-            loading="lazy"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+            priority={false}
           />
         </div>
         <button
@@ -63,8 +66,8 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
           className="absolute top-3 right-3 p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors"
           aria-label={isFavorite(product.id) ? "Remove from favorites" : "Add to favorites"}
         >
-          <FiHeart 
-            className={isFavorite(product.id) ? 'fill-red-500 text-red-500' : 'text-black/40'} 
+          <FiHeart
+            className={isFavorite(product.id) ? 'fill-red-500 text-red-500' : 'text-black/40'}
           />
         </button>
       </div>

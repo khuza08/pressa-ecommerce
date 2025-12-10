@@ -15,6 +15,7 @@ import { productService, type Product } from '@/services/productService';
 import { useCart } from '@/context/CartContext';
 import { useFavorites } from '@/context/FavoriteContext';
 import ProductDetailBottomBar from './ProductDetailBottomBar';
+import Image from 'next/image';
 
 import { memo } from 'react';
 
@@ -365,14 +366,13 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                             key={index}
                                             className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${mainImage === img.url ? 'opacity-100' : 'opacity-0'}`}
                                         >
-                                            <img
+                                            <Image
                                                 src={img.url || "https://placehold.co/600x600?text=Product+Image"}
                                                 alt={img.alt || product?.name || "Product image"}
+                                                fill
                                                 className="w-full h-full object-cover"
-                                                onError={(e) => {
-                                                    const target = e.target as HTMLImageElement;
-                                                    target.src = "https://placehold.co/600x600?text=No+Image";
-                                                }}
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                                                priority={false}
                                             />
                                         </div>
                                     ))}
@@ -398,16 +398,17 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 onMouseLeave={() => setIsHovering(false)}
                                 onMouseMove={handleMouseMove}
                             >
-                                <img
-                                    src={mainImage || product?.image || "https://placehold.co/600x600?text=Product+Image"}
-                                    alt={product?.name || "Product image"}
-                                    className={`w-full h-full object-cover rounded-lg transition-all duration-200 ${isHovering ? "blur-sm" : ""
-                                        }`}
-                                    onError={(e) => {
-                                        const target = e.target as HTMLImageElement;
-                                        target.src = "https://placehold.co/600x600?text=No+Image";
-                                    }}
-                                />
+                                <div className="relative w-full h-full">
+                                    <Image
+                                        src={mainImage || product?.image || "https://placehold.co/600x600?text=Product+Image"}
+                                        alt={product?.name || "Product image"}
+                                        fill
+                                        className={`object-cover rounded-lg transition-all duration-200 ${isHovering ? "blur-sm" : ""
+                                            }`}
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                                        priority={false}
+                                    />
+                                </div>
 
                                 {/* Fullscreen Zoom Button - Desktop only */}
                                 <button
@@ -441,15 +442,16 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                 : "border-black/20"
                                                 }`}
                                         >
-                                            <img
-                                                src={img.url || "https://placehold.co/100x100?text=Thumb"}
-                                                alt={img.alt || "Thumbnail"}
-                                                className="w-full h-full object-cover"
-                                                onError={(e) => {
-                                                    const target = e.target as HTMLImageElement;
-                                                    target.src = "https://placehold.co/100x100?text=No+Image";
-                                                }}
-                                            />
+                                            <div className="relative w-full h-full">
+                                                <Image
+                                                    src={img.url || "https://placehold.co/100x100?text=Thumb"}
+                                                    alt={img.alt || "Thumbnail"}
+                                                    fill
+                                                    className="w-full h-full object-cover"
+                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                                                    priority={false}
+                                                />
+                                            </div>
                                         </button>
                                     ))}
                                 </div>
@@ -759,10 +761,13 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                         className="relative max-w-4xl max-h-[90vh] w-full flex items-center justify-center"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <img
+                        <Image
                             src={fullscreenImage}
                             alt="Fullscreen view"
+                            width={800}
+                            height={600}
                             className="max-h-[85vh] object-contain"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 50vw"
                         />
                     </div>
                 </div>

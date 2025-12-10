@@ -4,6 +4,8 @@ import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { FavoriteProvider } from "@/context/FavoriteContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { SWRConfig } from 'swr';
+import { swrConfig } from '@/lib/swrConfig';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -32,15 +34,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          <FavoriteProvider>
-            <CartProvider>
-              <Header />
-              <main>{children}</main>
-              <Footer />
-            </CartProvider>
-          </FavoriteProvider>
-        </AuthProvider>
+        <SWRConfig value={swrConfig}>
+          <AuthProvider>
+            <FavoriteProvider>
+              <CartProvider>
+                <Header />
+                <main>{children}</main>
+                <Footer />
+              </CartProvider>
+            </FavoriteProvider>
+          </AuthProvider>
+        </SWRConfig>
       </body>
     </html>
   );
