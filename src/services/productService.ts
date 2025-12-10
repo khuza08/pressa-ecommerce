@@ -37,9 +37,17 @@ export const productService = {
       if (!response.ok) {
         throw new Error(`Failed to fetch products: ${response.status}`);
       }
-      const products = await response.json();
-      // Ensure that the response is an array, even if the API returns unexpected data
-      return Array.isArray(products) ? products : [];
+      const data = await response.json();
+
+      // Handle both simple array format and paginated format for backward compatibility
+      if (Array.isArray(data)) {
+        return data;
+      } else if (data && typeof data === 'object' && Array.isArray(data.data)) {
+        // If it's the paginated format, return the data array
+        return data.data;
+      } else {
+        return [];
+      }
     } catch (error) {
       console.error('Error fetching products:', error);
       // Return an empty array instead of throwing to prevent breaking the UI

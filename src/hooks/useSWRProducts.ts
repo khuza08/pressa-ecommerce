@@ -5,7 +5,23 @@ import { CarouselItem } from '@/services/carouselService';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1';
 
 // Fetcher function for SWR
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcher = (url: string) =>
+  fetch(url).then(res => {
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return res.json();
+  }).then(data => {
+    // Handle both simple array format and paginated format for backward compatibility
+    if (Array.isArray(data)) {
+      return data;
+    } else if (data && typeof data === 'object' && Array.isArray(data.data)) {
+      // If it's the paginated format, return the data array
+      return data.data;
+    } else {
+      return [];
+    }
+  });
 
 // Custom hook for getting all products with caching
 export function useProducts() {

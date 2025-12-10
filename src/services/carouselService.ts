@@ -6,6 +6,7 @@ export interface CarouselItem {
   title: string;
   description: string;
   image: string;
+  imageType?: 'url' | 'file'; // Added image type field
   link?: string;
   order: number;
   isActive: boolean;
@@ -14,18 +15,26 @@ export interface CarouselItem {
   updatedAt: string;
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 
 export const carouselService = {
   // Public methods - for frontend carousel display
   getActiveCarouselItems: async (): Promise<CarouselItem[]> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/carousels`);
+      const response = await fetch(`${API_BASE_URL}/api/v1/carousels`);
       if (!response.ok) {
         throw new Error(`Failed to fetch carousel items: ${response.status}`);
       }
       const items = await response.json();
-      return Array.isArray(items) ? items : [];
+      // Ensure all items have proper defaults to prevent undefined values
+      const normalizedItems = Array.isArray(items) ? items.map(item => ({
+        ...item,
+        image: item.image || '',
+        imageType: item.imageType || 'url',
+        description: item.description || '',
+        link: item.link || '',
+      })) : [];
+      return normalizedItems;
     } catch (error) {
       console.error('Error fetching carousel items:', error);
       return [];
@@ -34,14 +43,22 @@ export const carouselService = {
 
   getCarouselItemById: async (id: number): Promise<CarouselItem | undefined> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/carousels/${id}`);
+      const response = await fetch(`${API_BASE_URL}/api/v1/carousels/${id}`);
       if (!response.ok) {
         if (response.status === 404) {
           return undefined;
         }
         throw new Error(`Failed to fetch carousel item: ${response.status}`);
       }
-      return await response.json();
+      const item = await response.json();
+      // Ensure the item has proper defaults to prevent undefined values
+      return {
+        ...item,
+        image: item.image || '',
+        imageType: item.imageType || 'url',
+        description: item.description || '',
+        link: item.link || '',
+      };
     } catch (error) {
       console.error('Error fetching carousel item:', error);
       return undefined;

@@ -13,6 +13,7 @@ interface CarouselItem {
   title: string;
   description: string;
   image: string;
+  imageType?: 'url' | 'file'; // Added image type field
   link?: string; // Optional link when carousel is clicked
   order: number;
 }
@@ -73,7 +74,7 @@ const Carousel = memo(() => {
           >
             <div className="w-full h-full relative">
               <Image
-                src={slide.image}
+                src={slide.imageType === 'file' ? `/uploads/${slide.image}` : slide.image}
                 alt={slide.title}
                 fill
                 className="object-cover"
