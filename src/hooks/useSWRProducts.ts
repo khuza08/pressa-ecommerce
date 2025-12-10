@@ -1,5 +1,6 @@
 import useSWR from 'swr';
 import { Product } from '@/services/productService';
+import { CarouselItem } from '@/services/carouselService';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1';
 
@@ -69,6 +70,34 @@ export function usePaginatedProducts(page: number, limit: number, filters?: {
     isLoading,
     isError: error,
     mutate
+  };
+}
+
+// Custom hook for getting carousel items with caching
+export function useCarouselItems() {
+  const { data, error, isLoading, mutate } = useSWR<CarouselItem[]>(
+    `${API_BASE_URL}/carousels`,
+    async (url) => {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch carousel items: ${response.status}`);
+      }
+      const result = await response.json();
+      // Ensure result is an array
+      return Array.isArray(result) ? result : [];
+    },
+    {
+      refreshInterval: 60000, // Refresh every minute
+      errorRetryCount: 3,
+      fallbackData: [] // Provide empty array as fallback
+    }
+  );
+
+  return {
+    carouselItems: data || [],
+    isLoading,
+    isError: error,
+    mutate // Allows manual refresh
   };
 }
 

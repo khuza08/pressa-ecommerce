@@ -3,35 +3,22 @@
 
 import { useState } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import Image from 'next/image';
+import { useCarouselItems } from '@/hooks/useSWRProducts';
 
 import { memo } from 'react';
 
-const Carousel = memo(() => {
-  // Sample data - in a real app, this would come from props or state
-  const slides = [
-    {
-      id: 1,
-      title: "Summer Collection",
-      subtitle: "New Arrivals",
-      description: "Discover our new summer collection",
-      image: "https://images.unsplash.com/photo-1552374196-c4e83d929a60?w=1200&h=600&fit=crop&auto=format",
-    },
-    {
-      id: 2,
-      title: "Exclusive Designs",
-      subtitle: "Limited Edition",
-      description: "Check out our latest exclusive designs",
-      image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1200&h=600&fit=crop&auto=format",
-    },
-    {
-      id: 3,
-      title: "Premium Quality",
-      subtitle: "Soft & Comfortable",
-      description: "Experience premium quality fabrics",
-      image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=1200&h=600&fit=crop&auto=format",
-    },
-  ];
+interface CarouselItem {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  link?: string; // Optional link when carousel is clicked
+  order: number;
+}
 
+const Carousel = memo(() => {
+  const { carouselItems: slides, isLoading, isError } = useCarouselItems();
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const goToPrevSlide = () => {
@@ -46,6 +33,34 @@ const Carousel = memo(() => {
     setCurrentSlide(index);
   };
 
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="relative w-full md:w-[90vw] lg:w-[90vw] mx-auto overflow-hidden rounded-lg h-[300px] md:h-[400px] lg:h-[500px] flex items-center justify-center">
+        <p>Loading carousel...</p>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (isError) {
+    console.error('Error loading carousel items');
+    return (
+      <div className="relative w-full md:w-[90vw] lg:w-[90vw] mx-auto overflow-hidden rounded-lg h-[300px] md:h-[400px] lg:h-[500px] flex items-center justify-center">
+        <p className="text-red-500">Error loading carousel</p>
+      </div>
+    );
+  }
+
+  // If no slides available
+  if (!slides || slides.length === 0) {
+    return (
+      <div className="relative w-full md:w-[90vw] lg:w-[90vw] mx-auto overflow-hidden rounded-lg h-[300px] md:h-[400px] lg:h-[500px] flex items-center justify-center">
+        <p>No carousel items available</p>
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-full md:w-[90vw] lg:w-[90vw] mx-auto overflow-hidden rounded-lg">
       <div className="relative h-[300px] md:h-[400px] lg:h-[500px]">
@@ -56,20 +71,28 @@ const Carousel = memo(() => {
               index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
             }`}
           >
-            <div
-              className="w-full h-full bg-cover bg-center bg-black/20"
-              style={{ backgroundImage: `url(${slide.image})` }}
-            >
+            <div className="w-full h-full relative">
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 90vw"
+              />
               <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                 <div className="text-center text-white px-4 max-w-2xl">
                   <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-2">
                     {slide.title}
                   </h2>
-                  <p className="text-lg md:text-xl mb-2">{slide.subtitle}</p>
                   <p className="text-base md:text-lg mb-6">{slide.description}</p>
-                  <button className="bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-colors">
-                    Shop Now
-                  </button>
+                  {slide.link && (
+                    <a
+                      href={slide.link}
+                      className="inline-block bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-colors"
+                    >
+                      Shop Now
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
