@@ -374,14 +374,28 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                             key={index}
                                             className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${mainImage === img.url ? 'opacity-100' : 'opacity-0'}`}
                                         >
-                                            <Image
-                                                src={img.url || "https://placehold.co/600x600?text=Product+Image"}
-                                                alt={img.alt || product?.name || "Product image"}
-                                                fill
-                                                className="w-full h-full object-cover"
-                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                                                priority={false}
-                                            />
+                                            {img.url?.includes('uploads') ? (
+                                                <img
+                                                    src={(() => {
+                                                        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                        let normalizedPath = img.url.replace(/\\/g, '/');
+                                                        if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
+                                                        if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
+                                                        return `${baseUrl}${normalizedPath}`;
+                                                    })()}
+                                                    alt={img.alt || product?.name || "Product image"}
+                                                    className="absolute inset-0 w-full h-full object-cover"
+                                                />
+                                            ) : (
+                                                <Image
+                                                    src={img.url || "https://placehold.co/600x600?text=Product+Image"}
+                                                    alt={img.alt || product?.name || "Product image"}
+                                                    fill
+                                                    className="w-full h-full object-cover"
+                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                                                    priority={false}
+                                                />
+                                            )}
                                         </div>
                                     ))}
                                 </div>
@@ -407,31 +421,29 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 onMouseMove={handleMouseMove}
                             >
                                 <div className="relative w-full h-full">
-                                    <Image
-                                        src={mainImage?.includes('uploads')
-                                          ? (() => {
-                                              const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                              let normalizedPath = mainImage.replace(/\\/g, '/');
-                                              if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
-                                              if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
-                                              return `${baseUrl}${normalizedPath}`;
-                                            })()
-                                          : mainImage || (product?.image?.includes('uploads')
-                                            ? (() => {
+                                    {(mainImage || product?.image)?.includes('uploads') ? (
+                                        <img
+                                            src={(() => {
+                                                const imageToUse = mainImage || product?.image;
                                                 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                                let normalizedPath = product.image.replace(/\\/g, '/');
+                                                let normalizedPath = imageToUse.replace(/\\/g, '/');
                                                 if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
                                                 if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
                                                 return `${baseUrl}${normalizedPath}`;
-                                              })()
-                                            : product?.image) || "https://placehold.co/600x600?text=Product+Image"}
-                                        alt={product?.name || "Product image"}
-                                        fill
-                                        className={`object-cover rounded-lg transition-all duration-200 ${isHovering ? "blur-sm" : ""
-                                            }`}
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                                        priority={false}
-                                    />
+                                            })()}
+                                            alt={product?.name || "Product image"}
+                                            className={`absolute inset-0 w-full h-full object-cover rounded-lg transition-all duration-200 ${isHovering ? "blur-sm" : ""}`}
+                                        />
+                                    ) : (
+                                        <Image
+                                            src={mainImage || product?.image || "https://placehold.co/600x600?text=Product+Image"}
+                                            alt={product?.name || "Product image"}
+                                            fill
+                                            className={`object-cover rounded-lg transition-all duration-200 ${isHovering ? "blur-sm" : ""}`}
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                                            priority={false}
+                                        />
+                                    )}
                                 </div>
 
                                 {/* Fullscreen Zoom Button - Desktop only */}
@@ -467,14 +479,28 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                 }`}
                                         >
                                             <div className="relative w-full h-full">
-                                                <Image
-                                                    src={img.url || "https://placehold.co/100x100?text=Thumb"}
-                                                    alt={img.alt || "Thumbnail"}
-                                                    fill
-                                                    className="w-full h-full object-cover"
-                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                                                    priority={false}
-                                                />
+                                                {img.url?.includes('uploads') ? (
+                                                    <img
+                                                        src={(() => {
+                                                            const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                            let normalizedPath = img.url.replace(/\\/g, '/');
+                                                            if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
+                                                            if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
+                                                            return `${baseUrl}${normalizedPath}`;
+                                                        })()}
+                                                        alt={img.alt || "Thumbnail"}
+                                                        className="absolute inset-0 w-full h-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <Image
+                                                        src={img.url || "https://placehold.co/100x100?text=Thumb"}
+                                                        alt={img.alt || "Thumbnail"}
+                                                        fill
+                                                        className="w-full h-full object-cover"
+                                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                                                        priority={false}
+                                                    />
+                                                )}
                                             </div>
                                         </button>
                                     ))}
@@ -785,14 +811,28 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                         className="relative max-w-4xl max-h-[90vh] w-full flex items-center justify-center"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <Image
-                            src={fullscreenImage}
-                            alt="Fullscreen view"
-                            width={800}
-                            height={600}
-                            className="max-h-[85vh] object-contain"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 50vw"
-                        />
+                        {fullscreenImage?.includes('uploads') ? (
+                            <img
+                                src={(() => {
+                                    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                    let normalizedPath = fullscreenImage.replace(/\\/g, '/');
+                                    if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
+                                    if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
+                                    return `${baseUrl}${normalizedPath}`;
+                                })()}
+                                alt="Fullscreen view"
+                                className="max-h-[85vh] w-auto object-contain"
+                            />
+                        ) : (
+                            <Image
+                                src={fullscreenImage}
+                                alt="Fullscreen view"
+                                width={800}
+                                height={600}
+                                className="max-h-[85vh] object-contain"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 50vw"
+                            />
+                        )}
                     </div>
                 </div>
             )}
