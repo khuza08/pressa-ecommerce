@@ -18,6 +18,53 @@ interface CarouselItem {
   order: number;
 }
 
+// Get the API base URL for constructing full paths to backend resources
+// Use consistent format with next.config.ts remotePatterns
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+const API_HOST = new URL(API_BASE_URL).host; // Extract host from API_BASE_URL
+
+// Helper function to get a valid image URL
+const getValidImageUrl = (slide: CarouselItem): string => {
+  // If there's no image property or it's empty, return a placeholder
+  if (!slide.image || typeof slide.image !== 'string' || slide.image.trim() === '') {
+    return '/vercel.svg'; // Use an existing image in the public directory as fallback
+  }
+
+  // Check if it's a file type image (local upload)
+  if (slide.imageType === 'file' || !slide.imageType) { // Default to 'file' if imageType is not specified
+    // Check if the image starts with a protocol (to avoid invalid URLs like "http:/uploads/image.jpg")
+    if (slide.image.startsWith('http://') || slide.image.startsWith('https://') || slide.image.startsWith('//')) {
+      return slide.image; // It's already a full URL, return as-is
+    }
+
+    // Check if the image path already includes the uploads prefix
+    if (slide.image.startsWith('/uploads/')) {
+      // Create a full URL using the API server's host to match next.config.ts
+      return `${API_BASE_URL}${slide.image}`;
+    }
+
+    // If image path starts with 'uploads/' (without leading slash), construct the full URL
+    if (slide.image.startsWith('uploads/')) {
+      return `${API_BASE_URL}/${slide.image}`;
+    }
+
+    // Otherwise, it's a local file, construct the full URL using the API base and uploads path
+    return `${API_BASE_URL}/uploads/${slide.image}`;
+  } else {
+    // It's a URL type - validate it's a proper URL
+    // If it's already a full URL, return as-is
+    if (slide.image.startsWith('http://') || slide.image.startsWith('https://') || slide.image.startsWith('//')) {
+      return slide.image;
+    }
+    // If it's a relative path and not a file type, construct the full URL using API base
+    if (slide.image.startsWith('/')) {
+      return `${API_BASE_URL}${slide.image}`;
+    }
+    // For other relative paths, add the leading slash and construct the full URL
+    return `${API_BASE_URL}/${slide.image}`;
+  }
+};
+
 const Carousel = memo(() => {
   const { carouselItems: slides, isLoading, isError } = useCarouselItems();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -65,7 +112,11 @@ const Carousel = memo(() => {
   return (
     <div className="relative w-full md:w-[90vw] lg:w-[90vw] mx-auto overflow-hidden rounded-lg">
       <div className="relative h-[300px] md:h-[400px] lg:h-[500px]">
-        {slides.map((slide, index) => (
+        {slides.map((slide, index) => {
+          const imageUrl = getValidImageUrl(slide);
+          const isExternalImage = imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
+
+          return (
           <div
             key={slide.id}
             className={`absolute inset-0 transition-opacity duration-1000 ${
@@ -74,11 +125,15 @@ const Carousel = memo(() => {
           >
             <div className="w-full h-full relative">
               <Image
-                src={slide.imageType === 'file' ? `/uploads/${slide.image}` : slide.image}
-                alt={slide.title}
+                src={imageUrl}
+                alt={slide.title || 'Carousel item'}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 90vw"
+                unoptimized={isExternalImage} // Don't optimize external images
+                onError={(e) => {
+                  console.error('Image failed to load:', (e.target as HTMLImageElement).src);
+                }}
               />
               <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                 <div className="text-center text-white px-4 max-w-2xl">
@@ -98,7 +153,7 @@ const Carousel = memo(() => {
               </div>
             </div>
           </div>
-        ))}
+        )})}
       </div>
 
       {/* Navigation Arrows */}
