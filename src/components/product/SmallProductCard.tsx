@@ -23,14 +23,28 @@ const SmallProductCard = memo(({ product }: SmallProductCardProps) => {
   return (
     <Link href={`/shop/products/${product.id}`} className="flex gap-4 p-4 border border-black/20 rounded-xl hover:border-black/40 transition-colors bg-white min-w-[280px]">
       <div className="w-16 h-16 bg-black rounded-lg flex items-center justify-center shrink-0 relative">
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          className="w-full h-full object-cover rounded-lg"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-          priority={false}
-        />
+        {product.image.includes('uploads') ? (
+          <img
+            src={(() => {
+              const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+              let normalizedPath = product.image.replace(/\\/g, '/');
+              if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
+              if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
+              return `${baseUrl}${normalizedPath}`;
+            })()}
+            alt={product.name}
+            className="w-full h-full object-cover rounded-lg"
+          />
+        ) : (
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            className="w-full h-full object-cover rounded-lg"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+            priority={false}
+          />
+        )}
       </div>
       <div className="flex flex-col justify-center flex-1 min-w-0">
         <h4 className="font-medium text-sm truncate">{product.name}</h4>

@@ -182,7 +182,15 @@ export default function SearchPage() {
                 >
                   <div className="bg-black/10 h-48 md:h-56 lg:h-64 flex items-center justify-center">
                     <img
-                      src={product.image}
+                      src={product.image.includes('uploads')
+                        ? (() => {
+                            const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                            let normalizedPath = product.image.replace(/\\/g, '/');
+                            if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
+                            if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
+                            return `${baseUrl}${normalizedPath}`;
+                          })()
+                        : product.image}
                       alt={product.name}
                       className="w-full h-full object-cover"
                     />

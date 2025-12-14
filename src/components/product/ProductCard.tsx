@@ -52,14 +52,28 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
     >
       <div className="relative">
         <div className="aspect-square w-full overflow-hidden rounded-md">
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-            priority={false}
-          />
+          {product.image.includes('uploads') ? (
+            <img
+              src={(() => {
+                const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                let normalizedPath = product.image.replace(/\\/g, '/');
+                if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
+                if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
+                return `${baseUrl}${normalizedPath}`;
+              })()}
+              alt={product.name}
+              className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+            />
+          ) : (
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+              priority={false}
+            />
+          )}
         </div>
         <button
           onClick={handleFavoriteClick}

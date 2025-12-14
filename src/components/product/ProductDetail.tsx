@@ -291,7 +291,15 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
             if (product.images && product.images.length > 0 && product.images[0].url) {
                 setMainImage(product.images[0].url);
             } else if (product.image) {
-                setMainImage(product.image);
+                setMainImage(product.image.includes('uploads')
+                  ? (() => {
+                      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                      let normalizedPath = product.image.replace(/\\/g, '/');
+                      if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
+                      if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
+                      return `${baseUrl}${normalizedPath}`;
+                    })()
+                  : product.image);
             } else {
                 setMainImage("https://placehold.co/600x600?text=Product+Image");
             }
@@ -400,7 +408,23 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                             >
                                 <div className="relative w-full h-full">
                                     <Image
-                                        src={mainImage || product?.image || "https://placehold.co/600x600?text=Product+Image"}
+                                        src={mainImage?.includes('uploads')
+                                          ? (() => {
+                                              const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                              let normalizedPath = mainImage.replace(/\\/g, '/');
+                                              if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
+                                              if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
+                                              return `${baseUrl}${normalizedPath}`;
+                                            })()
+                                          : mainImage || (product?.image?.includes('uploads')
+                                            ? (() => {
+                                                const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                let normalizedPath = product.image.replace(/\\/g, '/');
+                                                if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
+                                                if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
+                                                return `${baseUrl}${normalizedPath}`;
+                                              })()
+                                            : product?.image) || "https://placehold.co/600x600?text=Product+Image"}
                                         alt={product?.name || "Product image"}
                                         fill
                                         className={`object-cover rounded-lg transition-all duration-200 ${isHovering ? "blur-sm" : ""
