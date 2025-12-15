@@ -76,7 +76,14 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
               >
                 <div className="w-16 h-16 bg-black/20 rounded-md overflow-hidden flex-shrink-0">
                   <img
-                    src={item.image}
+                    src={
+                      // Handle different URL formats
+                      item.image.startsWith('http')
+                        ? item.image  // Already a full URL
+                        : item.image.includes('uploads/')
+                          ? `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080'}/${item.image.replace(/^\/?/, '')}` // Handle uploads path
+                          : `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080'}/uploads/${item.image}` // Simple filename
+                    }
                     alt={item.name}
                     className="w-full h-full object-cover"
                   />

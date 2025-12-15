@@ -555,11 +555,25 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                 removeFromFavorites(product.id);
                                                 setLocalIsFavorite(false);
                                             } else {
+                                                // Create the proper image URL for favorites
+                                                let imageUrl = product.image || "";
+                                                if (product.image && !product.image.startsWith('http')) {
+                                                  // If not a full URL, check if it's a file that needs the uploads path
+                                                  if (product.image.includes('uploads/')) {
+                                                    // Extract filename from uploads path
+                                                    const filename = product.image.split('uploads/').pop();
+                                                    imageUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080'}/uploads/${filename}`;
+                                                  } else if (!product.image.startsWith('/')) {
+                                                    // It's a simple filename, so prepend the uploads path
+                                                    imageUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080'}/uploads/${product.image}`;
+                                                  }
+                                                }
+
                                                 addToFavorites({
                                                     id: product.id,
                                                     name: product.name,
                                                     price: product.price,
-                                                    image: product.image || ""
+                                                    image: imageUrl
                                                 });
                                                 setLocalIsFavorite(true);
                                             }
