@@ -13,7 +13,6 @@ interface CarouselItem {
   title: string;
   description: string;
   image: string;
-  imageType?: 'url' | 'file'; // Added image type field
   link?: string; // Optional link when carousel is clicked
   order: number;
 }
@@ -30,39 +29,24 @@ const getValidImageUrl = (slide: CarouselItem): string => {
     return '/vercel.svg'; // Use an existing image in the public directory as fallback
   }
 
-  // Check if it's a file type image (local upload)
-  if (slide.imageType === 'file' || !slide.imageType) { // Default to 'file' if imageType is not specified
-    // Check if the image starts with a protocol (to avoid invalid URLs like "http:/uploads/image.jpg")
-    if (slide.image.startsWith('http://') || slide.image.startsWith('https://') || slide.image.startsWith('//')) {
-      return slide.image; // It's already a full URL, return as-is
-    }
+  // Check if the image starts with a protocol (to avoid invalid URLs like "http:/uploads/image.jpg")
+  if (slide.image.startsWith('http://') || slide.image.startsWith('https://') || slide.image.startsWith('//')) {
+    return slide.image; // It's already a full URL, return as-is
+  }
 
-    // Check if the image path already includes the uploads prefix
-    if (slide.image.startsWith('/uploads/')) {
-      // Create a full URL using the API server's host to match next.config.ts
-      return `${API_BASE_URL}${slide.image}`;
-    }
+  // Check if the image path already includes the uploads prefix
+  if (slide.image.startsWith('/uploads/')) {
+    // Create a full URL using the API server's host to match next.config.ts
+    return `${API_BASE_URL}${slide.image}`;
+  }
 
-    // If image path starts with 'uploads/' (without leading slash), construct the full URL
-    if (slide.image.startsWith('uploads/')) {
-      return `${API_BASE_URL}/${slide.image}`;
-    }
-
-    // Otherwise, it's a local file, construct the full URL using the API base and uploads path
-    return `${API_BASE_URL}/uploads/${slide.image}`;
-  } else {
-    // It's a URL type - validate it's a proper URL
-    // If it's already a full URL, return as-is
-    if (slide.image.startsWith('http://') || slide.image.startsWith('https://') || slide.image.startsWith('//')) {
-      return slide.image;
-    }
-    // If it's a relative path and not a file type, construct the full URL using API base
-    if (slide.image.startsWith('/')) {
-      return `${API_BASE_URL}${slide.image}`;
-    }
-    // For other relative paths, add the leading slash and construct the full URL
+  // If image path starts with 'uploads/' (without leading slash), construct the full URL
+  if (slide.image.startsWith('uploads/')) {
     return `${API_BASE_URL}/${slide.image}`;
   }
+
+  // Otherwise, it's a local file, construct the full URL using the API base and uploads path
+  return `${API_BASE_URL}/uploads/${slide.image}`;
 };
 
 const Carousel = memo(() => {

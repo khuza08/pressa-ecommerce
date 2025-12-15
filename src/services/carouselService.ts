@@ -6,7 +6,6 @@ export interface CarouselItem {
   title: string;
   description: string;
   image: string;
-  imageType?: 'url' | 'file'; // Added image type field
   link?: string;
   order: number;
   isActive: boolean;
