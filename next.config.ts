@@ -1,6 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/uploads/:path*',
+        destination: 'http://localhost:8080/uploads/:path*', // Proxy to backend
+      },
+    ]
+  },
   images: {
     remotePatterns: [
       {
@@ -42,6 +50,14 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'cdn.pixabay.com', // Pixabay
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com', // Google user content (profile pictures)
+      },
+      {
+        protocol: 'https',
+        hostname: '*.googleusercontent.com', // For any Google user content subdomains
       },
     ],
   },

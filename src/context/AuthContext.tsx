@@ -45,6 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       id: userData.id,
       name: userData.name,
       email: userData.email,
+      ...(userData.avatar && { avatar: userData.avatar }), // Include avatar if it exists
     };
 
     setUser(userToStore);
@@ -79,6 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: result.user.id,
         name: result.user.name,
         email: result.user.email,
+        ...(result.user.avatar && { avatar: result.user.avatar }), // Include avatar if it exists
       };
 
       setUser(userToStore);
@@ -113,6 +115,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: result.user.id,
         name: result.user.name,
         email: result.user.email,
+        ...(result.user.avatar && { avatar: result.user.avatar }), // Include avatar if it exists
       };
 
       setUser(userToStore);

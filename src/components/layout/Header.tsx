@@ -345,7 +345,15 @@ export default function Header() {
                 {user ? (
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center">
-                      <FiUser className="text-xl mr-1" />
+                      {user.avatar ? (
+                        <img
+                          src={user.avatar}
+                          alt={user.name || 'User avatar'}
+                          className="w-7 h-7 rounded-full object-cover mr-2"
+                        />
+                      ) : (
+                        <FiUser className="text-xl mr-1" />
+                      )}
                       <span className="hidden md:inline text-sm">{user.name}</span>
                     </div>
                     <button
