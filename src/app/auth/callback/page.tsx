@@ -53,7 +53,6 @@ export default function GoogleCallback() {
 
           // Redirect to the shop page
           router.push('/shop');
-          router.refresh(); // Refresh to update UI
         } catch (error) {
           console.error('Error during Google OAuth callback:', error);
           // Redirect with error message
@@ -66,7 +65,7 @@ export default function GoogleCallback() {
       console.error('No token received from backend');
       router.push('/login');
     }
-  }, [searchParams, router, loginWithToken]);
+  }, []); // Empty dependency array to run only once
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
