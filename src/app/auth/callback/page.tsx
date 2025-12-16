@@ -41,7 +41,9 @@ export default function GoogleCallback() {
 
           let user;
           if (response.ok) {
-            user = await response.json();
+            const responseJson = await response.json();
+            // Extract the user object from the response (backend returns {user: {...}})
+            user = responseJson.user || responseJson;
           } else {
             // If we can't get user info, use a temporary user object
             console.error('Failed to fetch user profile');

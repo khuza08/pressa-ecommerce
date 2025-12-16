@@ -1,11 +1,21 @@
-'use client';
+"use client";
 
-import { FiHome, FiShoppingCart, FiHeart, FiGrid, FiPlus, FiMinus, FiX, FiUser, FiLogOut } from 'react-icons/fi';
-import { useRouter } from 'next/navigation';
-import { useCart } from '@/context/CartContext';
-import { useFavorites } from '@/context/FavoriteContext';
-import { useAuth } from '@/context/AuthContext';
-import { useState, useEffect } from 'react';
+import {
+  FiHome,
+  FiShoppingCart,
+  FiHeart,
+  FiGrid,
+  FiPlus,
+  FiMinus,
+  FiX,
+  FiUser,
+  FiLogOut,
+} from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import { useCart } from "@/context/CartContext";
+import { useFavorites } from "@/context/FavoriteContext";
+import { useAuth } from "@/context/AuthContext";
+import { useState, useEffect } from "react";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -13,7 +23,11 @@ interface MobileMenuProps {
   onOpenCategorySidebar?: () => void;
 }
 
-const MobileMenu = ({ isOpen, onClose, onOpenCategorySidebar }: MobileMenuProps) => {
+const MobileMenu = ({
+  isOpen,
+  onClose,
+  onOpenCategorySidebar,
+}: MobileMenuProps) => {
   const router = useRouter();
   const { getTotalItems } = useCart();
   const { getFavoritesCount } = useFavorites();
@@ -28,14 +42,14 @@ const MobileMenu = ({ isOpen, onClose, onOpenCategorySidebar }: MobileMenuProps)
   // Disable body scroll when menu is open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     }
 
     // Cleanup function
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, [isOpen]);
 
@@ -64,8 +78,8 @@ const MobileMenu = ({ isOpen, onClose, onOpenCategorySidebar }: MobileMenuProps)
         </div>
         <ul className="p-4 space-y-4">
           <li>
-            <a 
-              href="/" 
+            <a
+              href="/"
               className="block py-2 font-medium text-black"
               onClick={onClose}
             >
@@ -140,7 +154,7 @@ const MobileMenu = ({ isOpen, onClose, onOpenCategorySidebar }: MobileMenuProps)
               className="flex justify-between items-center w-full py-2 font-medium text-black"
               onClick={() => {
                 onClose();
-                router.push('/shop/cart');
+                router.push("/shop/cart");
               }}
             >
               <div className="flex items-center">
@@ -159,7 +173,7 @@ const MobileMenu = ({ isOpen, onClose, onOpenCategorySidebar }: MobileMenuProps)
               className="flex justify-between items-center w-full py-2 font-medium text-black"
               onClick={() => {
                 onClose();
-                router.push('/favorites');
+                router.push("/favorites");
               }}
             >
               <div className="flex items-center">
@@ -204,47 +218,27 @@ const MobileMenu = ({ isOpen, onClose, onOpenCategorySidebar }: MobileMenuProps)
             {openAccordion === "categories" && (
               <ul className="pl-4 mt-2 space-y-2 text-black">
                 <li>
-                  <a 
-                    href="#" 
-                    className="block py-1"
-                    onClick={onClose}
-                  >
+                  <a href="#" className="block py-1" onClick={onClose}>
                     All Products
                   </a>
                 </li>
                 <li>
-                  <a 
-                    href="#" 
-                    className="block py-1"
-                    onClick={onClose}
-                  >
+                  <a href="#" className="block py-1" onClick={onClose}>
                     New Arrivals
                   </a>
                 </li>
                 <li>
-                  <a 
-                    href="#" 
-                    className="block py-1"
-                    onClick={onClose}
-                  >
+                  <a href="#" className="block py-1" onClick={onClose}>
                     Best Sellers
                   </a>
                 </li>
                 <li>
-                  <a 
-                    href="#" 
-                    className="block py-1"
-                    onClick={onClose}
-                  >
+                  <a href="#" className="block py-1" onClick={onClose}>
                     Sale Items
                   </a>
                 </li>
                 <li>
-                  <a 
-                    href="#" 
-                    className="block py-1"
-                    onClick={onClose}
-                  >
+                  <a href="#" className="block py-1" onClick={onClose}>
                     Trending
                   </a>
                 </li>
@@ -256,7 +250,7 @@ const MobileMenu = ({ isOpen, onClose, onOpenCategorySidebar }: MobileMenuProps)
               className="flex justify-between items-center w-full py-2 font-medium text-black"
               onClick={() => toggleAccordion("mens")}
             >
-              <span>Men's</span>
+              <span>Men`s</span>
               {openAccordion === "mens" ? (
                 <FiMinus className="text-lg" />
               ) : (
@@ -266,38 +260,22 @@ const MobileMenu = ({ isOpen, onClose, onOpenCategorySidebar }: MobileMenuProps)
             {openAccordion === "mens" && (
               <ul className="pl-4 mt-2 space-y-2 text-black">
                 <li>
-                  <a 
-                    href="#" 
-                    className="block py-1"
-                    onClick={onClose}
-                  >
+                  <a href="#" className="block py-1" onClick={onClose}>
                     Shirt
                   </a>
                 </li>
                 <li>
-                  <a 
-                    href="#" 
-                    className="block py-1"
-                    onClick={onClose}
-                  >
+                  <a href="#" className="block py-1" onClick={onClose}>
                     Shorts & Jeans
                   </a>
                 </li>
                 <li>
-                  <a 
-                    href="#" 
-                    className="block py-1"
-                    onClick={onClose}
-                  >
+                  <a href="#" className="block py-1" onClick={onClose}>
                     Safety Shoes
                   </a>
                 </li>
                 <li>
-                  <a 
-                    href="#" 
-                    className="block py-1"
-                    onClick={onClose}
-                  >
+                  <a href="#" className="block py-1" onClick={onClose}>
                     Wallet
                   </a>
                 </li>
