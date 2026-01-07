@@ -5,28 +5,11 @@ import { FiChevronDown, FiMenu } from 'react-icons/fi';
 import CategorySidebar from './CategorySidebar'; // Import the existing CategorySidebar
 
 type Category = {
+  id: number;
   name: string;
-  subcategories?: string[];
+  createdAt?: string;
+  updatedAt?: string;
 };
-
-const categories: Category[] = [
-  {
-    name: "Men's",
-    subcategories: ["Shirt", "Shorts & Jeans", "Safety Shoes", "Wallet"]
-  },
-  {
-    name: "Women's",
-    subcategories: ["Dress & Frock", "Earrings", "Necklace", "Makeup Kit"]
-  },
-  {
-    name: "Jewelry",
-    subcategories: ["Earrings", "Couple Rings", "Necklace", "Bracelets"]
-  },
-  {
-    name: "Perfume",
-    subcategories: ["Clothes Perfume", "Deodorant", "Flower Fragrance", "Air Freshener"]
-  },
-];
 
 interface CategoryDropdownProps {
   isVisible?: boolean;
@@ -36,7 +19,34 @@ export default function CategoryDropdown({ isVisible = true }: CategoryDropdownP
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+        // If the base URL already includes /api/v1, don't add it again
+        const apiUrl = baseUrl.endsWith('/api/v1') ? `${baseUrl}/categories` : `${baseUrl}/api/v1/categories`;
+        const response = await fetch(apiUrl);
+        if (response.ok) {
+          const data = await response.json();
+          setCategories(Array.isArray(data) ? data : []);
+        } else {
+          console.error('Failed to fetch categories:', response.status);
+          setCategories([]);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setCategories([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -64,10 +74,18 @@ export default function CategoryDropdown({ isVisible = true }: CategoryDropdownP
     }, 300);
   };
 
-  const currentCategory = categories.find(cat => cat.name === activeCategory);
-  const hasSubcategories = currentCategory?.subcategories && currentCategory.subcategories.length > 0;
-
   if (!isVisible) return null;
+
+  if (loading) {
+    return (
+      <div className="hidden lg:block">
+        <div className="flex items-center text-black">
+          <span className="font-medium">Categories</span>
+          <FiChevronDown className="ml-1" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -87,8 +105,8 @@ export default function CategoryDropdown({ isVisible = true }: CategoryDropdownP
       />
 
       {/* Desktop View - Dropdown */}
-      <div 
-        className="relative hidden sm:hidden md:hidden lg:block" 
+      <div
+        className="relative hidden sm:hidden md:hidden lg:block"
         ref={dropdownRef}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -103,7 +121,7 @@ export default function CategoryDropdown({ isVisible = true }: CategoryDropdownP
           <FiChevronDown className="ml-1" />
         </button>
 
-        <div 
+        <div
           className={`absolute top-full left-0 bg-white shadow-xl rounded-lg py-2 w-56 transition-all duration-300 z-50 ${
             activeCategory ? 'opacity-100 visible' : 'opacity-0 invisible'
           }`}
@@ -113,7 +131,7 @@ export default function CategoryDropdown({ isVisible = true }: CategoryDropdownP
           <ul>
             {categories.map((category) => (
               <li
-                key={category.name}
+                key={category.id}
                 className="relative"
                 onMouseEnter={() => setActiveCategory(category.name)}
               >
@@ -127,29 +145,6 @@ export default function CategoryDropdown({ isVisible = true }: CategoryDropdownP
                 >
                   {category.name}
                 </a>
-                
-                {category.subcategories && category.subcategories.length > 0 && (
-                  <div 
-                    className={`absolute left-full top-0 bg-white shadow-xl rounded-lg py-2 w-48 transition-all duration-300 z-50 ${
-                      activeCategory === category.name
-                        ? 'opacity-100 visible'
-                        : 'opacity-0 invisible'
-                    }`}
-                  >
-                    <ul>
-                      {category.subcategories.map((subcategory, index) => (
-                        <li key={index}>
-                          <a
-                            href="#"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-black"
-                          >
-                            {subcategory}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
               </li>
             ))}
           </ul>
