@@ -129,13 +129,13 @@ export default function CategoryDropdown({ isVisible = true }: CategoryDropdownP
         </button>
 
         <div
-          className={`absolute top-full left-0 bg-white shadow-xl rounded-lg py-2 w-56 transition-all duration-300 z-50 ${
+          className={`absolute top-full left-0 bg-white border border-black/20 rounded-lg  w-56 transition-all duration-300 z-50 ${
             activeCategory ? 'opacity-100 visible' : 'opacity-0 invisible'
           }`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <ul>
+          <ul className='p-2'>
             {categories.map((category) => (
               <li
                 key={category.id}
@@ -147,8 +147,8 @@ export default function CategoryDropdown({ isVisible = true }: CategoryDropdownP
                   onClick={() => handleCategoryClick(category.name)}
                   className={`block w-full text-left px-4 py-2 text-sm ${
                     activeCategory === category.name
-                      ? 'bg-black/10 text-black font-medium'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-black/10 text-black font-medium  rounded-md  transition-all duration-300'
+                      : 'text-black font-medium  rounded-md transition-all duration-300'
                   }`}
                 >
                   {category.name}

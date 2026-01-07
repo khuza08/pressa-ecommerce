@@ -115,9 +115,9 @@ const Category = memo(() => {
                   style={{ scrollSnapAlign: 'start' }}
                 >
                   <div
-                    className="rounded-lg overflow-hidden border-2 border-black/10 cursor-pointer h-24 transition-all duration-300 hover:border-black/20"
+                    className="rounded-lg overflow-hidden border border-black/20 cursor-pointer h-24 transition-all hover:border-black/40"
                     onClick={() => handleCategoryClick(category.name)}
-                    onMouseEnter={() => setHoveredCategory(1)} // Just using a simple counter to trigger hover effect
+                    onMouseEnter={() => setHoveredCategory(1)}
                     onMouseLeave={() => setHoveredCategory(null)}
                   >
                     <div className="flex h-full">

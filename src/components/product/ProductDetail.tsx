@@ -365,7 +365,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                     {/* Left Column - Product Images */}
                     <div className="product-images-container w-full md:w-[280px] relative">
                         <div
-                            className="bg-white overflow-hidden shadow-sm sticky flex flex-col border border-black/10 rounded-lg h-[400px]"
+                            className="bg-white overflow-hidden sticky flex flex-col border border-black/20 rounded-lg h-[400px]"
                             style={snapToHeader.productImages ? { top: '70px' } : { top: '150px' }}
                         >
                             {/* Main Image with Zoom */}
@@ -432,7 +432,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
 
                             {/* Desktop: Single Image with Zoom */}
                             <div
-                                className="hidden md:block w-full aspect-square relative overflow-hidden rounded-lg"
+                                className="hidden md:block w-full aspect-square relative overflow-hidden"
                                 onMouseEnter={() => setIsHovering(true)}
                                 onMouseLeave={() => setIsHovering(false)}
                                 onMouseMove={handleMouseMove}
@@ -458,14 +458,14 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                 return `${baseUrl}/uploads/${filename}`;
                                             })()}
                                             alt={product?.name || "Product image"}
-                                            className={`absolute inset-0 w-full h-full object-cover rounded-lg transition-all duration-200 ${isHovering ? "blur-sm" : ""}`}
+                                            className={`absolute inset-0 w-full h-full object-cover transition-all duration-200 ${isHovering ? "" : ""}`}
                                         />
                                     ) : (
                                         <Image
                                             src={mainImage || product?.image || "https://placehold.co/600x600?text=Product+Image"}
                                             alt={product?.name || "Product image"}
                                             fill
-                                            className={`object-cover rounded-lg transition-all duration-200 ${isHovering ? "blur-sm" : ""}`}
+                                            className={`object-cover transition-all duration-200 ${isHovering ? "blur-sm" : ""}`}
                                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                                             priority={false}
                                         />
@@ -547,7 +547,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                         <div className="hidden md:block">
                             {isHovering && !isFullscreenZoom && (
                                 <div
-                                    className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-lg shadow-lg p-3 z-10"
+                                    className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-lg border border-black/20 p-3 z-10"
                                     style={{
                                         maxHeight: "400px",
                                         overflowY: "auto"
@@ -754,7 +754,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                         className="hidden md:block purchase-card-container lg:w-[300px] sticky h-[400px]"
                         style={snapToHeader.purchaseCard ? { top: '70px' } : { top: '36px' }}
                     >
-                        <div className="bg-white rounded-xl p-5 shadow-sm h-full flex flex-col justify-between border border-black/10">
+                        <div className="bg-white rounded-xl p-5 h-full flex flex-col justify-between border border-black/20">
                             <div className="mb-4 flex items-center gap-3">
                                 <div className="w-14 h-14 bg-green-50 rounded-lg flex items-center justify-center">
                                     <span className="text-xl">
@@ -858,7 +858,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
             {/* Fullscreen Zoom Overlay */}
             {isFullscreenZoom && (
                 <div
-                    className="fixed inset-0 bg-black/90 z-9999 flex items-center justify-center p-4"
+                    className="fixed inset-0 bg-black/50 backdrop-blur-xl z-9999 flex items-center justify-center p-4"
                     onClick={closeFullscreenZoom}
                 >
                     <button
@@ -892,7 +892,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                     return `${baseUrl}/uploads/${filename}`;
                                 })()}
                                 alt="Fullscreen view"
-                                className="max-h-[85vh] w-auto object-contain"
+                                className="max-h-[85vh] w-auto object-contain rounded-xl"
                             />
                         ) : (
                             <Image
