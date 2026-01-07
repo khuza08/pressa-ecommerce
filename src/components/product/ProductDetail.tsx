@@ -293,11 +293,13 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
             } else if (product.image) {
                 setMainImage(product.image.includes('uploads')
                   ? (() => {
-                      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                      let normalizedPath = product.image.replace(/\\/g, '/');
-                      if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
-                      if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
-                      return `${baseUrl}${normalizedPath}`;
+                      // Extract just the filename from the uploads path
+                      let filename = product.image;
+                      if (product.image.includes('uploads/')) {
+                        filename = product.image.split('uploads/').pop() || product.image;
+                      }
+                      // Use a relative URL that will be proxied to the backend
+                      return `/uploads/${filename}`;
                     })()
                   : product.image);
             } else {
@@ -377,11 +379,13 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                             {img.url?.includes('uploads') ? (
                                                 <img
                                                     src={(() => {
-                                                        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                                        let normalizedPath = img.url.replace(/\\/g, '/');
-                                                        if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
-                                                        if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
-                                                        return `${baseUrl}${normalizedPath}`;
+                                                        // Extract just the filename from the uploads path
+                                                        let filename = img.url;
+                                                        if (img.url?.includes('uploads/')) {
+                                                          filename = img.url.split('uploads/').pop() || img.url;
+                                                        }
+                                                        // Use a relative URL that will be proxied to the backend
+                                                        return `/uploads/${filename}`;
                                                     })()}
                                                     alt={img.alt || product?.name || "Product image"}
                                                     className="absolute inset-0 w-full h-full object-cover"
@@ -425,11 +429,13 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                         <img
                                             src={(() => {
                                                 const imageToUse = mainImage || product?.image;
-                                                const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                                let normalizedPath = imageToUse.replace(/\\/g, '/');
-                                                if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
-                                                if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
-                                                return `${baseUrl}${normalizedPath}`;
+                                                // Extract just the filename from the uploads path
+                                                let filename = imageToUse;
+                                                if (imageToUse?.includes('uploads/')) {
+                                                  filename = imageToUse.split('uploads/').pop() || imageToUse;
+                                                }
+                                                // Use a relative URL that will be proxied to the backend
+                                                return `/uploads/${filename}`;
                                             })()}
                                             alt={product?.name || "Product image"}
                                             className={`absolute inset-0 w-full h-full object-cover rounded-lg transition-all duration-200 ${isHovering ? "blur-sm" : ""}`}
@@ -482,11 +488,13 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                 {img.url?.includes('uploads') ? (
                                                     <img
                                                         src={(() => {
-                                                            const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                                            let normalizedPath = img.url.replace(/\\/g, '/');
-                                                            if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
-                                                            if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
-                                                            return `${baseUrl}${normalizedPath}`;
+                                                            // Extract just the filename from the uploads path
+                                                            let filename = img.url;
+                                                            if (img.url?.includes('uploads/')) {
+                                                              filename = img.url.split('uploads/').pop() || img.url;
+                                                            }
+                                                            // Use a relative URL that will be proxied to the backend
+                                                            return `/uploads/${filename}`;
                                                         })()}
                                                         alt={img.alt || "Thumbnail"}
                                                         className="absolute inset-0 w-full h-full object-cover"
@@ -562,10 +570,10 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                   if (product.image.includes('uploads/')) {
                                                     // Extract filename from uploads path
                                                     const filename = product.image.split('uploads/').pop();
-                                                    imageUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080'}/uploads/${filename}`;
+                                                    imageUrl = `/uploads/${filename}`;
                                                   } else if (!product.image.startsWith('/')) {
                                                     // It's a simple filename, so prepend the uploads path
-                                                    imageUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080'}/uploads/${product.image}`;
+                                                    imageUrl = `/uploads/${product.image}`;
                                                   }
                                                 }
 
@@ -828,11 +836,13 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                         {fullscreenImage?.includes('uploads') ? (
                             <img
                                 src={(() => {
-                                    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                    let normalizedPath = fullscreenImage.replace(/\\/g, '/');
-                                    if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
-                                    if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
-                                    return `${baseUrl}${normalizedPath}`;
+                                    // Extract just the filename from the uploads path
+                                    let filename = fullscreenImage;
+                                    if (fullscreenImage?.includes('uploads/')) {
+                                      filename = fullscreenImage.split('uploads/').pop() || fullscreenImage;
+                                    }
+                                    // Use a relative URL that will be proxied to the backend
+                                    return `/uploads/${filename}`;
                                 })()}
                                 alt="Fullscreen view"
                                 className="max-h-[85vh] w-auto object-contain"

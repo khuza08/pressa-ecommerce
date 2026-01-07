@@ -81,8 +81,16 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
                       item.image.startsWith('http')
                         ? item.image  // Already a full URL
                         : item.image.includes('uploads/')
-                          ? `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080'}/${item.image.replace(/^\/?/, '')}` // Handle uploads path
-                          : `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080'}/uploads/${item.image}` // Simple filename
+                          ? (() => {
+                              // Extract just the filename from the uploads path
+                              let filename = item.image;
+                              if (item.image.includes('uploads/')) {
+                                filename = item.image.split('uploads/').pop() || item.image;
+                              }
+                              // Use a relative URL that will be proxied to the backend
+                              return `/uploads/${filename}`;
+                            })() // Handle uploads path
+                          : `/uploads/${item.image}` // Simple filename
                     }
                     alt={item.name}
                     className="w-full h-full object-cover"

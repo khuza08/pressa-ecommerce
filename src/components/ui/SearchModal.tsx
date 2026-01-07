@@ -158,11 +158,13 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
                   <img
                     src={product.image.includes('uploads') ?
                       (() => {
-                        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                        let normalizedPath = product.image.replace(/\\/g, '/');
-                        if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
-                        if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
-                        return `${baseUrl}${normalizedPath}`;
+                        // Extract just the filename from the uploads path
+                        let filename = product.image;
+                        if (product.image.includes('uploads/')) {
+                          filename = product.image.split('uploads/').pop() || product.image;
+                        }
+                        // Use a relative URL that will be proxied to the backend
+                        return `/uploads/${filename}`;
                       })()
                      : product.image}
                     alt={product.name}

@@ -33,10 +33,10 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
       if (product.image.includes('uploads/')) {
         // Extract filename from uploads path
         const filename = product.image.split('uploads/').pop();
-        imageUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080'}/uploads/${filename}`;
+        imageUrl = `/uploads/${filename}`;
       } else if (!product.image.startsWith('/')) {
         // It's a simple filename, so prepend the uploads path
-        imageUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080'}/uploads/${product.image}`;
+        imageUrl = `/uploads/${product.image}`;
       }
     }
 
@@ -69,11 +69,13 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
           {product.image.includes('uploads') ? (
             <img
               src={(() => {
-                const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                let normalizedPath = product.image.replace(/\\/g, '/');
-                if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
-                if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
-                return `${baseUrl}${normalizedPath}`;
+                // Extract just the filename from the uploads path
+                let filename = product.image;
+                if (product.image.includes('uploads/')) {
+                  filename = product.image.split('uploads/').pop() || product.image;
+                }
+                // Use a relative URL that will be proxied to the backend
+                return `/uploads/${filename}`;
               })()}
               alt={product.name}
               className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
