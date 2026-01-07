@@ -298,8 +298,14 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                       if (product.image.includes('uploads/')) {
                         filename = product.image.split('uploads/').pop() || product.image;
                       }
-                      // Use a relative URL that will be proxied to the backend
-                      return `/uploads/${filename}`;
+
+                      // Get the base URL and remove any /api/v1 suffix for static files
+                      let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                      if (baseUrl.endsWith('/api/v1')) {
+                        baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                      }
+
+                      return `${baseUrl}/uploads/${filename}`;
                     })()
                   : product.image);
             } else {
@@ -384,8 +390,15 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                         if (img.url?.includes('uploads/')) {
                                                           filename = img.url.split('uploads/').pop() || img.url;
                                                         }
+
+                                                        // Get the base URL and remove any /api/v1 suffix for static files
+                                                        let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                        if (baseUrl.endsWith('/api/v1')) {
+                                                          baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                        }
+
                                                         // Use a relative URL that will be proxied to the backend
-                                                        return `/uploads/${filename}`;
+                                                        return `${baseUrl}/uploads/${filename}`;
                                                     })()}
                                                     alt={img.alt || product?.name || "Product image"}
                                                     className="absolute inset-0 w-full h-full object-cover"
@@ -434,8 +447,15 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                 if (imageToUse?.includes('uploads/')) {
                                                   filename = imageToUse.split('uploads/').pop() || imageToUse;
                                                 }
+
+                                                // Get the base URL and remove any /api/v1 suffix for static files
+                                                let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                if (baseUrl.endsWith('/api/v1')) {
+                                                  baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                }
+
                                                 // Use a relative URL that will be proxied to the backend
-                                                return `/uploads/${filename}`;
+                                                return `${baseUrl}/uploads/${filename}`;
                                             })()}
                                             alt={product?.name || "Product image"}
                                             className={`absolute inset-0 w-full h-full object-cover rounded-lg transition-all duration-200 ${isHovering ? "blur-sm" : ""}`}
@@ -493,8 +513,15 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                             if (img.url?.includes('uploads/')) {
                                                               filename = img.url.split('uploads/').pop() || img.url;
                                                             }
+
+                                                            // Get the base URL and remove any /api/v1 suffix for static files
+                                                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                            if (baseUrl.endsWith('/api/v1')) {
+                                                              baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                            }
+
                                                             // Use a relative URL that will be proxied to the backend
-                                                            return `/uploads/${filename}`;
+                                                            return `${baseUrl}/uploads/${filename}`;
                                                         })()}
                                                         alt={img.alt || "Thumbnail"}
                                                         className="absolute inset-0 w-full h-full object-cover"
@@ -570,10 +597,23 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                   if (product.image.includes('uploads/')) {
                                                     // Extract filename from uploads path
                                                     const filename = product.image.split('uploads/').pop();
-                                                    imageUrl = `/uploads/${filename}`;
+
+                                                    // Get the base URL and remove any /api/v1 suffix for static files
+                                                    let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                    if (baseUrl.endsWith('/api/v1')) {
+                                                      baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                    }
+
+                                                    imageUrl = `${baseUrl}/uploads/${filename}`;
                                                   } else if (!product.image.startsWith('/')) {
                                                     // It's a simple filename, so prepend the uploads path
-                                                    imageUrl = `/uploads/${product.image}`;
+                                                    // Get the base URL and remove any /api/v1 suffix for static files
+                                                    let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                    if (baseUrl.endsWith('/api/v1')) {
+                                                      baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                    }
+
+                                                    imageUrl = `${baseUrl}/uploads/${product.image}`;
                                                   }
                                                 }
 
@@ -841,8 +881,15 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                     if (fullscreenImage?.includes('uploads/')) {
                                       filename = fullscreenImage.split('uploads/').pop() || fullscreenImage;
                                     }
+
+                                    // Get the base URL and remove any /api/v1 suffix for static files
+                                    let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                    if (baseUrl.endsWith('/api/v1')) {
+                                      baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                    }
+
                                     // Use a relative URL that will be proxied to the backend
-                                    return `/uploads/${filename}`;
+                                    return `${baseUrl}/uploads/${filename}`;
                                 })()}
                                 alt="Fullscreen view"
                                 className="max-h-[85vh] w-auto object-contain"

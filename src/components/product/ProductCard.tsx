@@ -33,10 +33,23 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
       if (product.image.includes('uploads/')) {
         // Extract filename from uploads path
         const filename = product.image.split('uploads/').pop();
-        imageUrl = `/uploads/${filename}`;
+
+        // Get the base URL and remove any /api/v1 suffix for static files
+        let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+        if (baseUrl.endsWith('/api/v1')) {
+          baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+        }
+
+        imageUrl = `${baseUrl}/uploads/${filename}`;
       } else if (!product.image.startsWith('/')) {
         // It's a simple filename, so prepend the uploads path
-        imageUrl = `/uploads/${product.image}`;
+        // Get the base URL and remove any /api/v1 suffix for static files
+        let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+        if (baseUrl.endsWith('/api/v1')) {
+          baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+        }
+
+        imageUrl = `${baseUrl}/uploads/${product.image}`;
       }
     }
 
@@ -74,8 +87,14 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
                 if (product.image.includes('uploads/')) {
                   filename = product.image.split('uploads/').pop() || product.image;
                 }
-                // Use a relative URL that will be proxied to the backend
-                return `/uploads/${filename}`;
+
+                // Get the base URL and remove any /api/v1 suffix for static files
+                let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                if (baseUrl.endsWith('/api/v1')) {
+                  baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                }
+
+                return `${baseUrl}/uploads/${filename}`;
               })()}
               alt={product.name}
               className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"

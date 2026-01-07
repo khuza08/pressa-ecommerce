@@ -87,10 +87,24 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
                               if (item.image.includes('uploads/')) {
                                 filename = item.image.split('uploads/').pop() || item.image;
                               }
-                              // Use a relative URL that will be proxied to the backend
-                              return `/uploads/${filename}`;
+
+                              // Get the base URL and remove any /api/v1 suffix for static files
+                              let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                              if (baseUrl.endsWith('/api/v1')) {
+                                baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                              }
+
+                              return `${baseUrl}/uploads/${filename}`;
                             })() // Handle uploads path
-                          : `/uploads/${item.image}` // Simple filename
+                          : (() => {
+                              // Get the base URL and remove any /api/v1 suffix for static files
+                              let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                              if (baseUrl.endsWith('/api/v1')) {
+                                baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                              }
+
+                              return `${baseUrl}/uploads/${item.image}`; // Simple filename
+                            })()
                     }
                     alt={item.name}
                     className="w-full h-full object-cover"

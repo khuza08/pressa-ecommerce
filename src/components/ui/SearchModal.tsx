@@ -163,8 +163,14 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
                         if (product.image.includes('uploads/')) {
                           filename = product.image.split('uploads/').pop() || product.image;
                         }
-                        // Use a relative URL that will be proxied to the backend
-                        return `/uploads/${filename}`;
+
+                        // Get the base URL and remove any /api/v1 suffix for static files
+                        let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                        if (baseUrl.endsWith('/api/v1')) {
+                          baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                        }
+
+                        return `${baseUrl}/uploads/${filename}`;
                       })()
                      : product.image}
                     alt={product.name}

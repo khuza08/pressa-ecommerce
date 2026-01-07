@@ -87,7 +87,12 @@ export default function CategoryPage() {
                     <img
                       src={product.image.includes('uploads')
                         ? (() => {
-                            const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                            // Get the base URL and remove any /api/v1 suffix for static files
+                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                            if (baseUrl.endsWith('/api/v1')) {
+                              baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                            }
+
                             let normalizedPath = product.image.replace(/\\/g, '/');
                             if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
                             if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];

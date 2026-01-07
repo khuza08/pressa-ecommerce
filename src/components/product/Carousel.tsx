@@ -34,19 +34,25 @@ const getValidImageUrl = (slide: CarouselItem): string => {
     return slide.image; // It's already a full URL, return as-is
   }
 
+  // Get the base URL and remove any /api/v1 suffix for static files
+  let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+  if (baseUrl.endsWith('/api/v1')) {
+    baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+  }
+
   // Check if the image path already includes the uploads prefix
   if (slide.image.startsWith('/uploads/')) {
-    // Create a full URL using the API server's host to match next.config.ts
-    return `${API_BASE_URL}${slide.image}`;
+    // Create a full URL using the base URL without /api/v1
+    return `${baseUrl}${slide.image}`;
   }
 
   // If image path starts with 'uploads/' (without leading slash), construct the full URL
   if (slide.image.startsWith('uploads/')) {
-    return `${API_BASE_URL}/${slide.image}`;
+    return `${baseUrl}/${slide.image}`;
   }
 
-  // Otherwise, it's a local file, construct the full URL using the API base and uploads path
-  return `${API_BASE_URL}/uploads/${slide.image}`;
+  // Otherwise, it's a local file, construct the full URL using the base URL and uploads path
+  return `${baseUrl}/uploads/${slide.image}`;
 };
 
 const Carousel = memo(() => {
