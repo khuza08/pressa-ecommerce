@@ -1,6 +1,6 @@
 // src/components/product/Category.tsx
 'use client';
-import { useState, memo } from "react";
+import { useState, memo, useEffect } from "react";
 import {
   FiPlus,
   FiShoppingBag,
@@ -10,20 +10,75 @@ import {
   FiBook,
   FiGift
 } from "react-icons/fi";
-import { PRODUCT_CATEGORIES } from '@/lib/constants';
+
+interface Category {
+  id: number;
+  name: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 const Category = memo(() => {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Map category names to icons
-  const categoryIcons: Record<string, any> = {
-    fashion: FiShoppingBag,
-    electronics: FiCpu,
-    'home & living': FiHome,
-    sports: FiActivity,
-    books: FiBook,
-    toys: FiGift,
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+        const apiUrl = baseUrl.endsWith('/api/v1') ? `${baseUrl}/categories` : `${baseUrl}/api/v1/categories`;
+        const response = await fetch(apiUrl);
+        if (response.ok) {
+          const data = await response.json();
+          setCategories(Array.isArray(data) ? data : []);
+        } else {
+          console.error('Failed to fetch categories:', response.status);
+          setCategories([]);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setCategories([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Map category names to icons dynamically
+  const getCategoryIcon = (name: string) => {
+    const lowerName = name.toLowerCase();
+
+    if (lowerName.includes('fashion') || lowerName.includes('shirt') || lowerName.includes('dress') || lowerName.includes('clothes') || lowerName.includes('sweater') || lowerName.includes('jeans')) {
+      return FiShoppingBag;
+    } else if (lowerName.includes('electronic') || lowerName.includes('phone') || lowerName.includes('computer') || lowerName.includes('tech')) {
+      return FiCpu;
+    } else if (lowerName.includes('home') || lowerName.includes('living') || lowerName.includes('kitchen') || lowerName.includes('furniture')) {
+      return FiHome;
+    } else if (lowerName.includes('sport') || lowerName.includes('fitness') || lowerName.includes('exercise')) {
+      return FiActivity;
+    } else if (lowerName.includes('book') || lowerName.includes('education')) {
+      return FiBook;
+    } else if (lowerName.includes('toy') || lowerName.includes('game') || lowerName.includes('kids')) {
+      return FiGift;
+    } else {
+      return FiPlus;
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="relative w-full md:w-[90vw] lg:w-[90vw] mx-auto py-5">
+        <div className="relative overflow-hidden">
+          <div className="flex justify-center items-center h-32">
+            <p>Loading categories...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full md:w-[90vw] lg:w-[90vw] mx-auto py-5">
@@ -45,8 +100,8 @@ const Category = memo(() => {
               }
             `}</style>
 
-            {PRODUCT_CATEGORIES.map((category) => {
-              const IconComponent = categoryIcons[category.id] || FiPlus;
+            {categories.map((category) => {
+              const IconComponent = getCategoryIcon(category.name);
               return (
                 <div
                   key={category.id}
@@ -101,8 +156,8 @@ const Category = memo(() => {
               }
             `}</style>
 
-            {PRODUCT_CATEGORIES.map((category) => {
-              const IconComponent = categoryIcons[category.id] || FiPlus;
+            {categories.map((category) => {
+              const IconComponent = getCategoryIcon(category.name);
               return (
                 <div
                   key={category.id}
