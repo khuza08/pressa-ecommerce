@@ -64,7 +64,7 @@ export default function MagnifyingGlass({
           <>
             {/* Lens (magnifying glass) */}
             <div
-              className="absolute pointer-events-none z-20 border-2 border-white rounded-full shadow-xl bg-white/10 backdrop-blur-sm"
+              className="absolute pointer-events-none z-20 border-2 border-white rounded-full bg-white/10 backdrop-blur-sm"
               style={{
                 width: "100px",
                 height: "100px",
@@ -82,7 +82,7 @@ export default function MagnifyingGlass({
         {/* Fullscreen Zoom Button */}
         <button
           onClick={() => onFullscreenRequest(image)}
-          className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md transition-all z-10"
+          className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full p-2 transition-all z-10"
           aria-label="Zoom image"
         >
           <span className="text-black/80 text-lg">🔍</span>
@@ -92,7 +92,7 @@ export default function MagnifyingGlass({
       {/* Preview Zoom Overlay next to product image */}
       {enabled && (
         <div
-          className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-xl shadow-2xl p-4 z-30 border border-black/20"
+          className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-xl p-4 z-30 border border-black/20"
           style={{
             maxHeight: "400px",
             overflowY: "auto"

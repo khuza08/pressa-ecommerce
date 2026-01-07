@@ -129,7 +129,7 @@ export default function CategoryDropdown({ isVisible = true }: CategoryDropdownP
         </button>
 
         <div
-          className={`absolute top-full left-0 bg-white border border-black/20 rounded-lg  w-56 transition-all duration-300 z-50 ${
+          className={`absolute top-full left-0 bg-white border border-black/20 rounded-lg w-56 transition-all duration-300 z-50 mt-2 ${
             activeCategory ? 'opacity-100 visible' : 'opacity-0 invisible'
           }`}
           onMouseEnter={() => setIsHovered(true)}

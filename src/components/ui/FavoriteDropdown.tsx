@@ -39,8 +39,8 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
   return (
     <div
       ref={dropdownRef}
-      className={`absolute top-full right-0 mt-2 w-80 bg-white shadow-xl rounded-lg border border-black/20 z-50 transition-all duration-300 ${
-        isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+      className={`absolute top-full right-0 mt-2 w-80 bg-white rounded-lg border border-black/20 z-50 transition-all duration-300 ${
+        isOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'
       }`}
     >
       <div className="p-4 border-b border-black/20 flex justify-between items-center">

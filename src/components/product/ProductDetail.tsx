@@ -475,7 +475,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 {/* Fullscreen Zoom Button - Desktop only */}
                                 <button
                                     onClick={() => handleFullscreenZoom(mainImage)}
-                                    className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md transition-all"
+                                    className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full p-2 transition-all"
                                     aria-label="Zoom image"
                                 >
                                     <FaExpand className="text-black/80" />
@@ -825,7 +825,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                         quantity,
                                         size: activeVariant,
                                     })}
-                                    className="w-full bg-black text-white font-bold text-base py-2 rounded-xl transition-colors shadow-md"
+                                    className="w-full bg-black text-white font-bold text-base py-2 rounded-xl transition-colors"
                                 >
                                     + Keranjang
                                 </button>

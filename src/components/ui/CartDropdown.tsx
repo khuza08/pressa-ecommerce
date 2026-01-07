@@ -37,10 +37,10 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
   if (!visible && !isOpen) return null;
 
   return (
-    <div 
+    <div
       ref={dropdownRef}
-      className={`absolute top-full right-0 mt-2 w-80 bg-white shadow-xl rounded-lg border border-black/20 z-50 transition-all duration-300 ${
-        isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+      className={`absolute top-full right-0 mt-2 w-80 bg-white rounded-lg border border-black/20 z-50 transition-all duration-300 ${
+        isOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'
       }`}
     >
       <div className="p-4 border-b border-black/20 flex justify-between items-center">
@@ -59,8 +59,8 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
           <div className="p-6 text-center text-black/50">
             <FiShoppingCart size={48} className="mx-auto text-black/30 mb-3" />
             <p>Your cart is empty</p>
-            <Link 
-              href="/products" 
+            <Link
+              href="/products"
               className="mt-3 inline-block text-blue-600 hover:underline text-sm"
               onClick={onClose}
             >
@@ -70,14 +70,14 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
         ) : (
           <ul>
             {cart.items.map((item) => (
-              <li 
-                key={item.id} 
+              <li
+                key={item.id}
                 className="p-4 border-b border-black/10 flex items-center gap-3 hover:bg-black/5"
               >
                 <div className="w-16 h-16 bg-black/20 rounded-md overflow-hidden shrink-0">
-                  <img 
-                    src={item.image} 
-                    alt={item.name} 
+                  <img
+                    src={item.image}
+                    alt={item.name}
                     className="w-full h-full object-cover"
                   />
                 </div>
