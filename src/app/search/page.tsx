@@ -197,7 +197,7 @@ export default function SearchPage() {
                   </div>
                   <div className="p-3 md:p-4">
                     <h3 className="font-semibold text-sm md:text-base lg:text-lg mb-1 md:mb-2 truncate">{product.name}</h3>
-                    <p className="text-xl md:text-2xl font-bold mb-1 md:mb-2">${product.price}</p>
+                    <p className="text-xl md:text-2xl font-bold mb-1 md:mb-2">Rp{product.price.toLocaleString('id-ID')}</p>
                     <div className="flex items-center gap-1 md:gap-2 text-xs md:text-sm text-black/60 mb-0.5 md:mb-1">
                       <span className="flex items-center">
                         <span className="text-yellow-500">★</span> {product.rating}

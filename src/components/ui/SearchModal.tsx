@@ -173,7 +173,7 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
                 </div>
                 <div className="ml-3 flex-1 min-w-0">
                   <h3 className="font-medium text-sm truncate">{product.name}</h3>
-                  <p className="text-sm font-bold text-gray-900">${product.price}</p>
+                  <p className="text-sm font-bold text-gray-900">Rp{product.price.toLocaleString('id-ID')}</p>
                 </div>
               </div>
             ))}

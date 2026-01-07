@@ -98,7 +98,7 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="font-medium text-sm truncate">{item.name}</h4>
-                  <p className="text-black/60 text-sm">${item.price.toFixed(2)}</p>
+                  <p className="text-black/60 text-sm">Rp{item.price.toLocaleString('id-ID')}</p>
                 </div>
                 <button
                   onClick={() => removeFromFavorites(item.id)}

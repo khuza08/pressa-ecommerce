@@ -83,12 +83,12 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="font-medium text-sm truncate">{item.name}</h4>
-                  <p className="text-black/60 text-sm">${item.price.toFixed(2)} x {item.quantity}</p>
+                  <p className="text-black/60 text-sm">Rp{item.price.toLocaleString('id-ID')} x {item.quantity}</p>
                   {item.size && <p className="text-black/50 text-xs">Size: {item.size}</p>}
                   {item.color && <p className="text-black/50 text-xs">Color: {item.color}</p>}
                 </div>
                 <div className="text-right">
-                  <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="font-medium">Rp{(item.price * item.quantity).toLocaleString('id-ID')}</p>
                 </div>
               </li>
             ))}
@@ -100,7 +100,7 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
         <div className="p-4 border-t border-black/20">
           <div className="flex justify-between items-center mb-4">
             <span className="font-bold">Total:</span>
-            <span className="font-bold">${getTotalPrice().toFixed(2)}</span>
+            <span className="font-bold">Rp{getTotalPrice().toLocaleString('id-ID')}</span>
           </div>
           <div className="flex gap-2">
             <Link

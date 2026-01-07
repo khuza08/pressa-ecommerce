@@ -8,12 +8,12 @@ export default function ShippingPage() {
         <div className="prose max-w-none">
           <h2 className="text-xl font-semibold mb-4">Domestic Shipping</h2>
           <p className="mb-4">
-            We offer multiple shipping options for domestic orders within the United States:
+            We offer multiple shipping options for domestic orders within Indonesia:
           </p>
           <ul className="list-disc pl-6 mb-6">
-            <li><strong>Standard Shipping:</strong> 3-5 business days, $5.99 or free on orders over $50</li>
-            <li><strong>Express Shipping:</strong> 1-2 business days, $12.99</li>
-            <li><strong>Overnight Shipping:</strong> Next business day, $24.99</li>
+            <li><strong>Standard Shipping:</strong> 3-5 business days, Rp15.000 or free on orders over Rp200.000</li>
+            <li><strong>Express Shipping:</strong> 1-2 business days, Rp30.000</li>
+            <li><strong>Overnight Shipping:</strong> Next business day, Rp50.000</li>
           </ul>
           
           <h2 className="text-xl font-semibold mb-4">International Shipping</h2>

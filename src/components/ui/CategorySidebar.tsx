@@ -85,29 +85,29 @@ const categories: Category[] = [
 const bestSellers = [
     {
         name: "Baby Fabric Shoes",
-        price: "$4.00",
-        originalPrice: "$5.00",
+        price: "Rp40.000",
+        originalPrice: "Rp50.000",
         rating: 5,
         image: "/assets/images/products/1.jpg",
     },
     {
         name: "Men's Hoodies T-Shirt",
-        price: "$7.00",
-        originalPrice: "$17.00",
+        price: "Rp70.000",
+        originalPrice: "Rp170.000",
         rating: 4.5,
         image: "/assets/images/products/2.jpg",
     },
     {
         name: "Girls T-Shirt",
-        price: "$3.00",
-        originalPrice: "$5.00",
+        price: "Rp30.000",
+        originalPrice: "Rp50.000",
         rating: 4.5,
         image: "/assets/images/products/3.jpg",
     },
     {
         name: "Woolen Hat For Men",
-        price: "$12.00",
-        originalPrice: "$15.00",
+        price: "Rp120.000",
+        originalPrice: "Rp150.000",
         rating: 5,
         image: "/assets/images/products/4.jpg",
     },
@@ -196,8 +196,8 @@ export default function CategorySidebar({ isOpen, onClose }: { isOpen: boolean; 
                                     {renderStars(item.rating)}
                                 </div>
                                 <div className="flex items-center space-x-2 mt-1">
-                                    <span className="text-sm line-through text-black/50">${item.originalPrice}</span>
-                                    <span className="text-sm font-bold text-green-600">${item.price}</span>
+                                    <span className="text-sm line-through text-black/50">{item.originalPrice}</span>
+                                    <span className="text-sm font-bold text-green-600">{item.price}</span>
                                 </div>
                             </div>
                         </div>

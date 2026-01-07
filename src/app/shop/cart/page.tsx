@@ -62,7 +62,7 @@ export default function CartPage() {
                       <div className="flex justify-between">
                         <div>
                           <h3 className="font-medium text-lg">{item.name}</h3>
-                          <p className="text-black/60 mt-1">${item.price.toFixed(2)}</p>
+                          <p className="text-black/60 mt-1">Rp{item.price.toLocaleString('id-ID')}</p>
                           {item.size && <p className="text-black/50 text-sm mt-1">Size: {item.size}</p>}
                           {item.color && <p className="text-black/50 text-sm mt-1">Color: {item.color}</p>}
                         </div>
@@ -96,7 +96,7 @@ export default function CartPage() {
                         </div>
 
                         <div className="ml-6 font-medium">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          Rp{(item.price * item.quantity).toLocaleString('id-ID')}
                         </div>
                       </div>
                     </div>
@@ -112,7 +112,7 @@ export default function CartPage() {
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>${getTotalPrice().toFixed(2)}</span>
+                    <span>Rp{getTotalPrice().toLocaleString('id-ID')}</span>
                   </div>
 
                   <div className="flex justify-between">
@@ -122,12 +122,12 @@ export default function CartPage() {
 
                   <div className="flex justify-between">
                     <span>Tax</span>
-                    <span>${(getTotalPrice() * 0.1).toFixed(2)}</span>
+                    <span>Rp{(getTotalPrice() * 0.1).toLocaleString('id-ID')}</span>
                   </div>
 
                   <div className="border-t border-black/30 pt-3 mt-3 flex justify-between font-bold">
                     <span>Total</span>
-                    <span>${(getTotalPrice() * 1.1).toFixed(2)}</span>
+                    <span>Rp{(getTotalPrice() * 1.1).toLocaleString('id-ID')}</span>
                   </div>
                 </div>
 
