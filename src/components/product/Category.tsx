@@ -1,6 +1,7 @@
 // src/components/product/Category.tsx
 'use client';
 import { useState, memo, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 import {
   FiPlus,
   FiShoppingBag,
@@ -22,6 +23,11 @@ const Category = memo(() => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  const handleCategoryClick = (categoryName: string) => {
+    router.push(`/category?category=${encodeURIComponent(categoryName)}`);
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -110,6 +116,7 @@ const Category = memo(() => {
                 >
                   <div
                     className="rounded-lg overflow-hidden border-2 border-black/10 cursor-pointer h-24 transition-all duration-300 hover:border-black/20"
+                    onClick={() => handleCategoryClick(category.name)}
                     onMouseEnter={() => setHoveredCategory(1)} // Just using a simple counter to trigger hover effect
                     onMouseLeave={() => setHoveredCategory(null)}
                   >
@@ -126,7 +133,13 @@ const Category = memo(() => {
                             (67)
                           </span>
                         </div>
-                        <button className="flex items-center text-xs text-black/70 hover:text-black transition font-medium">
+                        <button
+                          className="flex items-center text-xs text-black/70 hover:text-black transition font-medium"
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent triggering the parent click
+                            handleCategoryClick(category.name);
+                          }}
+                        >
                           Show All
                           <FiPlus className="ml-1 w-3 h-3" />
                         </button>
@@ -165,13 +178,19 @@ const Category = memo(() => {
                   style={{ scrollSnapAlign: 'start' }}
                 >
                   <div
-                    className="w-16 h-16 rounded-lg bg-black/10 flex items-center justify-center mb-2"
+                    className="w-16 h-16 rounded-lg bg-black/10 flex items-center justify-center mb-2 cursor-pointer"
+                    onClick={() => handleCategoryClick(category.name)}
                     onMouseEnter={() => setHoveredCategory(1)}
                     onMouseLeave={() => setHoveredCategory(null)}
                   >
                     <IconComponent className="text-2xl text-black/70" />
                   </div>
-                  <span className="text-xs text-black/70 text-center w-16">{category.name}</span>
+                  <span
+                    className="text-xs text-black/70 text-center w-16 cursor-pointer"
+                    onClick={() => handleCategoryClick(category.name)}
+                  >
+                    {category.name}
+                  </span>
                 </div>
               );
             })}

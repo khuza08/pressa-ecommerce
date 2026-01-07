@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { FiChevronDown, FiMenu } from 'react-icons/fi';
+import { useRouter } from 'next/navigation';
 import CategorySidebar from './CategorySidebar'; // Import the existing CategorySidebar
 
 type Category = {
@@ -22,6 +23,7 @@ export default function CategoryDropdown({ isVisible = true }: CategoryDropdownP
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -72,6 +74,11 @@ export default function CategoryDropdown({ isVisible = true }: CategoryDropdownP
         setActiveCategory(null);
       }
     }, 300);
+  };
+
+  const handleCategoryClick = (categoryName: string) => {
+    router.push(`/category?category=${encodeURIComponent(categoryName)}`);
+    setActiveCategory(null); // Close dropdown after selection
   };
 
   if (!isVisible) return null;
@@ -135,16 +142,17 @@ export default function CategoryDropdown({ isVisible = true }: CategoryDropdownP
                 className="relative"
                 onMouseEnter={() => setActiveCategory(category.name)}
               >
-                <a
-                  href="#"
-                  className={`block px-4 py-2 text-sm ${
+                <button
+                  type="button"
+                  onClick={() => handleCategoryClick(category.name)}
+                  className={`block w-full text-left px-4 py-2 text-sm ${
                     activeCategory === category.name
                       ? 'bg-black/10 text-black font-medium'
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
                   {category.name}
-                </a>
+                </button>
               </li>
             ))}
           </ul>

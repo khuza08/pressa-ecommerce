@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 import {
     FiX,
     FiPlus,
@@ -56,6 +57,7 @@ export default function CategorySidebar({ isOpen, onClose }: { isOpen: boolean; 
     const [expanded, setExpanded] = useState<Record<string, boolean>>({});
     const [categories, setCategories] = useState<CategoryWithIcon[]>([]);
     const [loading, setLoading] = useState(true);
+    const router = useRouter();
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -91,6 +93,11 @@ export default function CategorySidebar({ isOpen, onClose }: { isOpen: boolean; 
 
     const toggleExpand = (name: string) => {
         setExpanded((prev) => ({ ...prev, [name]: !prev[name] }));
+    };
+
+    const handleCategoryClick = (categoryName: string) => {
+        router.push(`/category?category=${encodeURIComponent(categoryName)}`);
+        onClose(); // Close the sidebar after selection
     };
 
     const renderStars = (rating: number) => {
@@ -198,17 +205,12 @@ export default function CategorySidebar({ isOpen, onClose }: { isOpen: boolean; 
                     <div key={cat.id} className="border-b pb-4 last:border-b-0">
                         <button
                             className="flex justify-between items-center w-full py-2 font-medium text-black"
-                            onClick={() => toggleExpand(cat.name)}
+                            onClick={() => handleCategoryClick(cat.name)}
                         >
                             <div className="flex items-center space-x-2">
                                 {cat.icon}
                                 <span>{cat.name}</span>
                             </div>
-                            {expanded[cat.name] ? (
-                                <FiMinus className="text-lg" />
-                            ) : (
-                                <FiPlus className="text-lg" />
-                            )}
                         </button>
                     </div>
                 ))}
