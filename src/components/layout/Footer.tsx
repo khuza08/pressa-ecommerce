@@ -80,7 +80,7 @@ export default function Footer() {
                 categories.map((category) => (
                   <li key={category.id}>
                     <a
-                      href={`/shop/products?category=${category.name}`}
+                      href={`/category?category=${category.name}`}
                       className="hover:text-black transition"
                     >
                       {category.name}
