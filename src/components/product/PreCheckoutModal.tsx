@@ -30,13 +30,28 @@ export default function PreCheckoutModal({
 
   const handleConfirmBuy = () => {
     if (product) {
+      // If product has variants, validate that a variant is selected
+      if (product.has_variants && !activeVariant) {
+        alert('Silakan pilih ukuran terlebih dahulu');
+        return;
+      }
+
+      // If product has variants, check if selected variant is in stock
+      if (product.has_variants) {
+        const selectedVariant = product.variants?.find((v: any) => v.id === parseInt(activeVariant));
+        if (selectedVariant && selectedVariant.stock <= 0) {
+          alert('Ukuran yang dipilih sedang habis');
+          return;
+        }
+      }
+
       addToCart({
         id: product.id,
         name: product.name,
         price: product.price,
         image: mainImage,
         quantity,
-        size: activeVariant,
+        variantId: product.has_variants ? activeVariant : undefined,
       });
       router.push('/shop/cart');
     }
@@ -85,21 +100,25 @@ export default function PreCheckoutModal({
         </div>
 
         {/* Variant Selection */}
-        {product?.variants && product?.variants.length > 0 && (
+        {product?.has_variants && product?.variants && product?.variants.length > 0 && (
           <div className="px-4 pb-4">
-            <h4 className="font-medium mb-2">Pilih Varian:</h4>
+            <h4 className="font-medium mb-2">Pilih Ukuran:</h4>
             <div className="grid grid-cols-3 gap-2 max-h-40 overflow-y-auto">
               {product.variants.map((variant: any, index: number) => (
                 <button
                   key={index}
                   onClick={() => setActiveVariant(variant.id)}
+                  disabled={variant.stock <= 0}
                   className={`py-2 px-3 rounded border text-sm ${
                     activeVariant === variant.id
                       ? 'border-black bg-black text-white'
-                      : 'border-black/30'
+                      : variant.stock <= 0
+                          ? 'border-black/30 text-black/30 cursor-not-allowed'
+                          : 'border-black/30'
                   }`}
                 >
-                  {variant.name}
+                  {variant.size}
+                  {variant.stock <= 0 && <span className="text-xs ml-1">(Habis)</span>}
                 </button>
               ))}
             </div>

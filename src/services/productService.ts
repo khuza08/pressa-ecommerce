@@ -1,6 +1,16 @@
 // src/services/productService.ts
 // Service to fetch products from the Go backend API
 
+export interface ProductVariant {
+  id: number;
+  product_id: number;
+  size: string;
+  stock: number;
+  sku?: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Product {
   id: number;
   name: string;
@@ -15,11 +25,8 @@ export interface Product {
   store: string;
   description?: string;
   category?: string;
-  variants?: Array<{
-    id: string;
-    name: string;
-    icon: string;
-  }>;
+  has_variants: boolean;
+  variants?: ProductVariant[];
   stock: number;
   condition?: string;
   minOrder: number;

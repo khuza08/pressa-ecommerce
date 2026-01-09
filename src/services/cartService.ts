@@ -11,6 +11,8 @@ export interface CartItem {
   quantity: number;
   size?: string;
   color?: string;
+  variantId?: number; // Added for product variants
+  variantSize?: string; // Added for product variants
 }
 
 export interface Cart {
@@ -25,6 +27,8 @@ export interface BackendCartItem {
   quantity: number;
   size?: string;
   color?: string;
+  variant_id?: number; // Added for product variants
+  size_variant?: string; // Added for product variants
   created_at: string;
   updated_at: string;
   product: Product;
@@ -148,7 +152,7 @@ export const cartService = {
 
           // Convert backend items to local cart format
           const localItems = backendItems.map(backendItem => ({
-            id: `${backendItem.product_id}-${backendItem.size || ''}-${backendItem.color || ''}-${Date.now()}`,
+            id: `${backendItem.product_id}-${backendItem.size || ''}-${backendItem.color || ''}-${backendItem.variant_id || 'no_variant'}-${Date.now()}`,
             productId: backendItem.product_id,
             name: backendItem.product.name,
             price: backendItem.product.price,
@@ -156,6 +160,8 @@ export const cartService = {
             quantity: backendItem.quantity,
             size: backendItem.size,
             color: backendItem.color,
+            variantId: backendItem.variant_id,
+            variantSize: backendItem.size_variant,
           }));
 
           const cart: Cart = {
@@ -217,7 +223,7 @@ export const cartService = {
     cartService.clearCart();
   },
 
-  addToCart: async (product: Product, quantity: number = 1, size?: string, color?: string): Promise<Cart> => {
+  addToCart: async (product: Product, quantity: number = 1, size?: string, color?: string, variantId?: number): Promise<Cart> => {
     console.log('addToCart called with product:', product);
     const token = localStorage.getItem('auth_token');
     console.log('Current token in addToCart:', token);
@@ -225,21 +231,26 @@ export const cartService = {
 
     const cart = cartService.getCart();
     const existingItemIndex = cart.items.findIndex(item =>
-      item.productId === product.id && item.size === size && item.color === color
+      item.productId === product.id &&
+      item.size === size &&
+      item.color === color &&
+      item.variantId === variantId
     );
 
     if (existingItemIndex >= 0) {
       cart.items[existingItemIndex].quantity += quantity;
     } else {
       const newItem: CartItem = {
-        id: `${product.id}-${size || ''}-${color || ''}-${Date.now()}`,
+        id: `${product.id}-${size || ''}-${color || ''}-${variantId || 'no_variant'}-${Date.now()}`,
         productId: product.id,
         name: product.name,
         price: product.price,
         image: product.image,
         quantity,
         size,
-        color
+        color,
+        variantId,
+        variantSize: variantId ? product.variants?.find(v => v.id === variantId)?.size : undefined
       };
       cart.items.push(newItem);
     }
@@ -264,7 +275,8 @@ export const cartService = {
             product_id: product.id,
             quantity,
             size,
-            color
+            color,
+            variant_id: variantId
           }),
         });
 

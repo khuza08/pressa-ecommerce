@@ -701,25 +701,35 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
 
                             <div className="mb-6">
                                 <label className="block text-sm font-semibold mb-3">
-                                    Pilihan:{" "}
+                                    Ukuran:{" "}
                                     <span className="font-normal text-black/60">
-                                        {(product?.variants && product?.variants.find((v) => v.id === activeVariant)?.name) || product?.name}
+                                        {product?.has_variants
+                                          ? (product?.variants && product?.variants.find((v) => v.id === activeVariant)?.size) || "Pilih ukuran"
+                                          : "Satu ukuran"}
                                     </span>
                                 </label>
                                 <div className="flex flex-wrap gap-2">
-                                    {product?.variants?.map((variant) => (
+                                    {product?.has_variants && product?.variants?.map((variant) => (
                                         <button
                                             key={variant.id}
                                             onClick={() => setActiveVariant(variant.id)}
+                                            disabled={variant.stock <= 0}
                                             className={`px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all flex items-center gap-2 ${activeVariant === variant.id
-                                                ? "border-black/50 text-black/80"
-                                                : "border-black/20 hover:border-black/30"
+                                                ? "border-black/50 text-black/80 bg-black/5"
+                                                : variant.stock <= 0
+                                                    ? "border-black/20 text-black/30 cursor-not-allowed"
+                                                    : "border-black/20 hover:border-black/30"
                                                 }`}
                                         >
-                                            {variant.icon && <span>{variant.icon}</span>}
-                                            {variant.name}
+                                            {variant.size}
+                                            {variant.stock <= 0 && <span className="text-xs ml-1">(Habis)</span>}
                                         </button>
                                     ))}
+                                    {!product?.has_variants && (
+                                        <div className="px-4 py-2 rounded-lg border-2 border-black/20 text-sm text-black/60">
+                                            Produk ini tidak memiliki varian ukuran
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -863,7 +873,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 <button
                                     onClick={async () => {
                                         if (!isAuthenticated) {
-                                            openLoginModal(async () => {
+                                            openLoginDialog(async () => {
                                                 if (product) {
                                                     await addToCart({
                                                         id: product.id,
@@ -871,7 +881,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                         price: product.price,
                                                         image: mainImage,
                                                         quantity,
-                                                        size: activeVariant,
+                                                        variantId: product.has_variants ? activeVariant : undefined,
                                                     });
                                                 }
                                             }, 'cart');
@@ -879,13 +889,28 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                         }
 
                                         if (product) {
+                                            // If product has variants, validate that a variant is selected
+                                            if (product.has_variants && !activeVariant) {
+                                                alert('Silakan pilih ukuran terlebih dahulu');
+                                                return;
+                                            }
+
+                                            // If product has variants, check if selected variant is in stock
+                                            if (product.has_variants) {
+                                                const selectedVariant = product.variants?.find(v => v.id === activeVariant);
+                                                if (selectedVariant && selectedVariant.stock <= 0) {
+                                                    alert('Ukuran yang dipilih sedang habis');
+                                                    return;
+                                                }
+                                            }
+
                                             await addToCart({
                                                 id: product.id,
                                                 name: product.name,
                                                 price: product.price,
                                                 image: mainImage,
                                                 quantity,
-                                                size: activeVariant,
+                                                variantId: product.has_variants ? activeVariant : undefined,
                                             });
                                         }
                                     }}

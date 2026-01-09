@@ -41,7 +41,7 @@ export default function ProductDetailBottomBar({
             price: product.price,
             image: mainImage,
             quantity,
-            size: activeVariant,
+            variantId: product.has_variants ? activeVariant : undefined,
           });
         }
       }, 'cart');
@@ -49,13 +49,28 @@ export default function ProductDetailBottomBar({
     }
 
     if (product) {
+      // If product has variants, validate that a variant is selected
+      if (product.has_variants && !activeVariant) {
+        alert('Silakan pilih ukuran terlebih dahulu');
+        return;
+      }
+
+      // If product has variants, check if selected variant is in stock
+      if (product.has_variants) {
+        const selectedVariant = product.variants?.find((v: any) => v.id === parseInt(activeVariant));
+        if (selectedVariant && selectedVariant.stock <= 0) {
+          alert('Ukuran yang dipilih sedang habis');
+          return;
+        }
+      }
+
       await addToCart({
         id: product.id,
         name: product.name,
         price: product.price,
         image: mainImage,
         quantity,
-        size: activeVariant,
+        variantId: product.has_variants ? activeVariant : undefined,
       });
     }
   };
