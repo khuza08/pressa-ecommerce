@@ -321,7 +321,12 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
     const handleQuantityChange = (type: "increment" | "decrement") => {
         if (!product) return;
 
-        if (type === "increment" && quantity < (product.stock || 999)) {
+        // Determine the max stock based on whether the product has variants
+        const maxStock = product?.has_variants && product?.variants
+            ? (product.variants.find(v => v.id === activeVariant)?.stock || 1)
+            : (product?.stock || 1);
+
+        if (type === "increment" && quantity < maxStock) {
             setQuantity(quantity + 1);
         } else if (type === "decrement" && quantity > 1) {
             setQuantity(quantity - 1);
@@ -841,21 +846,35 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                             value={quantity}
                                             onChange={(e) => {
                                                 const val = parseInt(e.target.value) || 1;
-                                                if (val >= 1 && val <= (product?.stock || 999)) setQuantity(val);
+                                                // Determine the max stock based on whether the product has variants
+                                                const maxStock = product?.has_variants && product?.variants
+                                                    ? (product.variants.find(v => v.id === activeVariant)?.stock || 1)
+                                                    : (product?.stock || 1);
+                                                if (val >= 1 && val <= maxStock) setQuantity(val);
                                             }}
                                             className="w-14 text-center text-sm border-0 focus:outline-none"
                                         />
                                         <button
                                             onClick={() => handleQuantityChange("increment")}
                                             className="px-3 py-1.5 text-black/60 hover:bg-black/5 text-sm disabled:opacity-50"
-                                            disabled={quantity >= (product.stock || 999)}
+                                            disabled={
+                                                quantity >= (
+                                                    product?.has_variants && product?.variants
+                                                        ? (product.variants.find(v => v.id === activeVariant)?.stock || 1)
+                                                        : (product?.stock || 1)
+                                                )
+                                            }
                                         >
                                             +
                                         </button>
                                     </div>
                                     <div className="text-xs text-black/60">
                                         Stok:{" "}
-                                        <span className="font-semibold text-black">{product?.stock || 0}</span>
+                                        <span className="font-semibold text-black">
+                                            {product?.has_variants && product?.variants
+                                              ? (product.variants.find(v => v.id === activeVariant)?.stock || 0)
+                                              : (product?.stock || 0)}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -873,6 +892,21 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 <button
                                     onClick={async () => {
                                         if (!isAuthenticated) {
+                                            // If product has variants, check if selected variant is in stock
+                                            if (product && product.has_variants) {
+                                                const selectedVariant = product.variants?.find(v => v.id === activeVariant);
+                                                if (selectedVariant && selectedVariant.stock <= 0) {
+                                                    alert('Ukuran yang dipilih sedang habis');
+                                                    return;
+                                                }
+
+                                                // Check if requested quantity exceeds available stock
+                                                if (selectedVariant && selectedVariant.stock < quantity) {
+                                                    alert(`Stok untuk ukuran ${selectedVariant.size} hanya tersedia ${selectedVariant.stock} buah`);
+                                                    return;
+                                                }
+                                            }
+
                                             openLoginModal(async () => {
                                                 if (product) {
                                                     await addToCart({
@@ -900,6 +934,12 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                 const selectedVariant = product.variants?.find(v => v.id === activeVariant);
                                                 if (selectedVariant && selectedVariant.stock <= 0) {
                                                     alert('Ukuran yang dipilih sedang habis');
+                                                    return;
+                                                }
+
+                                                // Check if requested quantity exceeds available stock
+                                                if (selectedVariant && selectedVariant.stock < quantity) {
+                                                    alert(`Stok untuk ukuran ${selectedVariant.size} hanya tersedia ${selectedVariant.stock} buah`);
                                                     return;
                                                 }
                                             }
