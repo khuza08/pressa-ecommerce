@@ -62,7 +62,7 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
           }
         }
 
-        if (isFavorite(product.id)) {
+        if (isFavorite(product.id.toString())) {
           await removeFromFavorites(product.id.toString());
         } else {
           await addToFavorites({
@@ -103,7 +103,7 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
       }
     }
 
-    if (isFavorite(product.id)) {
+    if (isFavorite(product.id.toString())) {
       await removeFromFavorites(product.id.toString());
     } else {
       await addToFavorites({
@@ -160,13 +160,13 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
             />
           )}
         </div>
-        <button
+        <button 
           onClick={handleFavoriteClick}
           className="absolute top-3 right-3 p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors"
-          aria-label={isFavorite(product.id) ? "Remove from favorites" : "Add to favorites"}
+          aria-label={isFavorite(product.id.toString()) ? "Remove from favorites" : "Add to favorites"}
         >
           <FiHeart
-            className={isFavorite(product.id) ? 'fill-red-500 text-red-500' : 'text-black/40'}
+            className={isFavorite(product.id.toString()) ? 'fill-red-500 text-red-500' : 'text-black/40'}
           />
         </button>
       </div>

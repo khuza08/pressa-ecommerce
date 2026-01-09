@@ -738,25 +738,13 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 </div>
                             </div>
 
-                            <div className="border-t pt-4">
+                            <div className="border-t border-black/20 pt-">
                                 <div className="flex items-center justify-between mb-4">
                                     <button
                                         onClick={() => setActiveTab("detail")}
-                                        className={`flex-1 pb-2 text-center font-medium border-b-2 transition-colors ${activeTab === "detail"
-                                            ? "border-black/50 text-black/80"
-                                            : "border-transparent text-black/50"
-                                            }`}
+                                        className={`flex-1 pb-2 text-center font-medium border-b-2 border-black transition-colors}`}
                                     >
                                         Detail Produk
-                                    </button>
-                                    <button
-                                        onClick={() => setActiveTab("info")}
-                                        className={`flex-1 pb-2 text-center font-medium border-b-2 transition-colors ${activeTab === "info"
-                                            ? "border-black/50 text-black/80"
-                                            : "border-transparent text-black/50"
-                                            }`}
-                                    >
-                                        Info Penting
                                     </button>
                                 </div>
 
@@ -780,7 +768,10 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 )}
                             </div>
 
-                            <div className="mt-6 pt-6 border-t">
+                            <div className="mt-4 pt-4 border-t-2">
+                                
+                                <p className="font-medium">Description:</p>
+
                                 <div
                                     className={`text-black/70 ${!showFullDescription ? "line-clamp-4" : ""
                                         }`}
@@ -879,7 +870,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 </div>
                             </div>
 
-                            <div className="mb-5 pt-3 border-t">
+                            <div className="mb-5 pt-3 border-t border-black/20">
                                 <div className="flex justify-between items-center">
                                     <span className="text-black/60 text-md">Subtotal</span>
                                     <span className="text-2xl font-bold text-black">
@@ -963,22 +954,131 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 </button>
                             </div>
 
-                            <div className="pt-4 border-t mt-auto">
-                                <div className="flex gap-4">
-                                    <button className="flex items-center gap-1 text-black/60 hover:text-black text-xs">
-                                        <FaCommentAlt className="w-4 h-4" />
-                                        <span>Chat</span>
-                                    </button>
-                                    <button className="flex items-center gap-1 text-black/60 hover:text-black text-xs">
-                                        <FaHeart className="w-4 h-4" />
-                                        <span>Wishlist</span>
-                                    </button>
-                                    <button className="flex items-center gap-1 text-black/60 hover:text-black text-xs">
-                                        <FaShareAlt className="w-4 h-4" />
-                                        <span>Share</span>
-                                    </button>
-                                </div>
+                        <div className="pt-4 border-t border-black/20 mt-auto">
+                            <div className="flex justify-center gap-4">
+                                <button className="flex items-center gap-1 text-black/60 hover:text-black text-xs">
+                                <FaCommentAlt className="w-4 h-4" />
+                                <span>Chat</span>
+                                </button>
+                                <button
+                                onClick={async () => {
+                                    if (!isAuthenticated) {
+                                    openLoginModal(async () => {
+                                        if (product) {
+                                        const isCurrentlyFavorite = checkIsFavorite(product.id.toString());
+                                        if (isCurrentlyFavorite) {
+                                            await removeFromFavorites(product.id.toString());
+                                        } else {
+                                            // Create the proper image URL for favorites
+                                            let imageUrl = product.image || "";
+                                            if (product.image && !product.image.startsWith('http')) {
+                                            // If not a full URL, check if it's a file that needs the uploads path
+                                            if (product.image.includes('uploads/')) {
+                                                // Extract filename from uploads path
+                                                const filename = product.image.split('uploads/').pop();
+
+                                                // Get the base URL and remove any /api/v1 suffix for static files
+                                                let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                if (baseUrl.endsWith('/api/v1')) {
+                                                baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                }
+
+                                                imageUrl = `${baseUrl}/uploads/${filename}`;
+                                            } else if (!product.image.startsWith('/')) {
+                                                // It's a simple filename, so prepend the uploads path
+                                                // Get the base URL and remove any /api/v1 suffix for static files
+                                                let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                if (baseUrl.endsWith('/api/v1')) {
+                                                baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                }
+
+                                                imageUrl = `${baseUrl}/uploads/${product.image}`;
+                                            }
+                                            }
+
+                                            await addToFavorites({
+                                            id: product.id.toString(),
+                                            name: product.name,
+                                            price: product.price,
+                                            image: imageUrl
+                                            });
+                                        }
+                                        }
+                                    }, 'favorite');
+                                    return;
+                                    }
+
+                                    if (product) {
+                                    const isCurrentlyFavorite = checkIsFavorite(product.id.toString());
+                                    if (isCurrentlyFavorite) {
+                                        await removeFromFavorites(product.id.toString());
+                                    } else {
+                                        // Create the proper image URL for favorites
+                                        let imageUrl = product.image || "";
+                                        if (product.image && !product.image.startsWith('http')) {
+                                        // If not a full URL, check if it's a file that needs the uploads path
+                                        if (product.image.includes('uploads/')) {
+                                            // Extract filename from uploads path
+                                            const filename = product.image.split('uploads/').pop();
+
+                                            // Get the base URL and remove any /api/v1 suffix for static files
+                                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                            if (baseUrl.endsWith('/api/v1')) {
+                                            baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                            }
+
+                                            imageUrl = `${baseUrl}/uploads/${filename}`;
+                                        } else if (!product.image.startsWith('/')) {
+                                            // It's a simple filename, so prepend the uploads path
+                                            // Get the base URL and remove any /api/v1 suffix for static files
+                                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                            if (baseUrl.endsWith('/api/v1')) {
+                                            baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                            }
+
+                                            imageUrl = `${baseUrl}/uploads/${product.image}`;
+                                        }
+                                        }
+
+                                        await addToFavorites({
+                                        id: product.id.toString(),
+                                        name: product.name,
+                                        price: product.price,
+                                        image: imageUrl
+                                        });
+                                    }
+                                    }
+                                }}
+                                className="flex items-center gap-1 text-black/60 hover:text-black text-xs"
+                                >
+                                <FaHeart className={`${checkIsFavorite(product?.id.toString() || '') ? 'text-red-500 fill-red-500' : 'text-black/40'} w-4 h-4`} />
+                                <span>Favourite</span>
+                                </button>
+                                <button
+                                onClick={async () => {
+                                    const productUrl = window.location.href;
+                                    try {
+                                    await navigator.clipboard.writeText(productUrl);
+                                    alert('Link produk berhasil disalin!');
+                                    } catch (err) {
+                                    console.error('Failed to copy: ', err);
+                                    // Fallback for older browsers
+                                    const textArea = document.createElement('textarea');
+                                    textArea.value = productUrl;
+                                    document.body.appendChild(textArea);
+                                    textArea.select();
+                                    document.execCommand('copy');
+                                    document.body.removeChild(textArea);
+                                    alert('Link produk berhasil disalin!');
+                                    }
+                                }}
+                                className="flex items-center gap-1 text-black/60 hover:text-black text-xs"
+                                >
+                                <FaShareAlt className="w-4 h-4" />
+                                <span>Share</span>
+                                </button>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
