@@ -1,11 +1,43 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { FiX, FiPlus, FiMinus, FiArrowLeft } from 'react-icons/fi';
 import { useCart } from '@/context/CartContext';
 import Link from 'next/link';
+import { resolveImageUrl } from '@/lib/imageUrl';
 
 export default function CartPage() {
   const { cart, updateQuantity, removeItem, getTotalPrice } = useCart();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Don't render anything until mounted to avoid hydration mismatches
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-white py-8">
+        <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto">
+          <div className="mb-6">
+            <Link href="/" className="flex items-center text-black/60 hover:text-black">
+              <FiArrowLeft className="mr-2" />
+              Back to Home
+            </Link>
+          </div>
+          <h1 className="text-2xl font-bold mb-8 px-4">Your Cart</h1>
+          {/* Render the same container structure to avoid hydration mismatch */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-4">
+            <div className="lg:col-span-2">
+              <div className="text-center py-12 px-4">
+                <p>Loading cart...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const updateItemQuantity = (id: string, newQuantity: number) => {
     if (newQuantity < 1) {
@@ -51,11 +83,17 @@ export default function CartPage() {
                     className="py-6 border-b border-black/20 flex flex-col sm:flex-row"
                   >
                     <div className="w-24 h-24 bg-black/10 rounded-md overflow-hidden mb-4 sm:mb-0 sm:mr-6 flex-shrink-0">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-full h-full object-cover"
-                      />
+                      {item.image ? (
+                        <img
+                          src={resolveImageUrl(item.image)}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <span className="text-gray-500 text-xs">No Image</span>
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex-1">
