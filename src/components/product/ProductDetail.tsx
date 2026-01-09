@@ -388,7 +388,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                     <div className="product-images-container w-full md:w-[280px] relative">
                         <div
                             className="bg-white overflow-hidden sticky flex flex-col border border-black/20 rounded-lg h-[400px]"
-                            style={snapToHeader.productImages ? { top: '70px' } : { top: '150px' }}
+                            style={snapToHeader.productImages ? { top: '70px' } : { top: '70px' }}
                         >
                             {/* Main Image with Zoom */}
                             {/* Mobile & Tablet: Image Carousel with Swipe */}
