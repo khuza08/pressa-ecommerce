@@ -368,15 +368,9 @@ export default function Header() {
                   <div className="flex items-center space-x-3">
                     <button
                       onClick={handleLoginClick}
-                      className="text-black hover:text-black/80 text-sm font-medium"
+                      className="text-black hover:text-black/80 text-sm font-medium bg-black/10 border border-black/10 px-4 py-2 rounded-lg hover:border-black hover:bg-black hover:text-white/80 transition"
                     >
                       Sign In
-                    </button>
-                    <button
-                      onClick={handleRegisterClick}
-                      className="bg-black text-white px-4 py-1.5 rounded-full text-sm font-medium hover:bg-black/90"
-                    >
-                      Sign Up
                     </button>
                   </div>
                 )}
