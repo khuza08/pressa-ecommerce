@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { FiShoppingCart, FiMessageSquare, FiShoppingBag } from 'react-icons/fi';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
+import { useLoginModal } from '@/context/LoginModalContext';
 import { useRouter } from 'next/navigation';
 import PreCheckoutModal from './PreCheckoutModal';
 
@@ -22,12 +24,30 @@ export default function ProductDetailBottomBar({
   onQuantityChange
 }: ProductDetailBottomBarProps) {
   const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
+  const { openLoginModal } = useLoginModal();
   const router = useRouter();
   const [showPreCheckout, setShowPreCheckout] = useState(false);
   const [quantity, setQuantity] = useState(initialQuantity);
   const [activeVariant, setActiveVariant] = useState(initialVariant);
 
   const handleAddToCart = () => {
+    if (!isAuthenticated) {
+      openLoginModal(() => {
+        if (product) {
+          addToCart({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: mainImage,
+            quantity,
+            size: activeVariant,
+          });
+        }
+      }, 'cart');
+      return;
+    }
+
     if (product) {
       addToCart({
         id: product.id,

@@ -5,6 +5,8 @@ import { FiStar, FiHeart } from 'react-icons/fi';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useFavorites } from '@/context/FavoriteContext';
+import { useAuth } from '@/context/AuthContext';
+import { useLoginModal } from '@/context/LoginModalContext';
 
 interface Product {
   id: number;
@@ -22,9 +24,56 @@ interface ProductCardProps {
 const ProductCard = memo(({ product }: ProductCardProps) => {
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
 
+  const { isAuthenticated } = useAuth();
+  const { openLoginModal } = useLoginModal();
+
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    // If user is not authenticated, show login modal
+    if (!isAuthenticated) {
+      openLoginModal(() => {
+        // Create the proper image URL for favorites
+        let imageUrl = product.image;
+        if (product.image && !product.image.startsWith('http')) {
+          // If not a full URL, check if it's a file that needs the uploads path
+          if (product.image.includes('uploads/')) {
+            // Extract filename from uploads path
+            const filename = product.image.split('uploads/').pop();
+
+            // Get the base URL and remove any /api/v1 suffix for static files
+            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+            if (baseUrl.endsWith('/api/v1')) {
+              baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+            }
+
+            imageUrl = `${baseUrl}/uploads/${filename}`;
+          } else if (!product.image.startsWith('/')) {
+            // It's a simple filename, so prepend the uploads path
+            // Get the base URL and remove any /api/v1 suffix for static files
+            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+            if (baseUrl.endsWith('/api/v1')) {
+              baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+            }
+
+            imageUrl = `${baseUrl}/uploads/${product.image}`;
+          }
+        }
+
+        if (isFavorite(product.id)) {
+          removeFromFavorites(product.id);
+        } else {
+          addToFavorites({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: imageUrl
+          });
+        }
+      }, 'favorite');
+      return;
+    }
 
     // Create the proper image URL for favorites
     let imageUrl = product.image;

@@ -14,6 +14,8 @@ import {
 import { productService, type Product } from '@/services/productService';
 import { useCart } from '@/context/CartContext';
 import { useFavorites } from '@/context/FavoriteContext';
+import { useAuth } from '@/context/AuthContext';
+import { useLoginModal } from '@/context/LoginModalContext';
 import ProductDetailBottomBar from './ProductDetailBottomBar';
 import Image from 'next/image';
 
@@ -30,6 +32,8 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const { addToCart } = useCart();
+    const { isAuthenticated } = useAuth();
+    const { openLoginModal } = useLoginModal();
 
     // Update tombol berdasarkan scroll position
     const updateScrollButtons = () => {
@@ -585,6 +589,53 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 <h1 className="text-2xl font-bold text-black flex-1">{product?.name}</h1>
                                 <button
                                     onClick={() => {
+                                        if (!isAuthenticated) {
+                                            openLoginModal(() => {
+                                                if (product) {
+                                                    if (localIsFavorite) {
+                                                        removeFromFavorites(product.id);
+                                                        setLocalIsFavorite(false);
+                                                    } else {
+                                                        // Create the proper image URL for favorites
+                                                        let imageUrl = product.image || "";
+                                                        if (product.image && !product.image.startsWith('http')) {
+                                                          // If not a full URL, check if it's a file that needs the uploads path
+                                                          if (product.image.includes('uploads/')) {
+                                                            // Extract filename from uploads path
+                                                            const filename = product.image.split('uploads/').pop();
+
+                                                            // Get the base URL and remove any /api/v1 suffix for static files
+                                                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                            if (baseUrl.endsWith('/api/v1')) {
+                                                              baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                            }
+
+                                                            imageUrl = `${baseUrl}/uploads/${filename}`;
+                                                          } else if (!product.image.startsWith('/')) {
+                                                            // It's a simple filename, so prepend the uploads path
+                                                            // Get the base URL and remove any /api/v1 suffix for static files
+                                                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                            if (baseUrl.endsWith('/api/v1')) {
+                                                              baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                            }
+
+                                                            imageUrl = `${baseUrl}/uploads/${product.image}`;
+                                                          }
+                                                        }
+
+                                                        addToFavorites({
+                                                            id: product.id,
+                                                            name: product.name,
+                                                            price: product.price,
+                                                            image: imageUrl
+                                                        });
+                                                        setLocalIsFavorite(true);
+                                                    }
+                                                }
+                                            }, 'favorite');
+                                            return;
+                                        }
+
                                         if (product) {
                                             if (localIsFavorite) {
                                                 removeFromFavorites(product.id);
@@ -817,14 +868,34 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
 
                             <div className="space-y-3">
                                 <button
-                                    onClick={() => product && addToCart({
-                                        id: product.id,
-                                        name: product.name,
-                                        price: product.price,
-                                        image: mainImage,
-                                        quantity,
-                                        size: activeVariant,
-                                    })}
+                                    onClick={() => {
+                                        if (!isAuthenticated) {
+                                            openLoginModal(() => {
+                                                if (product) {
+                                                    addToCart({
+                                                        id: product.id,
+                                                        name: product.name,
+                                                        price: product.price,
+                                                        image: mainImage,
+                                                        quantity,
+                                                        size: activeVariant,
+                                                    });
+                                                }
+                                            }, 'cart');
+                                            return;
+                                        }
+
+                                        if (product) {
+                                            addToCart({
+                                                id: product.id,
+                                                name: product.name,
+                                                price: product.price,
+                                                image: mainImage,
+                                                quantity,
+                                                size: activeVariant,
+                                            });
+                                        }
+                                    }}
                                     className="w-full bg-black text-white font-bold text-base py-2 rounded-xl transition-colors"
                                 >
                                     + Keranjang

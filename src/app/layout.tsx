@@ -4,6 +4,7 @@ import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { FavoriteProvider } from "@/context/FavoriteContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { LoginModalProvider } from "@/context/LoginModalContext";
 import { SWRConfig } from 'swr';
 import { swrConfig } from '@/lib/swrConfig';
 import Header from "@/components/layout/Header";
@@ -38,9 +39,11 @@ export default function RootLayout({
           <AuthProvider>
             <FavoriteProvider>
               <CartProvider>
-                <Header />
-                <main>{children}</main>
-                <Footer />
+                <LoginModalProvider>
+                  <Header />
+                  <main>{children}</main>
+                  <Footer />
+                </LoginModalProvider>
               </CartProvider>
             </FavoriteProvider>
           </AuthProvider>

@@ -4,6 +4,8 @@ import { memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FiStar } from 'react-icons/fi';
+import { useAuth } from '@/context/AuthContext';
+import { useLoginModal } from '@/context/LoginModalContext';
 
 interface Product {
   id: number;
