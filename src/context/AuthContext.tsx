@@ -85,6 +85,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('user', JSON.stringify(userToStore));
     localStorage.setItem('auth_token', token);
 
+    // Clear local storage to force reload from backend with proper image URLs
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('cart');
+      localStorage.removeItem('favorites');
+    }
+
     // Load cart and favorites from backend after login
     await cartService.loadCartFromBackend();
   };
@@ -123,6 +129,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('user', JSON.stringify(userToStore));
       localStorage.setItem('auth_token', result.token);
 
+      // Clear local storage to force reload from backend with proper image URLs
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('cart');
+        localStorage.removeItem('favorites');
+      }
+
       // Load cart and favorites from backend after login
       await cartService.loadCartFromBackend();
     } catch (error) {
@@ -160,6 +172,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(userToStore);
       localStorage.setItem('user', JSON.stringify(userToStore));
       localStorage.setItem('auth_token', result.token);
+
+      // Clear local storage to force reload from backend with proper image URLs
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('cart');
+        localStorage.removeItem('favorites');
+      }
 
       // Load cart and favorites from backend after registration
       await cartService.loadCartFromBackend();

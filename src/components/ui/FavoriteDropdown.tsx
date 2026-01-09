@@ -5,6 +5,7 @@ import { FiHeart, FiX } from 'react-icons/fi';
 import { useFavorites } from '@/context/FavoriteContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { resolveImageUrl } from '@/lib/imageUrl';
 
 interface FavoriteDropdownProps {
   isOpen: boolean;
@@ -75,40 +76,20 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
                 className="p-4 border-b border-black/10 flex items-center gap-3 hover:bg-black/5"
               >
                 <div className="w-16 h-16 bg-black/20 rounded-md overflow-hidden flex-shrink-0">
-                  <img
-                    src={
-                      // Handle different URL formats
-                      item.image.startsWith('http')
-                        ? item.image  // Already a full URL
-                        : item.image.includes('uploads/')
-                          ? (() => {
-                              // Extract just the filename from the uploads path
-                              let filename = item.image;
-                              if (item.image.includes('uploads/')) {
-                                filename = item.image.split('uploads/').pop() || item.image;
-                              }
-
-                              // Get the base URL and remove any /api/v1 suffix for static files
-                              let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                              if (baseUrl.endsWith('/api/v1')) {
-                                baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                              }
-
-                              return `${baseUrl}/uploads/${filename}`;
-                            })() // Handle uploads path
-                          : (() => {
-                              // Get the base URL and remove any /api/v1 suffix for static files
-                              let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                              if (baseUrl.endsWith('/api/v1')) {
-                                baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                              }
-
-                              return `${baseUrl}/uploads/${item.image}`; // Simple filename
-                            })()
-                    }
-                    alt={item.name}
-                    className="w-full h-full object-cover"
-                  />
+                  {(() => {
+                    const imgSrc = resolveImageUrl(item.image);
+                    return imgSrc ? (
+                      <img
+                        src={imgSrc}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        No Image
+                      </div>
+                    );
+                  })()}
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="font-medium text-sm truncate">{item.name}</h4>

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { FiShoppingCart, FiX } from 'react-icons/fi';
 import { useCart } from '@/context/CartContext';
 import Link from 'next/link';
+import { resolveImageUrl } from '@/lib/imageUrl';
 
 interface CartDropdownProps {
   isOpen: boolean;
@@ -75,11 +76,20 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
                 className="p-4 border-b border-black/10 flex items-center gap-3 hover:bg-black/5"
               >
                 <div className="w-16 h-16 bg-black/20 rounded-md overflow-hidden shrink-0">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover"
-                  />
+                  {(() => {
+                    const imgSrc = resolveImageUrl(item.image);
+                    return imgSrc ? (
+                      <img
+                        src={imgSrc}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        No Image
+                      </div>
+                    );
+                  })()}
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="font-medium text-sm truncate">{item.name}</h4>

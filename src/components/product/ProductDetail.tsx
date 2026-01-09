@@ -18,6 +18,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useLoginModal } from '@/context/LoginModalContext';
 import ProductDetailBottomBar from './ProductDetailBottomBar';
 import Image from 'next/image';
+import { resolveImageUrl } from '@/lib/imageUrl';
 
 import { memo } from 'react';
 
@@ -292,25 +293,11 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
 
             // Set initial main image if available
             if (product.images && product.images.length > 0 && product.images[0].url) {
-                setMainImage(product.images[0].url);
+                const imgSrc = resolveImageUrl(product.images[0].url);
+                setMainImage(imgSrc || "https://placehold.co/600x600?text=Product+Image");
             } else if (product.image) {
-                setMainImage(product.image.includes('uploads')
-                  ? (() => {
-                      // Extract just the filename from the uploads path
-                      let filename = product.image;
-                      if (product.image.includes('uploads/')) {
-                        filename = product.image.split('uploads/').pop() || product.image;
-                      }
-
-                      // Get the base URL and remove any /api/v1 suffix for static files
-                      let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                      if (baseUrl.endsWith('/api/v1')) {
-                        baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                      }
-
-                      return `${baseUrl}/uploads/${filename}`;
-                    })()
-                  : product.image);
+                const imgSrc = resolveImageUrl(product.image);
+                setMainImage(imgSrc || "https://placehold.co/600x600?text=Product+Image");
             } else {
                 setMainImage("https://placehold.co/600x600?text=Product+Image");
             }
@@ -408,36 +395,24 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                     onTouchMove={handleTouchMove}
                                                     onTouchEnd={handleTouchEnd}
                                                 >
-                                                    {currentImage.url?.includes('uploads') ? (
-                                                        <img
-                                                            src={(() => {
-                                                                // Extract just the filename from the uploads path
-                                                                let filename = currentImage.url;
-                                                                if (currentImage.url?.includes('uploads/')) {
-                                                                  filename = currentImage.url.split('uploads/').pop() || currentImage.url;
-                                                                }
-
-                                                                // Get the base URL and remove any /api/v1 suffix for static files
-                                                                let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                                                if (baseUrl.endsWith('/api/v1')) {
-                                                                  baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                                                                }
-
-                                                                // Use a relative URL that will be proxied to the backend
-                                                                return `${baseUrl}/uploads/${filename}`;
-                                                            })()}
-                                                            alt={currentImage.alt || product?.name || "Product image"}
-                                                            className="absolute inset-0 w-full h-full object-cover"
-                                                            style={{ objectFit: 'cover' }}
-                                                        />
-                                                    ) : (
-                                                        <img
-                                                            src={currentImage.url || "https://placehold.co/600x600?text=Product+Image"}
-                                                            alt={currentImage.alt || product?.name || "Product image"}
-                                                            className="absolute inset-0 w-full h-full object-cover"
-                                                            style={{ objectFit: 'cover' }}
-                                                        />
-                                                    )}
+                                                    {(() => {
+                                                        const imgSrc = resolveImageUrl(currentImage.url);
+                                                        return imgSrc ? (
+                                                            <img
+                                                                src={imgSrc}
+                                                                alt={currentImage.alt || product?.name || "Product image"}
+                                                                className="absolute inset-0 w-full h-full object-cover"
+                                                                style={{ objectFit: 'cover' }}
+                                                            />
+                                                        ) : (
+                                                            <img
+                                                                src="https://placehold.co/600x600?text=Product+Image"
+                                                                alt={currentImage.alt || product?.name || "Product image"}
+                                                                className="absolute inset-0 w-full h-full object-cover"
+                                                                style={{ objectFit: 'cover' }}
+                                                            />
+                                                        );
+                                                    })()}
                                                 </div>
                                             );
                                         } else {
@@ -471,37 +446,25 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 onMouseMove={handleMouseMove}
                             >
                                 <div className="relative w-full h-full">
-                                    {(mainImage || product?.image)?.includes('uploads') ? (
-                                        <img
-                                            src={(() => {
-                                                const imageToUse = mainImage || product?.image;
-                                                // Extract just the filename from the uploads path
-                                                let filename = imageToUse;
-                                                if (imageToUse?.includes('uploads/')) {
-                                                  filename = imageToUse.split('uploads/').pop() || imageToUse;
-                                                }
-
-                                                // Get the base URL and remove any /api/v1 suffix for static files
-                                                let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                                if (baseUrl.endsWith('/api/v1')) {
-                                                  baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                                                }
-
-                                                // Use a relative URL that will be proxied to the backend
-                                                return `${baseUrl}/uploads/${filename}`;
-                                            })()}
-                                            alt={product?.name || "Product image"}
-                                            className={`absolute inset-0 w-full h-full object-cover transition-all duration-200 ${isHovering ? "" : ""}`}
-                                            style={{ objectFit: 'cover' }}
-                                        />
-                                    ) : (
-                                        <img
-                                            src={mainImage || product?.image || "https://placehold.co/600x600?text=Product+Image"}
-                                            alt={product?.name || "Product image"}
-                                            className="absolute inset-0 w-full h-full object-cover"
-                                            style={{ objectFit: 'cover' }}
-                                        />
-                                    )}
+                                    {(() => {
+                                        const imageToUse = mainImage || product?.image;
+                                        const imgSrc = resolveImageUrl(imageToUse);
+                                        return imgSrc ? (
+                                            <img
+                                                src={imgSrc}
+                                                alt={product?.name || "Product image"}
+                                                className={`absolute inset-0 w-full h-full object-cover transition-all duration-200 ${isHovering ? "" : ""}`}
+                                                style={{ objectFit: 'cover' }}
+                                            />
+                                        ) : (
+                                            <img
+                                                src="https://placehold.co/600x600?text=Product+Image"
+                                                alt={product?.name || "Product image"}
+                                                className="absolute inset-0 w-full h-full object-cover"
+                                                style={{ objectFit: 'cover' }}
+                                            />
+                                        );
+                                    })()}
                                 </div>
 
                                 {/* Fullscreen Zoom Button - Desktop only */}
@@ -537,36 +500,24 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                 }`}
                                         >
                                             <div className="relative w-full h-full">
-                                                {img.url?.includes('uploads') ? (
-                                                    <img
-                                                        src={(() => {
-                                                            // Extract just the filename from the uploads path
-                                                            let filename = img.url;
-                                                            if (img.url?.includes('uploads/')) {
-                                                              filename = img.url.split('uploads/').pop() || img.url;
-                                                            }
-
-                                                            // Get the base URL and remove any /api/v1 suffix for static files
-                                                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                                            if (baseUrl.endsWith('/api/v1')) {
-                                                              baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                                                            }
-
-                                                            // Use a relative URL that will be proxied to the backend
-                                                            return `${baseUrl}/uploads/${filename}`;
-                                                        })()}
-                                                        alt={img.alt || "Thumbnail"}
-                                                        className="absolute inset-0 w-full h-full object-cover"
-                                                        style={{ objectFit: 'cover' }}
-                                                    />
-                                                ) : (
-                                                    <img
-                                                        src={img.url || "https://placehold.co/100x100?text=Thumb"}
-                                                        alt={img.alt || "Thumbnail"}
-                                                        className="absolute inset-0 w-full h-full object-cover"
-                                                        style={{ objectFit: 'cover' }}
-                                                    />
-                                                )}
+                                                {(() => {
+                                                    const imgSrc = resolveImageUrl(img.url);
+                                                    return imgSrc ? (
+                                                        <img
+                                                            src={imgSrc}
+                                                            alt={img.alt || "Thumbnail"}
+                                                            className="absolute inset-0 w-full h-full object-cover"
+                                                            style={{ objectFit: 'cover' }}
+                                                        />
+                                                    ) : (
+                                                        <img
+                                                            src="https://placehold.co/100x100?text=Thumb"
+                                                            alt={img.alt || "Thumbnail"}
+                                                            className="absolute inset-0 w-full h-full object-cover"
+                                                            style={{ objectFit: 'cover' }}
+                                                        />
+                                                    );
+                                                })()}
                                             </div>
                                         </button>
                                     ))}
@@ -623,38 +574,12 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                     if (isCurrentlyFavorite) {
                                                         await removeFromFavorites(product.id.toString());
                                                     } else {
-                                                        // Create the proper image URL for favorites
-                                                        let imageUrl = product.image || "";
-                                                        if (product.image && !product.image.startsWith('http')) {
-                                                          // If not a full URL, check if it's a file that needs the uploads path
-                                                          if (product.image.includes('uploads/')) {
-                                                            // Extract filename from uploads path
-                                                            const filename = product.image.split('uploads/').pop();
-
-                                                            // Get the base URL and remove any /api/v1 suffix for static files
-                                                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                                            if (baseUrl.endsWith('/api/v1')) {
-                                                              baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                                                            }
-
-                                                            imageUrl = `${baseUrl}/uploads/${filename}`;
-                                                          } else if (!product.image.startsWith('/')) {
-                                                            // It's a simple filename, so prepend the uploads path
-                                                            // Get the base URL and remove any /api/v1 suffix for static files
-                                                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                                            if (baseUrl.endsWith('/api/v1')) {
-                                                              baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                                                            }
-
-                                                            imageUrl = `${baseUrl}/uploads/${product.image}`;
-                                                          }
-                                                        }
-
+                                                        const imgSrc = resolveImageUrl(product.image);
                                                         await addToFavorites({
                                                             id: product.id.toString(),
                                                             name: product.name,
                                                             price: product.price,
-                                                            image: imageUrl
+                                                            image: imgSrc || ""
                                                         });
                                                     }
                                                 }
@@ -667,38 +592,12 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                             if (isCurrentlyFavorite) {
                                                 await removeFromFavorites(product.id.toString());
                                             } else {
-                                                // Create the proper image URL for favorites
-                                                let imageUrl = product.image || "";
-                                                if (product.image && !product.image.startsWith('http')) {
-                                                  // If not a full URL, check if it's a file that needs the uploads path
-                                                  if (product.image.includes('uploads/')) {
-                                                    // Extract filename from uploads path
-                                                    const filename = product.image.split('uploads/').pop();
-
-                                                    // Get the base URL and remove any /api/v1 suffix for static files
-                                                    let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                                    if (baseUrl.endsWith('/api/v1')) {
-                                                      baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                                                    }
-
-                                                    imageUrl = `${baseUrl}/uploads/${filename}`;
-                                                  } else if (!product.image.startsWith('/')) {
-                                                    // It's a simple filename, so prepend the uploads path
-                                                    // Get the base URL and remove any /api/v1 suffix for static files
-                                                    let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                                    if (baseUrl.endsWith('/api/v1')) {
-                                                      baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                                                    }
-
-                                                    imageUrl = `${baseUrl}/uploads/${product.image}`;
-                                                  }
-                                                }
-
+                                                const imgSrc = resolveImageUrl(product.image);
                                                 await addToFavorites({
                                                     id: product.id.toString(),
                                                     name: product.name,
                                                     price: product.price,
-                                                    image: imageUrl
+                                                    image: imgSrc || ""
                                                 });
                                             }
                                         }

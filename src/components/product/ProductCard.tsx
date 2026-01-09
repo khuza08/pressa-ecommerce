@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useFavorites } from '@/context/FavoriteContext';
 import { useAuth } from '@/context/AuthContext';
 import { useLoginModal } from '@/context/LoginModalContext';
+import { resolveImageUrl } from '@/lib/imageUrl';
 
 interface Product {
   id: number;
@@ -129,40 +130,20 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
     >
       <div className="relative">
         <div className="aspect-square w-full overflow-hidden rounded-md">
-          {product.image && product.image.includes('uploads') ? (
-            <img
-              src={(() => {
-                // Extract just the filename from the uploads path
-                let filename = product.image;
-                if (product.image.includes('uploads/')) {
-                  filename = product.image.split('uploads/').pop() || product.image;
-                }
-
-                // Get the base URL and remove any /api/v1 suffix for static files
-                let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                if (baseUrl.endsWith('/api/v1')) {
-                  baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                }
-
-                return `${baseUrl}/uploads/${filename}`;
-              })()}
-              alt={product.name}
-              className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-            />
-          ) : product.image ? (
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-              priority={false}
-            />
-          ) : (
-            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-              <span className="text-gray-500 text-sm">No Image</span>
-            </div>
-          )}
+          {(() => {
+            const imgSrc = resolveImageUrl(product.image);
+            return imgSrc ? (
+              <img
+                src={imgSrc}
+                alt={product.name}
+                className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-500 text-sm">No Image</span>
+              </div>
+            );
+          })()}
         </div>
         <button 
           onClick={handleFavoriteClick}

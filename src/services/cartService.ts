@@ -1,6 +1,7 @@
 // src/services/cartService.ts
 import { Product } from './productService';
 import { apiService } from './apiService';
+import { resolveImageUrl } from '@/lib/imageUrl';
 
 export interface CartItem {
   id: string;
@@ -245,7 +246,7 @@ export const cartService = {
         productId: product.id,
         name: product.name,
         price: product.price,
-        image: product.image,
+        image: resolveImageUrl(product.image) || '',
         quantity,
         size,
         color,

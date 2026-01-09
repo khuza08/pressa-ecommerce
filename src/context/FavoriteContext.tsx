@@ -3,6 +3,7 @@
 
 import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
+import { resolveImageUrl } from '@/lib/imageUrl';
 
 // Define the type for a favorite item
 interface FavoriteItem {
@@ -167,7 +168,7 @@ export const FavoriteProvider = ({ children }: { children: ReactNode }) => {
             id: backendItem.product_id.toString(),
             name: backendItem.product.name,
             price: backendItem.product.price,
-            image: backendItem.product.image,
+            image: resolveImageUrl(backendItem.product.image) || '',
           }));
 
           setFavorites(localItems);
