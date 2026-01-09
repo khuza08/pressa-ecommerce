@@ -387,68 +387,79 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                     {/* Left Column - Product Images */}
                     <div className="product-images-container w-full md:w-[280px] relative">
                         <div
-                            className="bg-white overflow-hidden sticky flex flex-col border border-black/20 rounded-lg h-[400px]"
+                            className="bg-white overflow-hidden sticky flex flex-col border border-black/20 rounded-none md:rounded-lg h-[400px]"
                             style={snapToHeader.productImages ? { top: '70px' } : { top: '70px' }}
                         >
-                            {/* Main Image with Zoom */}
-                            {/* Mobile & Tablet: Image Carousel with Swipe */}
+                            {/* Mobile: Single Image with Swipe */}
                             <div className="block md:hidden relative overflow-hidden w-full">
-                                <div
-                                    className="relative aspect-square w-full"
-                                    onTouchStart={handleTouchStart}
-                                    onTouchMove={handleTouchMove}
-                                    onTouchEnd={handleTouchEnd}
-                                >
-                                    {(product?.images && product?.images?.length > 0 ? product.images : product?.image ? [{url: product.image, alt: product.name}] : []).map((img, index) => (
-                                        <div
-                                            key={index}
-                                            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${mainImage === img.url ? 'opacity-100' : 'opacity-0'}`}
-                                        >
-                                            {img.url?.includes('uploads') ? (
-                                                <img
-                                                    src={(() => {
-                                                        // Extract just the filename from the uploads path
-                                                        let filename = img.url;
-                                                        if (img.url?.includes('uploads/')) {
-                                                          filename = img.url.split('uploads/').pop() || img.url;
-                                                        }
+                                <div className="relative aspect-square w-full">
+                                    {(() => {
+                                        // Find the current image to display
+                                        const currentImage = (product?.images && product?.images?.length > 0 ?
+                                            product.images.find(img => img.url === mainImage) :
+                                            null) ||
+                                            (product?.image ? {url: product.image, alt: product.name} : null);
 
-                                                        // Get the base URL and remove any /api/v1 suffix for static files
-                                                        let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                                        if (baseUrl.endsWith('/api/v1')) {
-                                                          baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                                                        }
+                                        if (currentImage) {
+                                            return (
+                                                <div
+                                                    className="absolute inset-0 w-full h-full"
+                                                    onTouchStart={handleTouchStart}
+                                                    onTouchMove={handleTouchMove}
+                                                    onTouchEnd={handleTouchEnd}
+                                                >
+                                                    {currentImage.url?.includes('uploads') ? (
+                                                        <img
+                                                            src={(() => {
+                                                                // Extract just the filename from the uploads path
+                                                                let filename = currentImage.url;
+                                                                if (currentImage.url?.includes('uploads/')) {
+                                                                  filename = currentImage.url.split('uploads/').pop() || currentImage.url;
+                                                                }
 
-                                                        // Use a relative URL that will be proxied to the backend
-                                                        return `${baseUrl}/uploads/${filename}`;
-                                                    })()}
-                                                    alt={img.alt || product?.name || "Product image"}
-                                                    className="absolute inset-0 w-full h-full object-cover"
-                                                />
-                                            ) : (
-                                                <Image
-                                                    src={img.url || "https://placehold.co/600x600?text=Product+Image"}
-                                                    alt={img.alt || product?.name || "Product image"}
-                                                    fill
-                                                    className="w-full h-full object-cover"
-                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                                                    priority={false}
-                                                />
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
+                                                                // Get the base URL and remove any /api/v1 suffix for static files
+                                                                let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                                if (baseUrl.endsWith('/api/v1')) {
+                                                                  baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                                }
 
-                                {/* Mobile Carousel Indicators */}
-                                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
-                                    {(product?.images && product?.images?.length > 0 ? product.images : product?.image ? [{url: product.image, alt: product.name}] : []).map((img, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => setMainImage(img.url)}
-                                            className={`w-2 h-2 rounded-full ${mainImage === img.url ? 'bg-white' : 'bg-white/50'}`}
-                                            aria-label={`View image ${index + 1}`}
-                                        />
-                                    ))}
+                                                                // Use a relative URL that will be proxied to the backend
+                                                                return `${baseUrl}/uploads/${filename}`;
+                                                            })()}
+                                                            alt={currentImage.alt || product?.name || "Product image"}
+                                                            className="absolute inset-0 w-full h-full object-cover"
+                                                            style={{ objectFit: 'cover' }}
+                                                        />
+                                                    ) : (
+                                                        <img
+                                                            src={currentImage.url || "https://placehold.co/600x600?text=Product+Image"}
+                                                            alt={currentImage.alt || product?.name || "Product image"}
+                                                            className="absolute inset-0 w-full h-full object-cover"
+                                                            style={{ objectFit: 'cover' }}
+                                                        />
+                                                    )}
+                                                </div>
+                                            );
+                                        } else {
+                                            return (
+                                                <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                                                    <span className="text-gray-500">No image available</span>
+                                                </div>
+                                            );
+                                        }
+                                    })()}
+
+                                    {/* Mobile Carousel Indicators */}
+                                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+                                        {(product?.images && product?.images?.length > 0 ? product.images : product?.image ? [{url: product.image, alt: product.name}] : []).map((img, index) => (
+                                            <button
+                                                key={index}
+                                                onClick={() => setMainImage(img.url)}
+                                                className={`w-2 h-2 rounded-full ${mainImage === img.url ? 'bg-white' : 'bg-white/50'}`}
+                                                aria-label={`View image ${index + 1}`}
+                                            />
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
 
@@ -481,15 +492,14 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                             })()}
                                             alt={product?.name || "Product image"}
                                             className={`absolute inset-0 w-full h-full object-cover transition-all duration-200 ${isHovering ? "" : ""}`}
+                                            style={{ objectFit: 'cover' }}
                                         />
                                     ) : (
-                                        <Image
+                                        <img
                                             src={mainImage || product?.image || "https://placehold.co/600x600?text=Product+Image"}
                                             alt={product?.name || "Product image"}
-                                            fill
-                                            className={`object-cover transition-all duration-200 ${isHovering ? "blur-sm" : ""}`}
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                                            priority={false}
+                                            className="absolute inset-0 w-full h-full object-cover"
+                                            style={{ objectFit: 'cover' }}
                                         />
                                     )}
                                 </div>
@@ -547,15 +557,14 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                         })()}
                                                         alt={img.alt || "Thumbnail"}
                                                         className="absolute inset-0 w-full h-full object-cover"
+                                                        style={{ objectFit: 'cover' }}
                                                     />
                                                 ) : (
-                                                    <Image
+                                                    <img
                                                         src={img.url || "https://placehold.co/100x100?text=Thumb"}
                                                         alt={img.alt || "Thumbnail"}
-                                                        fill
-                                                        className="w-full h-full object-cover"
-                                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                                                        priority={false}
+                                                        className="absolute inset-0 w-full h-full object-cover"
+                                                        style={{ objectFit: 'cover' }}
                                                     />
                                                 )}
                                             </div>
@@ -851,7 +860,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                             −
                                         </button>
                                         <input
-                                            type="number"
+                                            type="numeric"
                                             value={quantity}
                                             onChange={(e) => {
                                                 const val = parseInt(e.target.value) || 1;
@@ -1146,13 +1155,10 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 className="max-h-[85vh] w-auto object-contain rounded-xl"
                             />
                         ) : (
-                            <Image
+                            <img
                                 src={fullscreenImage}
                                 alt="Fullscreen view"
-                                width={800}
-                                height={600}
-                                className="max-h-[85vh] object-contain"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 50vw"
+                                className="max-h-[85vh] w-auto object-contain rounded-xl"
                             />
                         )}
                     </div>
