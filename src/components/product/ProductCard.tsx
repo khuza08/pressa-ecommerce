@@ -27,13 +27,13 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
   const { isAuthenticated } = useAuth();
   const { openLoginModal } = useLoginModal();
 
-  const handleFavoriteClick = (e: React.MouseEvent) => {
+  const handleFavoriteClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
     // If user is not authenticated, show login modal
     if (!isAuthenticated) {
-      openLoginModal(() => {
+      openLoginModal(async () => {
         // Create the proper image URL for favorites
         let imageUrl = product.image;
         if (product.image && !product.image.startsWith('http')) {
@@ -62,10 +62,10 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
         }
 
         if (isFavorite(product.id)) {
-          removeFromFavorites(product.id);
+          await removeFromFavorites(product.id.toString());
         } else {
-          addToFavorites({
-            id: product.id,
+          await addToFavorites({
+            id: product.id.toString(),
             name: product.name,
             price: product.price,
             image: imageUrl
@@ -103,10 +103,10 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
     }
 
     if (isFavorite(product.id)) {
-      removeFromFavorites(product.id);
+      await removeFromFavorites(product.id.toString());
     } else {
-      addToFavorites({
-        id: product.id,
+      await addToFavorites({
+        id: product.id.toString(),
         name: product.name,
         price: product.price,
         image: imageUrl

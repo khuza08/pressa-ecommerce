@@ -3,12 +3,13 @@
 
 import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import { cartService, Cart } from '@/services/cartService';
+import { useAuth } from './AuthContext';
 
 interface CartContextType {
   cart: Cart;
-  addToCart: (product: any, quantity?: number, size?: string, color?: string) => void;
-  updateQuantity: (itemId: string, quantity: number) => void;
-  removeItem: (itemId: string) => void;
+  addToCart: (product: any, quantity?: number, size?: string, color?: string) => Promise<void>;
+  updateQuantity: (itemId: string, quantity: number) => Promise<void>;
+  removeItem: (itemId: string) => Promise<void>;
   getTotalItems: () => number;
   getTotalPrice: () => number;
   clearCart: () => void;
@@ -18,6 +19,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<Cart>(cartService.getCart());
+  const { getToken } = useAuth();
 
   // For real-time updates when localStorage changes (e.g., from other tabs)
   useEffect(() => {
@@ -29,18 +31,31 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  const addToCart = (product: any, quantity: number = 1, size?: string, color?: string) => {
-    const updatedCart = cartService.addToCart(product, quantity, size, color);
+  // Load cart from backend when user logs in
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      cartService.loadCartFromBackend().then(loadedCart => {
+        setCart(loadedCart);
+      });
+    } else {
+      // When user logs out, clear cart
+      setCart({ items: [], total: 0 });
+    }
+  }, [getToken]);
+
+  const addToCart = async (product: any, quantity: number = 1, size?: string, color?: string) => {
+    const updatedCart = await cartService.addToCart(product, quantity, size, color);
     setCart(updatedCart);
   };
 
-  const updateQuantity = (itemId: string, quantity: number) => {
-    const updatedCart = cartService.updateQuantity(itemId, quantity);
+  const updateQuantity = async (itemId: string, quantity: number) => {
+    const updatedCart = await cartService.updateQuantity(itemId, quantity);
     setCart(updatedCart);
   };
 
-  const removeItem = (itemId: string) => {
-    const updatedCart = cartService.removeFromCart(itemId);
+  const removeItem = async (itemId: string) => {
+    const updatedCart = await cartService.removeFromCart(itemId);
     setCart(updatedCart);
   };
 

@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '@/types/user';
+import { cartService } from '@/services/cartService';
 
 interface AuthContextType {
   user: User | null;
@@ -12,6 +13,7 @@ interface AuthContextType {
   loginWithToken: (user: any, token: string) => void; // New method for OAuth login
   logout: () => void;
   isAuthenticated: boolean;
+  getToken: () => string | null; // Function to get token directly from localStorage
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -37,9 +39,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     }
     setLoading(false);
+
+    // Listen for storage changes (e.g., from OAuth callback)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'auth_token') {
+        if (e.newValue) {
+          // Token was added/updated, refresh user data
+          const storedUser = localStorage.getItem('user');
+          if (storedUser) {
+            try {
+              const parsedUser = JSON.parse(storedUser);
+              setUser(parsedUser);
+            } catch (error) {
+              console.error('Error parsing user data from storage event:', error);
+            }
+          }
+        } else {
+          // Token was removed (logout)
+          setUser(null);
+        }
+      } else if (e.key === 'user' && e.newValue) {
+        try {
+          const parsedUser = JSON.parse(e.newValue);
+          setUser(parsedUser);
+        } catch (error) {
+          console.error('Error parsing user data from storage event:', error);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  const loginWithToken = (userData: any, token: string) => {
+  const loginWithToken = async (userData: any, token: string) => {
     // Convert the user data from backend to our frontend User type
     const userToStore: User = {
       id: userData.id,
@@ -51,6 +84,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(userToStore);
     localStorage.setItem('user', JSON.stringify(userToStore));
     localStorage.setItem('auth_token', token);
+
+    // Load cart and favorites from backend after login
+    await cartService.loadCartFromBackend();
   };
 
   const loginWithGoogle = () => {
@@ -86,6 +122,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(userToStore);
       localStorage.setItem('user', JSON.stringify(userToStore));
       localStorage.setItem('auth_token', result.token);
+
+      // Load cart and favorites from backend after login
+      await cartService.loadCartFromBackend();
     } catch (error) {
       throw error;
     } finally {
@@ -121,6 +160,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(userToStore);
       localStorage.setItem('user', JSON.stringify(userToStore));
       localStorage.setItem('auth_token', result.token);
+
+      // Load cart and favorites from backend after registration
+      await cartService.loadCartFromBackend();
     } catch (error) {
       throw error;
     } finally {
@@ -128,10 +170,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    // Keep cart items in backend but clear local cart to hide notification
+    cartService.clearCart(); // Clear local storage cart to remove notification
+
     setUser(null);
     localStorage.removeItem('user');
     localStorage.removeItem('auth_token');
+  };
+
+  const getToken = () => {
+    return localStorage.getItem('auth_token');
   };
 
   const isAuthenticated = !!user;
@@ -145,7 +194,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loginWithGoogle,
       loginWithToken,
       logout,
-      isAuthenticated
+      isAuthenticated,
+      getToken
     }}>
       {children}
     </AuthContext.Provider>

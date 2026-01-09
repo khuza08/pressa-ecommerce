@@ -31,11 +31,11 @@ export default function ProductDetailBottomBar({
   const [quantity, setQuantity] = useState(initialQuantity);
   const [activeVariant, setActiveVariant] = useState(initialVariant);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!isAuthenticated) {
-      openLoginModal(() => {
+      openLoginModal(async () => {
         if (product) {
-          addToCart({
+          await addToCart({
             id: product.id,
             name: product.name,
             price: product.price,
@@ -49,7 +49,7 @@ export default function ProductDetailBottomBar({
     }
 
     if (product) {
-      addToCart({
+      await addToCart({
         id: product.id,
         name: product.name,
         price: product.price,

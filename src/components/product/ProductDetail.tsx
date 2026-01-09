@@ -239,8 +239,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
     const [activeTab, setActiveTab] = useState("detail");
     const [mainImage, setMainImage] = useState<string>("");
     const [showFullDescription, setShowFullDescription] = useState(false);
-    const { addToFavorites, removeFromFavorites, isFavorite: checkIsFavorite } = useFavorites();
-    const [localIsFavorite, setLocalIsFavorite] = useState(false);
+    const { addToFavorites, removeFromFavorites, isFavorite: checkIsFavorite, favorites } = useFavorites();
 
     // Touch handling for mobile swipe
     const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -316,12 +315,8 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                 setMainImage("https://placehold.co/600x600?text=Product+Image");
             }
 
-            // Check if product is already in favorites
-            if (product.id) {
-                setLocalIsFavorite(checkIsFavorite(product.id));
-            }
         }
-    }, [product, checkIsFavorite]);
+    }, [product, favorites, checkIsFavorite]);
 
     const handleQuantityChange = (type: "increment" | "decrement") => {
         if (!product) return;
@@ -588,13 +583,13 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                             <div className="flex items-center justify-between mb-2">
                                 <h1 className="text-2xl font-bold text-black flex-1">{product?.name}</h1>
                                 <button
-                                    onClick={() => {
+                                    onClick={async () => {
                                         if (!isAuthenticated) {
-                                            openLoginModal(() => {
+                                            openLoginModal(async () => {
                                                 if (product) {
-                                                    if (localIsFavorite) {
-                                                        removeFromFavorites(product.id);
-                                                        setLocalIsFavorite(false);
+                                                    const isCurrentlyFavorite = checkIsFavorite(product.id.toString());
+                                                    if (isCurrentlyFavorite) {
+                                                        await removeFromFavorites(product.id.toString());
                                                     } else {
                                                         // Create the proper image URL for favorites
                                                         let imageUrl = product.image || "";
@@ -623,13 +618,12 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                           }
                                                         }
 
-                                                        addToFavorites({
-                                                            id: product.id,
+                                                        await addToFavorites({
+                                                            id: product.id.toString(),
                                                             name: product.name,
                                                             price: product.price,
                                                             image: imageUrl
                                                         });
-                                                        setLocalIsFavorite(true);
                                                     }
                                                 }
                                             }, 'favorite');
@@ -637,9 +631,9 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                         }
 
                                         if (product) {
-                                            if (localIsFavorite) {
-                                                removeFromFavorites(product.id);
-                                                setLocalIsFavorite(false);
+                                            const isCurrentlyFavorite = checkIsFavorite(product.id.toString());
+                                            if (isCurrentlyFavorite) {
+                                                await removeFromFavorites(product.id.toString());
                                             } else {
                                                 // Create the proper image URL for favorites
                                                 let imageUrl = product.image || "";
@@ -668,21 +662,20 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                   }
                                                 }
 
-                                                addToFavorites({
-                                                    id: product.id,
+                                                await addToFavorites({
+                                                    id: product.id.toString(),
                                                     name: product.name,
                                                     price: product.price,
                                                     image: imageUrl
                                                 });
-                                                setLocalIsFavorite(true);
                                             }
                                         }
                                     }}
                                     className="ml-4 shrink-0"
-                                    aria-label={localIsFavorite ? "Remove from favorites" : "Add to favorites"}
+                                    aria-label={checkIsFavorite(product?.id.toString() || '') ? "Remove from favorites" : "Add to favorites"}
                                 >
                                     <FaHeart
-                                        className={`${localIsFavorite ? 'text-red-500 fill-red-500' : 'text-black/40'} w-6 h-6`}
+                                        className={`${checkIsFavorite(product?.id.toString() || '') ? 'text-red-500 fill-red-500' : 'text-black/40'} w-6 h-6`}
                                     />
                                 </button>
                             </div>
@@ -868,11 +861,11 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
 
                             <div className="space-y-3">
                                 <button
-                                    onClick={() => {
+                                    onClick={async () => {
                                         if (!isAuthenticated) {
-                                            openLoginModal(() => {
+                                            openLoginModal(async () => {
                                                 if (product) {
-                                                    addToCart({
+                                                    await addToCart({
                                                         id: product.id,
                                                         name: product.name,
                                                         price: product.price,
@@ -886,7 +879,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                         }
 
                                         if (product) {
-                                            addToCart({
+                                            await addToCart({
                                                 id: product.id,
                                                 name: product.name,
                                                 price: product.price,
