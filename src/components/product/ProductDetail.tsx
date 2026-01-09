@@ -339,7 +339,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
 
     if (loading) {
         return (
-            <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto mb-10 flex justify-center items-center h-64">
+            <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto mt-12 mb-10 flex justify-center items-center h-64">
                 <p className="text-lg">Loading product...</p>
             </div>
         );
@@ -347,7 +347,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
 
     if (error) {
         return (
-            <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto mb-10">
+            <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto mt-12 mb-10">
                 <p className="text-lg text-red-500">Error: {error}</p>
             </div>
         );
@@ -355,7 +355,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
 
     if (!product) {
         return (
-            <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto mb-10">
+            <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto mt-12 mb-10">
                 <p className="text-lg">Product not found</p>
             </div>
         );
@@ -363,8 +363,26 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
 
     return (
         <>
+            {/* Breadcrumb */}
+            {!loading && product && (
+            <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto px-4 py-3">
+                <nav className="flex items-center text-sm text-black/60">
+                    <a href="/" className="hover:text-black transition">Home</a>
+                    <span className="mx-2">&gt;</span>
+                    <a
+                      href={`/category?category=${encodeURIComponent(product?.category || '')}`}
+                      className="hover:text-black transition"
+                    >
+                      {product?.category || 'Uncategorized'}
+                    </a>
+                    <span className="mx-2">&gt;</span>
+                    <span className="text-black font-medium">{product?.name}</span>
+                </nav>
+            </div>
+            )}
+
             {/* Changed max-width to responsive width */}
-            <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto mb-20 md:mb-10">
+            <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto mt-4 mb-20 md:mb-10">
                 <div className="flex flex-col lg:flex-row gap-4">
                     {/* Left Column - Product Images */}
                     <div className="product-images-container w-full md:w-[280px] relative">
