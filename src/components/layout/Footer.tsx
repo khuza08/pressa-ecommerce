@@ -1,10 +1,43 @@
+"use client";
 // src/components/layout/Footer.tsx
 import { FaFacebook, FaInstagram, FaTwitter, FaCcVisa, FaCcMastercard, FaCcPaypal, FaLock } from "react-icons/fa";
+import { useState, useEffect } from 'react';
+import { Category } from '@/types/category';
 
 export default function Footer() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+        const response = await fetch(`${API_BASE_URL}/categories`);
+        if (response.ok) {
+          const data = await response.json();
+          // Limit to first 4 categories for the footer
+          setCategories(Array.isArray(data) ? data.slice(0, 4) : []);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        // Fallback to default categories if API fails
+        setCategories([
+          { id: 1, name: 'New Arrivals' },
+          { id: 2, name: 'Best Sellers' },
+          { id: 3, name: 'Sale Items' },
+          { id: 4, name: 'Featured' },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
-<footer className="text-black pt-16 pb-12">
-        <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto px-4">
+    <footer className="text-black pt-16 pb-12">
+      <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
           {/* Brand/Company Info */}
           <div className="lg:col-span-2">
@@ -41,10 +74,27 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Categories</h4>
             <ul className="space-y-2 text-sm text-black/50">
-              <li><a href="/shop/products" className="hover:text-black transition">New Arrivals</a></li>
-              <li><a href="/shop/products" className="hover:text-black transition">Best Sellers</a></li>
-              <li><a href="/shop/products" className="hover:text-black transition">Sale Items</a></li>
-              <li><a href="/shop/products" className="hover:text-black transition">Featured</a></li>
+              {loading ? (
+                <li>Loading categories...</li>
+              ) : categories.length > 0 ? (
+                categories.map((category) => (
+                  <li key={category.id}>
+                    <a
+                      href={`/shop/products?category=${category.name}`}
+                      className="hover:text-black transition"
+                    >
+                      {category.name}
+                    </a>
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li><a href="/shop/products" className="hover:text-black transition">New Arrivals</a></li>
+                  <li><a href="/shop/products" className="hover:text-black transition">Best Sellers</a></li>
+                  <li><a href="/shop/products" className="hover:text-black transition">Sale Items</a></li>
+                  <li><a href="/shop/products" className="hover:text-black transition">Featured</a></li>
+                </>
+              )}
             </ul>
           </div>
 
