@@ -837,14 +837,18 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                             value={quantity}
                                             onChange={(e) => {
                                                 const val = parseInt(e.target.value) || 1;
-                                                // Determine the max stock based on whether the product has variants
                                                 const maxStock = product?.has_variants && product?.variants
-                                                    ? (product.variants.find(v => v.id === activeVariant)?.stock || 1)
-                                                    : (product?.stock || 1);
+                                                ? (product.variants.find(v => v.id === activeVariant)?.stock || 1)
+                                                : (product?.stock || 1);
                                                 if (val >= 1 && val <= maxStock) setQuantity(val);
                                             }}
-                                            className="w-14 text-center text-sm border-0 focus:outline-none"
-                                        />
+                                            className="w-14 text-center text-sm border-0 focus:outline-none webkit-appearance-none moz-appearance-none appearance-none"
+                                            style={{
+                                                MozAppearance: 'none',
+                                                WebkitAppearance: 'none',
+                                                appearance: 'none'
+                                            }}
+                                            />
                                         <button
                                             onClick={() => handleQuantityChange("increment")}
                                             className="px-3 py-1.5 text-black/60 hover:bg-black/5 text-sm disabled:opacity-50"
