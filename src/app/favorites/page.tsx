@@ -119,11 +119,11 @@ export default function FavoritesPage() {
             </div>
 
             <div className="lg:col-span-1">
-              <div className="bg-black/5 p-6 rounded-lg">
+              <div className="p-6 rounded-lg border border-black/20">
                 <h2 className="text-lg font-bold mb-4">Favorites Summary</h2>
                 <p>You have {favorites.length} item{favorites.length !== 1 ? 's' : ''} in your favorites list.</p>
                 
-                <Link href="/" className="w-full mt-4 border border-black/30 py-3 px-4 rounded-full text-center hover:bg-black/10 transition block">
+                <Link href="/" className="font-bold w-full mt-4 border border-black/30 py-3 px-4 rounded-full text-white text-center bg-black transition block">
                   Continue Shopping
                 </Link>
               </div>
