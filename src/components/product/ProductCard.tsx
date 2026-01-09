@@ -25,6 +25,7 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
 
   const { isAuthenticated } = useAuth();
+
   const { openLoginModal } = useLoginModal();
 
   const handleFavoriteClick = async (e: React.MouseEvent) => {
@@ -169,10 +170,10 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
           />
         </button>
       </div>
-      
+
       <div className="mt-3">
         <h3 className="font-medium text-sm line-clamp-2 h-12 overflow-hidden">{product.name}</h3>
-        
+
         <div className="flex items-center gap-2 mt-2">
           <div className="flex items-center">
             <FiStar className="text-yellow-400 fill-current" />
@@ -181,7 +182,7 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
           <span className="text-black/50 text-sm">|</span>
           <span className="text-black/50 text-sm">Terjual {product.totalSold}</span>
         </div>
-        
+
         <div className="mt-2">
           <span className="font-bold text-sm">{formattedPrice}</span>
         </div>

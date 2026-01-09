@@ -873,7 +873,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 <button
                                     onClick={async () => {
                                         if (!isAuthenticated) {
-                                            openLoginDialog(async () => {
+                                            openLoginModal(async () => {
                                                 if (product) {
                                                     await addToCart({
                                                         id: product.id,
