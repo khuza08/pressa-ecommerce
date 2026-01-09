@@ -129,7 +129,7 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
     >
       <div className="relative">
         <div className="aspect-square w-full overflow-hidden rounded-md">
-          {product.image.includes('uploads') ? (
+          {product.image && product.image.includes('uploads') ? (
             <img
               src={(() => {
                 // Extract just the filename from the uploads path
@@ -149,7 +149,7 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
               alt={product.name}
               className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
             />
-          ) : (
+          ) : product.image ? (
             <Image
               src={product.image}
               alt={product.name}
@@ -158,6 +158,10 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
               priority={false}
             />
+          ) : (
+            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+              <span className="text-gray-500 text-sm">No Image</span>
+            </div>
           )}
         </div>
         <button 

@@ -25,7 +25,7 @@ const SmallProductCard = memo(({ product }: SmallProductCardProps) => {
   return (
     <Link href={`/shop/products/${product.id}`} className="flex gap-4 p-4 border border-black/20 rounded-xl hover:border-black/40 transition-colors bg-white min-w-[280px]">
       <div className="w-16 h-16 bg-black rounded-lg flex items-center justify-center shrink-0 relative">
-        {product.image.includes('uploads') ? (
+        {product.image && product.image.includes('uploads') ? (
           <img
             src={(() => {
               // Extract just the filename from the uploads path
@@ -45,7 +45,7 @@ const SmallProductCard = memo(({ product }: SmallProductCardProps) => {
             alt={product.name}
             className="w-full h-full object-cover rounded-lg"
           />
-        ) : (
+        ) : product.image ? (
           <Image
             src={product.image}
             alt={product.name}
@@ -54,6 +54,10 @@ const SmallProductCard = memo(({ product }: SmallProductCardProps) => {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
             priority={false}
           />
+        ) : (
+          <div className="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center">
+            <span className="text-gray-500 text-xs">No Image</span>
+          </div>
         )}
       </div>
       <div className="flex flex-col justify-center flex-1 min-w-0">

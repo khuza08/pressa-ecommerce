@@ -1,13 +1,22 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: [
+    'localhost:3000',
+    'localhost:3001',
+    'localhost:3002',
+    '192.168.1.4:3000',
+    '192.168.1.4:3001',
+    '192.168.1.4:3002',
+    '*.vercel.app'
+  ],
   async rewrites() {
     return [
       {
         source: '/uploads/:path*',
         destination: 'http://localhost:8080/uploads/:path*', // Proxy to backend
       },
-    ]
+    ];
   },
   images: {
     remotePatterns: [

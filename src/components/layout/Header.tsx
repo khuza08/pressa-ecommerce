@@ -240,7 +240,7 @@ export default function Header() {
       <header className="sticky top-0 z-50 bg-white">
 
         {/* Main Header */}
-        <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto py-3">
+        <div className="w-[90vw] mx-auto py-3">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center space-x-6">
               <a href="/" className="text-black text-xl font-bold">

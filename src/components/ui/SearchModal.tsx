@@ -155,27 +155,33 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
                 }}
               >
                 <div className="w-16 h-16 bg-gray-200 rounded-md overflow-hidden flex-shrink-0">
-                  <img
-                    src={product.image.includes('uploads') ?
-                      (() => {
-                        // Extract just the filename from the uploads path
-                        let filename = product.image;
-                        if (product.image.includes('uploads/')) {
-                          filename = product.image.split('uploads/').pop() || product.image;
-                        }
+                  {product.image ? (
+                    <img
+                      src={product.image.includes('uploads') ?
+                        (() => {
+                          // Extract just the filename from the uploads path
+                          let filename = product.image;
+                          if (product.image.includes('uploads/')) {
+                            filename = product.image.split('uploads/').pop() || product.image;
+                          }
 
-                        // Get the base URL and remove any /api/v1 suffix for static files
-                        let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                        if (baseUrl.endsWith('/api/v1')) {
-                          baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                        }
+                          // Get the base URL and remove any /api/v1 suffix for static files
+                          let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                          if (baseUrl.endsWith('/api/v1')) {
+                            baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                          }
 
-                        return `${baseUrl}/uploads/${filename}`;
-                      })()
-                     : product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
+                          return `${baseUrl}/uploads/${filename}`;
+                        })()
+                       : product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <span className="text-gray-500 text-xs">No Image</span>
+                    </div>
+                  )}
                 </div>
                 <div className="ml-3 flex-1 min-w-0">
                   <h3 className="font-medium text-sm truncate">{product.name}</h3>

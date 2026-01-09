@@ -84,24 +84,30 @@ export default function CategoryPage() {
                   className="bg-white rounded-lg overflow-hidden border border-black/20 hover:border-black/40 transition-colors"
                 >
                   <div className="bg-black/10 h-48 md:h-56 lg:h-64 flex items-center justify-center">
-                    <img
-                      src={product.image.includes('uploads')
-                        ? (() => {
-                            // Get the base URL and remove any /api/v1 suffix for static files
-                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                            if (baseUrl.endsWith('/api/v1')) {
-                              baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                            }
+                    {product.image ? (
+                      <img
+                        src={product.image.includes('uploads')
+                          ? (() => {
+                              // Get the base URL and remove any /api/v1 suffix for static files
+                              let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                              if (baseUrl.endsWith('/api/v1')) {
+                                baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                              }
 
-                            let normalizedPath = product.image.replace(/\\/g, '/');
-                            if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
-                            if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
-                            return `${baseUrl}${normalizedPath}`;
-                          })()
-                        : product.image}
-                      alt={product.name}
-                      className="w-full h-full object-cover"
-                    />
+                              let normalizedPath = product.image.replace(/\\/g, '/');
+                              if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
+                              if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
+                              return `${baseUrl}${normalizedPath}`;
+                            })()
+                          : product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                        <span className="text-gray-500">No Image</span>
+                      </div>
+                    )}
                   </div>
                   <div className="p-3 md:p-4">
                     <h3 className="font-semibold text-sm md:text-base lg:text-lg mb-1 md:mb-2 truncate">{product.name}</h3>
