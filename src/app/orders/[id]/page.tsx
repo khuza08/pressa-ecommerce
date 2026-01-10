@@ -75,11 +75,21 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
 
         const fetchOrderDetails = async () => {
             try {
+                const token = getToken();
+                console.log('OrderDetailPage: Fetching order details with token:', token ? 'exists' : 'missing');
+
                 const data = await paymentService.getPaymentStatus(resolvedParams.id);
                 setOrder(data.order as Order);
                 setTransaction(data.transaction as Transaction);
+                setError(null);
             } catch (err: any) {
-                setError(err.message);
+                console.error('OrderDetailPage: Fetch error:', err);
+                // Check if it's an authentication error
+                if (err.message.includes('401') || err.message.toLowerCase().includes('unauthorized') || err.message.toLowerCase().includes('authenticated')) {
+                    setError('Your session has expired. Please log in again.');
+                } else {
+                    setError(err.message);
+                }
             } finally {
                 setLoading(false);
             }
@@ -110,13 +120,41 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
         );
     }
 
-    if (error || !order) {
+    if (error) {
+        return (
+            <div className="min-h-screen bg-white py-8 flex items-center justify-center">
+                <div className="max-w-md w-full px-4 text-center">
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-8 rounded-lg mb-6">
+                        <p className="mb-4">{error}</p>
+                        <button
+                            onClick={() => {
+                                setLoading(true);
+                                setError(null);
+                                window.location.reload();
+                            }}
+                            className="bg-red-600 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-red-700 transition"
+                        >
+                            Retry
+                        </button>
+                    </div>
+                    <Link
+                        href="/orders"
+                        className="inline-block bg-black text-white py-3 px-6 rounded-full hover:bg-black/90 transition"
+                    >
+                        View All Orders
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    if (!order) {
         return (
             <div className="min-h-screen bg-white flex items-center justify-center">
                 <div className="text-center">
                     <FiPackage className="w-16 h-16 mx-auto text-gray-300 mb-4" />
                     <h2 className="text-xl font-medium text-gray-600 mb-2">Order not found</h2>
-                    <p className="text-gray-400 mb-6">{error || 'The order you are looking for does not exist.'}</p>
+                    <p className="text-gray-400 mb-6">The order you are looking for does not exist.</p>
                     <Link
                         href="/orders"
                         className="inline-block bg-black text-white py-3 px-6 rounded-full hover:bg-black/90 transition"

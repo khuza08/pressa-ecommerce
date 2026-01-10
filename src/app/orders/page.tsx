@@ -46,6 +46,8 @@ export default function OrdersPage() {
         const fetchOrders = async () => {
             try {
                 const token = getToken();
+                console.log('OrdersPage: Fetching orders with token:', token ? 'exists' : 'missing');
+
                 const response = await fetch(`${API_BASE_URL}/orders`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -54,12 +56,19 @@ export default function OrdersPage() {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Failed to fetch orders');
+                    const errorData = await response.json().catch(() => ({}));
+                    if (response.status === 401) {
+                        console.error('OrdersPage: Unauthorized error. Token might be invalid or expired.');
+                        throw new Error('Your session has expired. Please log in again.');
+                    }
+                    throw new Error(errorData.error || errorData.message || `Failed to fetch orders: ${response.status}`);
                 }
 
                 const data = await response.json();
                 setOrders(data.orders || []);
+                setError(null);
             } catch (err: any) {
+                console.error('OrdersPage: Fetch error:', err);
                 setError(err.message);
             } finally {
                 setLoading(false);
@@ -130,8 +139,18 @@ export default function OrdersPage() {
                 </h1>
 
                 {error && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
-                        {error}
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-6 rounded-lg mb-6 text-center">
+                        <p className="mb-4">{error}</p>
+                        <button
+                            onClick={() => {
+                                setLoading(true);
+                                setError(null);
+                                window.location.reload();
+                            }}
+                            className="bg-red-600 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-red-700 transition"
+                        >
+                            Retry
+                        </button>
                     </div>
                 )}
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { User } from '@/types/user';
 import { cartService } from '@/services/cartService';
 
@@ -9,8 +9,8 @@ interface AuthContextType {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
-  loginWithGoogle: () => Promise<void>;
-  loginWithToken: (user: any, token: string) => void; // New method for OAuth login
+  loginWithGoogle: () => void;
+  loginWithToken: (user: any, token: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
   getToken: () => string | null; // Function to get token directly from localStorage
@@ -23,22 +23,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing session
-    const storedUser = localStorage.getItem('user');
-    const storedToken = localStorage.getItem('auth_token');
+    // Check for existing session on mount
+    const initAuth = () => {
+      const storedUser = localStorage.getItem('user');
+      const storedToken = localStorage.getItem('auth_token');
 
-    if (storedUser && storedToken) {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-      } catch (error) {
-        console.error('Error parsing stored user data:', error);
-        // Clear invalid data
-        localStorage.removeItem('user');
-        localStorage.removeItem('auth_token');
+      if (storedUser && storedToken) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
+        } catch (error) {
+          console.error('Error parsing stored user data:', error);
+          // Clear invalid data
+          localStorage.removeItem('user');
+          localStorage.removeItem('auth_token');
+        }
       }
-    }
-    setLoading(false);
+      setLoading(false);
+    };
+
+    initAuth();
 
     // Listen for storage changes (e.g., from OAuth callback)
     const handleStorageChange = (e: StorageEvent) => {
@@ -72,7 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  const loginWithToken = async (userData: any, token: string) => {
+  const loginWithToken = useCallback(async (userData: any, token: string) => {
     // Convert the user data from backend to our frontend User type
     const userToStore: User = {
       id: userData.id,
@@ -93,14 +97,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Load cart and favorites from backend after login
     await cartService.loadCartFromBackend();
-  };
+  }, []);
 
-  const loginWithGoogle = () => {
+  const loginWithGoogle = useCallback(() => {
     // Redirect to initiate Google OAuth flow
     window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1'}/auth/google/login`;
-  };
+  }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = useCallback(async (email: string, password: string) => {
     setLoading(true);
 
     try {
@@ -142,9 +146,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = useCallback(async (name: string, email: string, password: string) => {
     setLoading(true);
 
     try {
@@ -186,20 +190,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const logout = async () => {
+  const logout = useCallback(() => {
     // Keep cart items in backend but clear local cart to hide notification
     cartService.clearCart(); // Clear local storage cart to remove notification
 
     setUser(null);
     localStorage.removeItem('user');
     localStorage.removeItem('auth_token');
-  };
+  }, []);
 
-  const getToken = () => {
-    return localStorage.getItem('auth_token');
-  };
+  const getToken = useCallback(() => {
+    return typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+  }, []);
 
   const isAuthenticated = !!user;
 
