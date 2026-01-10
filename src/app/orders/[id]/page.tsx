@@ -153,7 +153,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                     <div className="text-right">
                         <span className={`px-3 py-1 rounded-full text-sm font-medium ${order.payment_status === 'paid' ? 'bg-green-100 text-green-800' :
                             order.payment_status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                'bg-gray-100 text-gray-800'
+                                'bg-[#E5E5E5] text-black'
                             }`}>
                             {order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1)}
                         </span>
@@ -161,25 +161,24 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                 </div>
 
                 {/* Order Progress */}
-                <div className="bg-gray-50 rounded-lg p-6 mb-8">
+                <div className=" rounded-lg p-6 mb-8 border-2 border-black/10">
                     <h2 className="font-bold mb-6">Order Status</h2>
-                    <div className="flex items-center justify-between max-w-2xl">
+                    <div className="flex items-center justify-between w-full">
                         {['Confirmed', 'Processing', 'Shipped', 'Delivered'].map((label, index) => (
-                            <div key={label} className="flex flex-col items-center relative">
-                                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${index <= currentStep ? 'bg-black text-white' : 'bg-gray-200 text-gray-400'
+                            <div key={label} className="flex-1 flex flex-col items-center relative">
+                                {index < 3 && (
+                                    <div className={`absolute top-6 md:top-8 left-[50%] w-full h-1 md:h-1.5 ${index < currentStep ? 'bg-black' : 'bg-black/10'}`} />
+                                )}
+                                <div className={`w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center relative z-10 transition-all duration-300 ${index <= currentStep ? 'bg-black text-white' : 'bg-[#E5E5E5] text-black'
                                     }`}>
-                                    {index === 0 && <FiCheckCircle />}
-                                    {index === 1 && <FiPackage />}
-                                    {index === 2 && <FiTruck />}
-                                    {index === 3 && <FiMapPin />}
+                                    {index === 0 && <FiCheckCircle className="text-lg md:text-2xl" />}
+                                    {index === 1 && <FiPackage className="text-lg md:text-2xl" />}
+                                    {index === 2 && <FiTruck className="text-lg md:text-2xl" />}
+                                    {index === 3 && <FiMapPin className="text-lg md:text-2xl" />}
                                 </div>
-                                <span className={`text-xs mt-2 ${index <= currentStep ? 'text-black' : 'text-gray-400'}`}>
+                                <span className={`text-[10px] md:text-sm font-medium mt-3 relative z-10 text-center ${index <= currentStep ? 'text-black' : 'text-black/50'}`}>
                                     {label}
                                 </span>
-                                {index < 3 && (
-                                    <div className={`absolute top-5 left-10 w-20 h-0.5 ${index < currentStep ? 'bg-black' : 'bg-gray-200'
-                                        }`} style={{ marginLeft: '5px' }} />
-                                )}
                             </div>
                         ))}
                     </div>
@@ -188,11 +187,11 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Order Items */}
                     <div className="lg:col-span-2">
-                        <div className="border border-black/10 rounded-lg p-6">
+                        <div className="border-2 border-black/10 rounded-lg p-6">
                             <h2 className="font-bold mb-4">Order Items</h2>
                             <div className="space-y-4">
                                 {order.items?.map((item) => (
-                                    <div key={item.id} className="flex items-center py-3 border-b border-black/10 last:border-0">
+                                    <div key={item.id} className="flex items-center py-3 border-b-2 border-black/10 last:border-0">
                                         <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden mr-4">
                                             {item.product?.image ? (
                                                 <img
@@ -224,7 +223,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                     {/* Order Summary */}
                     <div className="lg:col-span-1 space-y-6">
                         {/* Payment Info */}
-                        <div className="border border-black/10 rounded-lg p-6">
+                        <div className="border-2 border-black/10 rounded-lg p-6">
                             <h2 className="font-bold mb-4">Payment Details</h2>
                             {transaction && (
                                 <div className="space-y-2 text-sm">
@@ -250,7 +249,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                                     )}
                                 </div>
                             )}
-                            <div className="border-t border-black/10 mt-4 pt-4">
+                            <div className="border-t-2 border-black/10 mt-4 pt-4">
                                 <div className="flex justify-between font-bold">
                                     <span>Total</span>
                                     <span>Rp{order.total_amount.toLocaleString('id-ID')}</span>
@@ -259,7 +258,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                         </div>
 
                         {/* Shipping Address */}
-                        <div className="border border-black/10 rounded-lg p-6">
+                        <div className="border-2 border-black/10 rounded-lg p-6">
                             <h2 className="font-bold mb-4">Shipping Address</h2>
                             <div className="text-sm text-gray-600">
                                 <p>{order.shipping_address}</p>
