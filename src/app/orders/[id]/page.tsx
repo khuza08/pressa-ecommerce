@@ -2,7 +2,7 @@
 
 import { useEffect, useState, use } from 'react';
 import Link from 'next/link';
-import { FiArrowLeft, FiPackage, FiTruck, FiCheckCircle, FiClock, FiMapPin, FiLoader } from 'react-icons/fi';
+import { FiArrowLeft, FiPackage, FiTruck, FiCheckCircle, FiClock, FiMapPin, FiLoader, FiPhone, FiCreditCard, FiDollarSign } from 'react-icons/fi';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { paymentService } from '@/services/paymentService';
@@ -193,7 +193,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                             <div className="space-y-4">
                                 {order.items?.map((item) => (
                                     <div key={item.id} className="flex items-center py-3 border-b-2 border-black/10 last:border-0">
-                                        <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden mr-4">
+                                        <div className="w-20 h-20 bg-black/5 rounded-lg overflow-hidden mr-4">
                                             {(() => {
                                                 const imgSrc = resolveImageUrl(item.product?.image || item.product?.images?.[0]?.url);
                                                 return imgSrc ? (
@@ -211,12 +211,12 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                                         </div>
                                         <div className="flex-1">
                                             <h3 className="font-medium">{item.product?.name || `Product #${item.product_id}`}</h3>
-                                            {item.size && <p className="text-sm text-gray-500">Size: {item.size}</p>}
-                                            <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+                                            {item.size && <p className="text-sm text-black/60">Size: {item.size}</p>}
+                                            <p className="text-sm text-black/60">Qty: {item.quantity}</p>
                                         </div>
                                         <div className="text-right">
                                             <p className="font-bold">Rp{(item.price * item.quantity).toLocaleString('id-ID')}</p>
-                                            <p className="text-sm text-gray-500">Rp{item.price.toLocaleString('id-ID')} each</p>
+                                            <p className="text-sm text-black/60">Rp{item.price.toLocaleString('id-ID')} each</p>
                                         </div>
                                     </div>
                                 ))}
@@ -228,47 +228,87 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                     <div className="lg:col-span-1 space-y-6">
                         {/* Payment Info */}
                         <div className="border-2 border-black/10 rounded-lg p-6">
-                            <h2 className="font-bold mb-4">Payment Details</h2>
+                            <div className="flex items-center gap-2 mb-4">
+                                <FiCreditCard className="text-black" size={20} />
+                                <h2 className="font-bold">Payment Details</h2>
+                            </div>
+
                             {transaction && (
-                                <div className="space-y-2 text-sm">
-                                    <div className="flex justify-between">
-                                        <span className="text-gray-500">Method</span>
-                                        <span className="capitalize">{transaction.payment_type?.replace(/_/g, ' ') || 'Midtrans'}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span className="text-gray-500">Status</span>
-                                        <span className="capitalize">{transaction.transaction_status}</span>
-                                    </div>
-                                    {transaction.va_number && (
-                                        <div className="flex justify-between">
-                                            <span className="text-gray-500">VA Number</span>
-                                            <span className="font-mono">{transaction.va_number}</span>
+                                <div className="space-y-3">
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div className="p-3 bg-black/5 rounded-lg border border-black/10">
+                                            <span className="text-[10px] uppercase tracking-wider text-black font-bold block mb-1">Method</span>
+                                            <p className="text-sm text-black/60 capitalize font-medium">{transaction.payment_type?.replace(/_/g, ' ') || 'Midtrans'}</p>
                                         </div>
-                                    )}
-                                    {transaction.bank && (
-                                        <div className="flex justify-between">
-                                            <span className="text-gray-500">Bank</span>
-                                            <span className="uppercase">{transaction.bank}</span>
+                                        <div className="p-3 bg-black/5 rounded-lg border border-black/10">
+                                            <span className="text-[10px] uppercase tracking-wider text-black font-bold block mb-1">Status</span>
+                                            <p className="text-sm text-black/60 capitalize font-medium">{transaction.transaction_status}</p>
+                                        </div>
+                                    </div>
+
+                                    {(transaction.va_number || transaction.bank || transaction.bill_key || transaction.payment_code) && (
+                                        <div className="p-3 bg-black/5 rounded-lg border border-black/10 space-y-2">
+                                            {transaction.bank && (
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-[10px] uppercase tracking-wider text-black font-bold">Bank</span>
+                                                    <span className="text-sm text-black/60 uppercase font-mono font-medium">{transaction.bank}</span>
+                                                </div>
+                                            )}
+                                            {transaction.va_number && (
+                                                <div className="flex justify-between items-center pt-2 border-t border-black/5">
+                                                    <span className="text-[10px] uppercase tracking-wider text-black font-bold">VA Number</span>
+                                                    <span className="text-sm text-black/80 font-mono font-bold tracking-wider">{transaction.va_number}</span>
+                                                </div>
+                                            )}
+                                            {transaction.payment_code && (
+                                                <div className="flex justify-between items-center pt-2 border-t border-black/5">
+                                                    <span className="text-[10px] uppercase tracking-wider text-black font-bold">Payment Code</span>
+                                                    <span className="text-sm text-black/80 font-mono font-bold tracking-wider">{transaction.payment_code}</span>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                 </div>
                             )}
-                            <div className="border-t-2 border-black/10 mt-4 pt-4">
-                                <div className="flex justify-between font-bold">
-                                    <span>Total</span>
-                                    <span>Rp{order.total_amount.toLocaleString('id-ID')}</span>
+
+                            <div className="border-t-2 border-black/10 mt-6 pt-4">
+                                <div className="flex justify-between items-center">
+                                    <div className="flex items-center gap-2">
+                                        <FiDollarSign className="text-black/40" size={16} />
+                                        <span className="text-sm font-bold text-black uppercase tracking-wider">Total</span>
+                                    </div>
+                                    <span className="text-xl font-bold text-black font-mono">
+                                        Rp{order.total_amount.toLocaleString('id-ID')}
+                                    </span>
                                 </div>
                             </div>
                         </div>
 
                         {/* Shipping Address */}
                         <div className="border-2 border-black/10 rounded-lg p-6">
-                            <h2 className="font-bold mb-4">Shipping Address</h2>
-                            <div className="text-sm text-gray-600">
-                                <p>{order.shipping_address}</p>
-                                <p>{order.shipping_city}, {order.shipping_postal}</p>
-                                <p>{order.shipping_country}</p>
-                                {order.shipping_phone && <p className="mt-2">Phone: {order.shipping_phone}</p>}
+                            <div className="flex items-center gap-2 mb-4">
+                                <FiMapPin className="text-black" size={20} />
+                                <h2 className="font-bold">Shipping Address</h2>
+                            </div>
+                            <div className="space-y-3">
+                                <div className="p-3 bg-black/5 rounded-lg border border-black/10">
+                                    <p className="text-sm font-bold text-black mb-1">{order.shipping_address}</p>
+                                    <p className="text-sm text-black/60 leading-relaxed">
+                                        {order.shipping_city}, {order.shipping_postal}
+                                        <br />
+                                        {order.shipping_country}
+                                    </p>
+                                </div>
+
+                                {order.shipping_phone && (
+                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/5 rounded-lg border border-black/10">
+                                        <FiPhone className="text-black" size={14} />
+                                        <div className="flex flex-col">
+                                            <span className="text-[10px] uppercase tracking-wider text-black font-bold">Contact Phone</span>
+                                            <p className="text-sm text-black/60 font-mono">{order.shipping_phone}</p>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
