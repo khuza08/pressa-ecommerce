@@ -57,7 +57,7 @@ interface Transaction {
 
 export default function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = use(params);
-    const { isAuthenticated, getToken } = useAuth();
+    const { isAuthenticated, getToken, loading: authLoading } = useAuth();
     const router = useRouter();
     const [order, setOrder] = useState<Order | null>(null);
     const [transaction, setTransaction] = useState<Transaction | null>(null);
@@ -65,8 +65,10 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        if (authLoading) return;
+
         if (!isAuthenticated) {
-            router.push('/auth?redirect=/orders');
+            router.push('/?login=true&redirect=/orders');
             return;
         }
 

@@ -29,15 +29,17 @@ interface Order {
 }
 
 export default function OrdersPage() {
-    const { isAuthenticated, getToken } = useAuth();
+    const { isAuthenticated, getToken, loading: authLoading } = useAuth();
     const router = useRouter();
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        if (authLoading) return;
+
         if (!isAuthenticated) {
-            router.push('/auth?redirect=/orders');
+            router.push('/?login=true&redirect=/orders');
             return;
         }
 
@@ -148,14 +150,14 @@ export default function OrdersPage() {
                 ) : (
                     <div className="space-y-4">
                         {orders.map((order) => (
-                            <div key={order.id} className="border border-black/10 rounded-lg p-6 hover:border-black/30 transition">
+                            <div key={order.id} className="border border-black/20 rounded-lg p-6 transition">
                                 <div className="flex flex-wrap items-start justify-between mb-4">
                                     <div>
                                         <div className="flex items-center gap-2 mb-1">
                                             {getStatusIcon(order.status)}
                                             <span className="font-bold">{order.order_number}</span>
                                         </div>
-                                        <p className="text-sm text-gray-500">
+                                        <p className="text-sm text-black/60">
                                             {new Date(order.created_at).toLocaleDateString('id-ID', {
                                                 year: 'numeric',
                                                 month: 'long',
@@ -171,15 +173,15 @@ export default function OrdersPage() {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-wrap items-center justify-between pt-4 border-t border-black/10">
-                                    <div className="text-sm text-gray-500">
+                                <div className="flex flex-wrap items-center justify-between pt-4 border-t border-black/20">
+                                    <div className="text-sm text-black/60">
                                         {order.items?.length || 0} item(s)
                                     </div>
                                     <Link
                                         href={`/orders/${order.midtrans_order_id || order.id}`}
-                                        className="text-sm font-medium text-black hover:underline"
+                                        className="text-sm font-medium text-black border border-black/20 rounded-full px-4 py-2 hover:bg-black/10 transition-all"
                                     >
-                                        View Details →
+                                        View Details
                                     </Link>
                                 </div>
                             </div>
