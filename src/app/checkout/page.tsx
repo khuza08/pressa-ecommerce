@@ -18,7 +18,7 @@ const MIDTRANS_SNAP_URL = MIDTRANS_IS_PRODUCTION
   : 'https://app.sandbox.midtrans.com/snap/snap.js';
 
 export default function CheckoutPage() {
-  const { cart, getTotalPrice, clearCart } = useCart();
+  const { cart, getTotalPrice, clearCartFromServer } = useCart();
   const { isAuthenticated, getToken } = useAuth();
   const router = useRouter();
 
@@ -140,11 +140,12 @@ export default function CheckoutPage() {
       window.snap.pay(response.snap_token, {
         onSuccess: (result: any) => {
           console.log('Payment success:', result);
-          clearCart();
+          clearCartFromServer();
           router.push(`/payment/success?order_id=${response.midtrans_order_id}`);
         },
         onPending: (result: any) => {
           console.log('Payment pending:', result);
+          clearCartFromServer();
           router.push(`/payment/success?order_id=${response.midtrans_order_id}&status=pending`);
         },
         onError: (result: any) => {

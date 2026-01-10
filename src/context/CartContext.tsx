@@ -13,6 +13,7 @@ interface CartContextType {
   getTotalItems: () => number;
   getTotalPrice: () => number;
   clearCart: () => void;
+  clearCartFromServer: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -72,6 +73,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCart(updatedCart);
   };
 
+  const clearCartFromServer = async () => {
+    await cartService.clearCartFromServer();
+    setCart({ items: [], total: 0 });
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -82,6 +88,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         getTotalItems,
         getTotalPrice,
         clearCart,
+        clearCartFromServer,
       }}
     >
       {children}

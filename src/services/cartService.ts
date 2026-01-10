@@ -189,12 +189,10 @@ export const cartService = {
     return { items: [], total: 0 };
   },
 
-  // Clear cart in backend when user logs out
-  clearCartOnLogout: async (): Promise<void> => {
-    console.log('clearCartOnLogout called');
+  // Clear cart in backend and locally
+  clearCartFromServer: async (): Promise<void> => {
+    console.log('clearCartFromServer called');
     const token = localStorage.getItem('auth_token');
-    console.log('Current token in clearCartOnLogout:', token);
-    console.log('Is authenticated?', !!token);
 
     try {
       if (token) {
@@ -207,21 +205,23 @@ export const cartService = {
           },
         });
 
-        console.log('Clear cart API response:', response.status);
         if (!response.ok) {
-          console.error('Error clearing cart on logout:', response.statusText);
+          console.error('Error clearing cart on backend:', response.statusText);
         } else {
           console.log('Successfully cleared cart on backend');
         }
-      } else {
-        console.log('No token found, skipping backend cart clear');
       }
     } catch (error) {
-      console.error('Error clearing cart on logout:', error);
+      console.error('Error clearing cart on backend:', error);
     }
 
     // Clear local storage
     cartService.clearCart();
+  },
+
+  // Alias for backward compatibility if needed, or just use clearCartFromServer
+  clearCartOnLogout: async (): Promise<void> => {
+    await cartService.clearCartFromServer();
   },
 
   addToCart: async (product: Product, quantity: number = 1, size?: string, color?: string, variantId?: number): Promise<Cart> => {
