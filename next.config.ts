@@ -10,6 +10,19 @@ const nextConfig: NextConfig = {
     '192.168.1.4:3002',
     '*.vercel.app'
   ],
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://app.sandbox.midtrans.com https://app.midtrans.com https://api.sandbox.midtrans.com https://api.midtrans.com https://snap-assets.al-pc-id-b.cdn.gtflabs.io https://pay.google.com https://js-agent.newrelic.com https://bam.nr-data.net https://gwk.gopayapi.com/sdk/stable/gp-container.min.js; connect-src 'self' https://app.sandbox.midtrans.com https://app.midtrans.com https://api.sandbox.midtrans.com https://api.midtrans.com http://localhost:8080 http://127.0.0.1:8080; img-src 'self' data: http://localhost:8080 http://127.0.0.1:8080 https://midtrans.com https://*.midtrans.com https://img.freepik.com https://www.shutterstock.com https://*.shutterstock.com https://placehold.co https://i.ibb.co https://images.unsplash.com https://cdn.pixabay.com https://lh3.googleusercontent.com https://*.googleusercontent.com; frame-src 'self' https://app.sandbox.midtrans.com https://app.midtrans.com https://pay.google.com;",
+          },
+        ],
+      },
+    ];
+  },
   async rewrites() {
     return [
       {

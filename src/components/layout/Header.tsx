@@ -18,6 +18,7 @@ import {
   FiGrid,
   FiUser,
   FiLogOut,
+  FiPackage,
 } from "react-icons/fi";
 import CategorySidebar from "../ui/CategorySidebar";
 import CartDropdown from "../ui/CartDropdown";
@@ -356,6 +357,10 @@ export default function Header() {
                       )}
                       <span className="hidden md:inline text-sm">{user.name}</span>
                     </div>
+                    <Link href="/orders" className="text-black hover:text-black/70 flex items-center" aria-label="My Orders">
+                      <FiPackage className="text-xl mr-1" />
+                      <span className="hidden md:inline text-sm">Orders</span>
+                    </Link>
                     <button
                       onClick={handleLogout}
                       className="text-black hover:text-red-600"
