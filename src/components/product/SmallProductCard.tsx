@@ -23,7 +23,7 @@ interface SmallProductCardProps {
 
 const SmallProductCard = memo(({ product }: SmallProductCardProps) => {
   return (
-    <Link href={`/shop/products/${product.id}`} className="flex gap-4 p-4 border-2 border-black/20 rounded-xl hover:border-black/40 transition-colors bg-white min-w-[280px]">
+    <Link href={`/shop/products/${product.id}`} className="flex gap-4 p-4 border-2 border-black/10 rounded-xl hover:border-black/40 transition-colors bg-white min-w-[280px]">
       <div className="w-16 h-16 bg-[#242424] rounded-lg flex items-center justify-center shrink-0 relative">
         {product.image && product.image.includes('uploads') ? (
           <img

@@ -31,91 +31,91 @@ const Category = memo(() => {
   };
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-      const categoriesApiUrl = baseUrl.endsWith('/api/v1') ? `${baseUrl}/categories` : `${baseUrl}/api/v1/categories`;
+    const fetchData = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+        const categoriesApiUrl = baseUrl.endsWith('/api/v1') ? `${baseUrl}/categories` : `${baseUrl}/api/v1/categories`;
 
-      // Fetch categories
-      const categoriesResponse = await fetch(categoriesApiUrl);
-      let categoriesData: Category[] = [];
-      if (categoriesResponse.ok) {
-        categoriesData = await categoriesResponse.json();
-        setCategories(Array.isArray(categoriesData) ? categoriesData : []);
-        console.log('✅ Categories fetched:', categoriesData);
-      } else {
-        console.error('❌ Failed to fetch categories:', categoriesResponse.status);
-      }
+        // Fetch categories
+        const categoriesResponse = await fetch(categoriesApiUrl);
+        let categoriesData: Category[] = [];
+        if (categoriesResponse.ok) {
+          categoriesData = await categoriesResponse.json();
+          setCategories(Array.isArray(categoriesData) ? categoriesData : []);
+          console.log('✅ Categories fetched:', categoriesData);
+        } else {
+          console.error('❌ Failed to fetch categories:', categoriesResponse.status);
+        }
 
-      // Fetch all products to count by category
-      const productsApiUrl = `${baseUrl}/products`;
-      console.log('🔍 Fetching from:', productsApiUrl);
-      const productsResponse = await fetch(productsApiUrl);
-      console.log('📡 Response status:', productsResponse.status);
-      if (productsResponse.ok) {
-        const productsData = await productsResponse.json();
-        console.log('📦 Raw response:', productsData);
+        // Fetch all products to count by category
+        const productsApiUrl = `${baseUrl}/products`;
+        console.log('🔍 Fetching from:', productsApiUrl);
+        const productsResponse = await fetch(productsApiUrl);
+        console.log('📡 Response status:', productsResponse.status);
+        if (productsResponse.ok) {
+          const productsData = await productsResponse.json();
+          console.log('📦 Raw response:', productsData);
 
-        // Extract products from pagination rather than assuming direct array 
-        let products = [];
-        if (Array.isArray(productsData)) {
-          // If API returns array directly
-          products = productsData;
-        } else if (productsData.data && Array.isArray(productsData.data)) {
-          // If API returns pagination object with 'data' property
-          products = productsData.data;
-        }        
+          // Extract products from pagination rather than assuming direct array 
+          let products = [];
+          if (Array.isArray(productsData)) {
+            // If API returns array directly
+            products = productsData;
+          } else if (productsData.data && Array.isArray(productsData.data)) {
+            // If API returns pagination object with 'data' property
+            products = productsData.data;
+          }
 
-        console.log('✅ Products fetched:', products.length);
-        console.log('📦 Sample products:', products.slice(0, 3).map((p: any) => ({
-          name: p.name,
-          category: p.category
-        })));
+          console.log('✅ Products fetched:', products.length);
+          console.log('📦 Sample products:', products.slice(0, 3).map((p: any) => ({
+            name: p.name,
+            category: p.category
+          })));
 
-        // Simple exact match counting (case-insensitive)
-        const counts: Record<string, number> = {};
-        
-        categoriesData.forEach(category => {
-          // Exact match, case-insensitive
-          const matchingProducts = products.filter((product: any) => {
-            if (!product.category) return false;
-            
-            // Simple case-insensitive comparison
-            const productCat = product.category.trim().toLowerCase();
-            const categoryCat = category.name.trim().toLowerCase();
-            
-            return productCat === categoryCat;
+          // Simple exact match counting (case-insensitive)
+          const counts: Record<string, number> = {};
+
+          categoriesData.forEach(category => {
+            // Exact match, case-insensitive
+            const matchingProducts = products.filter((product: any) => {
+              if (!product.category) return false;
+
+              // Simple case-insensitive comparison
+              const productCat = product.category.trim().toLowerCase();
+              const categoryCat = category.name.trim().toLowerCase();
+
+              return productCat === categoryCat;
+            });
+
+            counts[category.name] = matchingProducts.length;
+
+            console.log(`📊 Category "${category.name}": ${matchingProducts.length} products`);
+            if (matchingProducts.length > 0) {
+              console.log('   Products:', matchingProducts.map((p: any) => p.name));
+            }
           });
 
-          counts[category.name] = matchingProducts.length;
-          
-          console.log(`📊 Category "${category.name}": ${matchingProducts.length} products`);
-          if (matchingProducts.length > 0) {
-            console.log('   Products:', matchingProducts.map((p: any) => p.name));
-          }
-        });
-
-        setCategoryCounts(counts);
-        console.log('✅ Final counts:', counts);
-      } else {
-        console.error('❌ Failed to fetch products:', productsResponse.status);
-        // Set default counts to 0
-        const defaultCounts: Record<string, number> = {};
-        categoriesData.forEach(category => {
-          defaultCounts[category.name] = 0;
-        });
-        setCategoryCounts(defaultCounts);
+          setCategoryCounts(counts);
+          console.log('✅ Final counts:', counts);
+        } else {
+          console.error('❌ Failed to fetch products:', productsResponse.status);
+          // Set default counts to 0
+          const defaultCounts: Record<string, number> = {};
+          categoriesData.forEach(category => {
+            defaultCounts[category.name] = 0;
+          });
+          setCategoryCounts(defaultCounts);
+        }
+      } catch (error) {
+        console.error('❌ Error fetching data:', error);
+        setCategories([]);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('❌ Error fetching data:', error);
-      setCategories([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  fetchData();
-}, []);
+    fetchData();
+  }, []);
 
   // Map category names to icons dynamically
   const getCategoryIcon = (name: string) => {
@@ -179,7 +179,7 @@ const Category = memo(() => {
                   style={{ scrollSnapAlign: 'start' }}
                 >
                   <div
-                    className="rounded-lg overflow-hidden border-2 border-black/20 cursor-pointer h-24 transition-all hover:border-black/40"
+                    className="rounded-lg overflow-hidden border-2 border-black/10 cursor-pointer h-24 transition-all hover:border-black/40"
                     onClick={() => handleCategoryClick(category.name)}
                     onMouseEnter={() => setHoveredCategory(1)}
                     onMouseLeave={() => setHoveredCategory(null)}

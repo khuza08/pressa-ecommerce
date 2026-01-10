@@ -150,7 +150,7 @@ export default function OrdersPage() {
                 ) : (
                     <div className="space-y-4">
                         {orders.map((order) => (
-                            <div key={order.id} className="border-2 border-black/20 rounded-lg p-6 transition">
+                            <div key={order.id} className="border-2 border-black/10 rounded-lg p-6 transition">
                                 <div className="flex flex-wrap items-start justify-between mb-4">
                                     <div>
                                         <div className="flex items-center gap-2 mb-1">
@@ -173,13 +173,13 @@ export default function OrdersPage() {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-wrap items-center justify-between pt-4 border-t-2 border-black/20">
+                                <div className="flex flex-wrap items-center justify-between pt-4 border-t-2 border-black/10">
                                     <div className="text-sm text-black/60">
                                         {order.items?.length || 0} item(s)
                                     </div>
                                     <Link
                                         href={`/orders/${order.midtrans_order_id || order.id}`}
-                                        className="text-sm font-medium text-black border-2 border-black/20 rounded-full px-4 py-2 hover:bg-[#242424]/10 transition-all"
+                                        className="text-sm font-medium text-black border-2 border-black/10 rounded-full px-4 py-2 hover:bg-[#242424]/10 transition-all"
                                     >
                                         View Details
                                     </Link>

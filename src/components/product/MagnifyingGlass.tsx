@@ -92,7 +92,7 @@ export default function MagnifyingGlass({
       {/* Preview Zoom Overlay next to product image */}
       {enabled && (
         <div
-          className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-xl p-4 z-30 border-2 border-black/20"
+          className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-xl p-4 z-30 border-2 border-black/10"
           style={{
             maxHeight: "400px",
             overflowY: "auto"

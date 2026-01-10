@@ -126,7 +126,7 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
   return (
     <Link
       href={`/shop/products/${product.id}`}
-      className="block bg-white p-4 rounded-lg border-2 border-black/20 hover:border-black/40 transition-all overflow-hidden"
+      className="block bg-white p-4 rounded-lg border-2 border-black/10 hover:border-black/40 transition-all overflow-hidden"
     >
       <div className="relative">
         <div className="aspect-square w-full overflow-hidden rounded-md">
@@ -145,7 +145,7 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
             );
           })()}
         </div>
-        <button 
+        <button
           onClick={handleFavoriteClick}
           className="absolute top-3 right-3 p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors"
           aria-label={isFavorite(product.id.toString()) ? "Remove from favorites" : "Add to favorites"}

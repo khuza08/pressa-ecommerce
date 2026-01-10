@@ -68,12 +68,12 @@ export default function PreCheckoutModal({
 
   return (
     <div className="fixed inset-0 bg-[#242424]/50 z-50 flex items-end">
-      <div 
+      <div
         className="w-full bg-white rounded-t-xl max-h-[80vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="p-4 border-b-2 border-black/20 flex justify-between items-center">
+        <div className="p-4 border-b-2 border-black/10 flex justify-between items-center">
           <h3 className="font-bold text-lg">Detail Pesanan</h3>
           <button
             onClick={onClose}
@@ -109,13 +109,12 @@ export default function PreCheckoutModal({
                   key={index}
                   onClick={() => setActiveVariant(variant.id)}
                   disabled={variant.stock <= 0}
-                  className={`py-2 px-3 rounded border text-sm ${
-                    activeVariant === variant.id
+                  className={`py-2 px-3 rounded border text-sm ${activeVariant === variant.id
                       ? 'border-black bg-[#242424] text-white'
                       : variant.stock <= 0
-                          ? 'border-black/30 text-black/30 cursor-not-allowed'
-                          : 'border-black/30'
-                  }`}
+                        ? 'border-black/30 text-black/30 cursor-not-allowed'
+                        : 'border-black/30'
+                    }`}
                 >
                   {variant.size}
                   {variant.stock <= 0 && <span className="text-xs ml-1">(Habis)</span>}
@@ -126,7 +125,7 @@ export default function PreCheckoutModal({
         )}
 
         {/* Quantity Selection */}
-        <div className="px-4 py-4 border-t-2 border-black/20">
+        <div className="px-4 py-4 border-t-2 border-black/10">
           <div className="flex items-center justify-between">
             <span className="font-medium">Jumlah:</span>
             <div className="flex items-center border border-black/30 rounded-lg">
@@ -150,7 +149,7 @@ export default function PreCheckoutModal({
         </div>
 
         {/* Price Summary */}
-        <div className="px-4 py-4 border-t-2 border-black/20">
+        <div className="px-4 py-4 border-t-2 border-black/10">
           <div className="flex justify-between mb-2">
             <span>Subtotal:</span>
             <span className="font-bold">Rp{(product?.price * quantity)?.toLocaleString('id-ID')}</span>

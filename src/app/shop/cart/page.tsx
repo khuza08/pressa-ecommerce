@@ -80,7 +80,7 @@ export default function CartPage() {
                 {cart.items.map((item) => (
                   <li
                     key={item.id}
-                    className="py-6 border-b-2 border-black/20 flex flex-col sm:flex-row"
+                    className="py-6 border-b-2 border-black/10 flex flex-col sm:flex-row"
                   >
                     <div className="w-24 h-24 bg-[#242424]/10 rounded-md overflow-hidden mb-4 sm:mb-0 sm:mr-6 flex-shrink-0">
                       {item.image ? (
@@ -144,7 +144,7 @@ export default function CartPage() {
             </div>
 
             <div className="lg:col-span-1">
-              <div className="p-6 rounded-4xl border-2 border-black/20">
+              <div className="p-6 rounded-4xl border-2 border-black/10">
                 <h2 className="text-lg font-bold mb-4">Order Summary</h2>
 
                 <div className="space-y-3 mb-6">

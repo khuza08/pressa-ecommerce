@@ -117,13 +117,13 @@ export default function FavoritesPage() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-4 text-black">
             <div className="lg:col-span-2">
-              <div className="flex items-center justify-between py-4 border-b-2 border-black/20 mb-2">
+              <div className="flex items-center justify-between py-4 border-b-2 border-black/10 mb-2">
                 <div className="flex items-center">
                   <button
                     onClick={handleSelectAll}
                     className="flex items-center text-sm font-medium hover:text-black/70 transition"
                   >
-                    <div className={`w-5 h-5 rounded-full border-2 border-black/20 mr-3 flex items-center justify-center ${selectedIds.length === favorites.length ? 'bg-[#242424]' : 'bg-transparent'}`}>
+                    <div className={`w-5 h-5 rounded-full border-2 border-black/10 mr-3 flex items-center justify-center ${selectedIds.length === favorites.length ? 'bg-[#242424]' : 'bg-transparent'}`}>
                       {selectedIds.length === favorites.length && <FiCheck className="text-white text-xs" />}
                     </div>
                     Select All ({favorites.length})
@@ -140,12 +140,12 @@ export default function FavoritesPage() {
                 {favorites.map((item) => (
                   <li
                     key={item.id}
-                    className={`py-6 border-b-2 border-black/20 flex flex-col sm:flex-row transition-colors ${selectedIds.includes(item.id) ? 'bg-[#242424]/[0.02]' : ''}`}
+                    className={`py-6 border-b-2 border-black/10 flex flex-col sm:flex-row transition-colors ${selectedIds.includes(item.id) ? 'bg-[#242424]/[0.02]' : ''}`}
                   >
                     <div className="flex items-center mr-4 mb-4 sm:mb-0">
                       <button
                         onClick={() => handleToggleSelect(item.id)}
-                        className={`w-6 h-6 rounded-full border-2 border-black/20 flex items-center justify-center transition-colors ${selectedIds.includes(item.id) ? 'bg-[#242424]' : 'bg-transparent hover:bg-[#242424]/5'}`}
+                        className={`w-6 h-6 rounded-full border-2 border-black/10 flex items-center justify-center transition-colors ${selectedIds.includes(item.id) ? 'bg-[#242424]' : 'bg-transparent hover:bg-[#242424]/5'}`}
                       >
                         {selectedIds.includes(item.id) && <FiCheck className="text-white text-sm" />}
                       </button>
@@ -211,7 +211,7 @@ export default function FavoritesPage() {
             </div>
 
             <div className="lg:col-span-1">
-              <div className="p-6 rounded-4xl border-2 border-black/20 sticky top-24">
+              <div className="p-6 rounded-4xl border-2 border-black/10 sticky top-24">
                 <h2 className="text-lg font-bold mb-4">Summary</h2>
                 <div className="space-y-3 pb-4 border-b-2 border-black/10 mb-4">
                   <div className="flex justify-between">
@@ -238,7 +238,7 @@ export default function FavoritesPage() {
                 </button>
 
 
-                <Link href="/" className="w-full mt-4 border-2 border-black/20 py-3 px-4 rounded-full text-black text-center bg-white hover:bg-[#242424]/5 transition block text-sm">
+                <Link href="/" className="w-full mt-4 border-2 border-black/10 py-3 px-4 rounded-full text-black text-center bg-white hover:bg-[#242424]/5 transition block text-sm">
                   Continue Shopping
                 </Link>
               </div>

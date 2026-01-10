@@ -1,6 +1,6 @@
 "use client";
 // src/components/layout/Footer.tsx
-import { FaFacebook, FaInstagram, FaTwitter, FaLock } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTwitter, FaLock, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
 import { useState, useEffect } from 'react';
 import { Category } from '@/types/category';
 
@@ -58,7 +58,7 @@ export default function Footer() {
             </div>
 
             {/* Payment Methods */}
-            <div className="mt-8">
+            <div className="mt-8 border-t-2 border-black/10 pt-6">
               <div className="flex flex-wrap gap-3 max-w-sm items-center" >
                 {[
                   { name: 'Visa', src: '/images/payments/visa.svg' },
@@ -133,15 +133,29 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Stay Connected</h4>
             <div className="flex mb-4">
             </div>
-            <p className="text-black/50 text-sm">
-              📞 (607) 936-8058<br />
-              ✉️ support@pressa.com
-            </p>
+            <div className="flex flex-col space-y-2 mt-4">
+              <div className="flex items-center text-black/50 text-sm">
+                <FaPhoneAlt className="mr-3 text-black/40" size={12} />
+                <span>+62 838-8453-2666</span>
+              </div>
+              <div className="flex items-center text-black/50 text-sm">
+                <FaEnvelope className="mr-3 text-black/40" size={12} />
+                <span>support@pressa.com</span>
+              </div>
+            </div>
+
+            <div className="mt-6 border-t-2 border-black/10 pt-6">
+              <img
+                src="/images/qr.png"
+                alt="QR Code"
+                className="w-full h-auto rounded-lg border-2 border-black/5 opacity-80 hover:opacity-100 transition-all"
+              />
+            </div>
           </div>
         </div>
 
-        {/* Payment & Copyright */}
-        <div className="border-t-2 border-black/20 pt-6">
+        {/* Copyright */}
+        <div className="border-t-2 border-black/10 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
               <img

@@ -40,11 +40,10 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
   return (
     <div
       ref={dropdownRef}
-      className={`absolute top-full right-0 mt-2 w-80 bg-white rounded-lg border-2 border-black/20 z-50 transition-all duration-300 ${
-        isOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'
-      }`}
+      className={`absolute top-full right-0 mt-2 w-80 bg-white rounded-lg border-2 border-black/10 z-50 transition-all duration-300 ${isOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'
+        }`}
     >
-      <div className="p-4 border-b-2 border-black/20 flex justify-between items-center">
+      <div className="p-4 border-b-2 border-black/10 flex justify-between items-center">
         <h3 className="font-bold text-lg">Your Cart</h3>
         <button
           onClick={onClose}
@@ -54,7 +53,7 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
           <FiX size={20} />
         </button>
       </div>
-      
+
       <div className="max-h-96 overflow-y-auto">
         {cart.items.length === 0 ? (
           <div className="p-6 text-center text-black/50">
@@ -105,9 +104,9 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
           </ul>
         )}
       </div>
-      
+
       {cart.items.length > 0 && (
-        <div className="p-4 border-t-2 border-black/20">
+        <div className="p-4 border-t-2 border-black/10">
           <div className="flex justify-between items-center mb-4">
             <span className="font-bold">Total:</span>
             <span className="font-bold">Rp{getTotalPrice().toLocaleString('id-ID')}</span>

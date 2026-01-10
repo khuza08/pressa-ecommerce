@@ -266,7 +266,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
         if (isLeftSwipe || isRightSwipe) {
             const images = product.images && product.images.length > 0
                 ? product.images
-                : product.image ? [{url: product.image, alt: product.name}] : [];
+                : product.image ? [{ url: product.image, alt: product.name }] : [];
 
             const currentIndex = images.findIndex(img => img.url === mainImage);
 
@@ -352,20 +352,20 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
         <>
             {/* Breadcrumb */}
             {!loading && product && (
-            <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto px-4 py-3">
-                <nav className="flex items-center text-sm text-black/60">
-                    <a href="/" className="hover:text-black transition">Home</a>
-                    <span className="mx-2">&gt;</span>
-                    <a
-                      href={`/category?category=${encodeURIComponent(product?.category || '')}`}
-                      className="hover:text-black transition"
-                    >
-                      {product?.category || 'Uncategorized'}
-                    </a>
-                    <span className="mx-2">&gt;</span>
-                    <span className="text-black font-medium">{product?.name}</span>
-                </nav>
-            </div>
+                <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto px-4 py-3">
+                    <nav className="flex items-center text-sm text-black/60">
+                        <a href="/" className="hover:text-black transition">Home</a>
+                        <span className="mx-2">&gt;</span>
+                        <a
+                            href={`/category?category=${encodeURIComponent(product?.category || '')}`}
+                            className="hover:text-black transition"
+                        >
+                            {product?.category || 'Uncategorized'}
+                        </a>
+                        <span className="mx-2">&gt;</span>
+                        <span className="text-black font-medium">{product?.name}</span>
+                    </nav>
+                </div>
             )}
 
             {/* Changed max-width to responsive width */}
@@ -374,7 +374,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                     {/* Left Column - Product Images */}
                     <div className="product-images-container w-full md:w-[280px] relative">
                         <div
-                            className="bg-white overflow-hidden sticky flex flex-col border-2 border-black/20 rounded-none md:rounded-lg h-[400px]"
+                            className="bg-white overflow-hidden sticky flex flex-col border-2 border-black/10 rounded-none md:rounded-lg h-[400px]"
                             style={snapToHeader.productImages ? { top: '70px' } : { top: '70px' }}
                         >
                             {/* Mobile: Single Image with Swipe */}
@@ -385,7 +385,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                         const currentImage = (product?.images && product?.images?.length > 0 ?
                                             product.images.find(img => img.url === mainImage) :
                                             null) ||
-                                            (product?.image ? {url: product.image, alt: product.name} : null);
+                                            (product?.image ? { url: product.image, alt: product.name } : null);
 
                                         if (currentImage) {
                                             return (
@@ -426,7 +426,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
 
                                     {/* Mobile Carousel Indicators */}
                                     <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
-                                        {(product?.images && product?.images?.length > 0 ? product.images : product?.image ? [{url: product.image, alt: product.name}] : []).map((img, index) => (
+                                        {(product?.images && product?.images?.length > 0 ? product.images : product?.image ? [{ url: product.image, alt: product.name }] : []).map((img, index) => (
                                             <button
                                                 key={index}
                                                 onClick={() => setMainImage(resolveImageUrl(img.url) || img.url)}
@@ -490,13 +490,13 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                     }}
                                 >
                                     {/* Show main image if no additional images */}
-                                    {(product?.images && product?.images?.length > 0 ? product.images : product?.image ? [{url: product.image, alt: product.name}] : []).map((img, index) => (
+                                    {(product?.images && product?.images?.length > 0 ? product.images : product?.image ? [{ url: product.image, alt: product.name }] : []).map((img, index) => (
                                         <button
                                             key={index}
                                             onClick={() => setMainImage(resolveImageUrl(img.url) || img.url)}
                                             className={`shrink-0 w-16 h-16 rounded border-2 overflow-hidden ${mainImage === img.url
                                                 ? "border-black/50"
-                                                : "border-black/20"
+                                                : "border-black/10"
                                                 }`}
                                         >
                                             <div className="relative w-full h-full">
@@ -524,12 +524,12 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 </div>
                             </div>
                         </div>
-                        
+
                         {/* Preview Zoom Overlay - Desktop Only */}
                         <div className="hidden md:block">
                             {isHovering && !isFullscreenZoom && (
                                 <div
-                                    className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-lg border-2 border-black/20 p-3 z-10"
+                                    className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-lg border-2 border-black/10 p-3 z-10"
                                     style={{
                                         maxHeight: "400px",
                                         overflowY: "auto"
@@ -635,8 +635,8 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                     Ukuran:{" "}
                                     <span className="font-normal text-black/60">
                                         {product?.has_variants
-                                          ? (product?.variants && product?.variants.find((v) => v.id === activeVariant)?.size) || "Pilih ukuran"
-                                          : "Satu ukuran"}
+                                            ? (product?.variants && product?.variants.find((v) => v.id === activeVariant)?.size) || "Pilih ukuran"
+                                            : "Satu ukuran"}
                                     </span>
                                 </label>
                                 <div className="flex flex-wrap gap-2">
@@ -648,8 +648,8 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                             className={`px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all flex items-center gap-2 ${activeVariant === variant.id
                                                 ? "border-black/50 text-black/80 bg-[#242424]/5"
                                                 : variant.stock <= 0
-                                                    ? "border-black/20 text-black/30 cursor-not-allowed"
-                                                    : "border-black/20 hover:border-black/30"
+                                                    ? "border-black/10 text-black/30 cursor-not-allowed"
+                                                    : "border-black/10 hover:border-black/30"
                                                 }`}
                                         >
                                             {variant.size}
@@ -657,14 +657,14 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                         </button>
                                     ))}
                                     {!product?.has_variants && (
-                                        <div className="px-4 py-2 rounded-lg border-2 border-black/20 text-sm text-black/60">
+                                        <div className="px-4 py-2 rounded-lg border-2 border-black/10 text-sm text-black/60">
                                             Produk ini tidak memiliki varian ukuran
                                         </div>
                                     )}
                                 </div>
                             </div>
 
-                            <div className="border-t-2 border-black/20 pt-">
+                            <div className="border-t-2 border-black/10 pt-">
                                 <div className="flex items-center justify-between mb-4">
                                     <button
                                         onClick={() => setActiveTab("detail")}
@@ -695,7 +695,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                             </div>
 
                             <div className="mt-4 pt-4 border-t-2">
-                                
+
                                 <p className="font-medium">Description:</p>
 
                                 <div
@@ -730,7 +730,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                         className="hidden md:block purchase-card-container lg:w-[300px] sticky h-[400px]"
                         style={snapToHeader.purchaseCard ? { top: '70px' } : { top: '36px' }}
                     >
-                        <div className="bg-white rounded-xl p-5 h-full flex flex-col justify-between border-2 border-black/20">
+                        <div className="bg-white rounded-xl p-5 h-full flex flex-col justify-between border-2 border-black/10">
                             <div className="mb-4 flex items-center gap-3">
                                 <div className="w-14 h-14 bg-green-50 rounded-lg flex items-center justify-center">
                                     <span className="text-xl">
@@ -750,7 +750,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                     Atur jumlah dan catatan
                                 </label>
                                 <div className="flex items-center gap-2">
-                                    <div className="flex items-center border-2 border-black/20 rounded-lg">
+                                    <div className="flex items-center border-2 border-black/10 rounded-lg">
                                         <button
                                             onClick={() => handleQuantityChange("decrement")}
                                             className="px-3 py-1.5 text-black/60 hover:bg-[#242424]/5 text-sm disabled:opacity-50"
@@ -764,8 +764,8 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                             onChange={(e) => {
                                                 const val = parseInt(e.target.value) || 1;
                                                 const maxStock = product?.has_variants && product?.variants
-                                                ? (product.variants.find(v => v.id === activeVariant)?.stock || 1)
-                                                : (product?.stock || 1);
+                                                    ? (product.variants.find(v => v.id === activeVariant)?.stock || 1)
+                                                    : (product?.stock || 1);
                                                 if (val >= 1 && val <= maxStock) setQuantity(val);
                                             }}
                                             className="w-14 text-center text-sm border-0 focus:outline-none webkit-appearance-none moz-appearance-none appearance-none"
@@ -774,7 +774,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                                 WebkitAppearance: 'none',
                                                 appearance: 'none'
                                             }}
-                                            />
+                                        />
                                         <button
                                             onClick={() => handleQuantityChange("increment")}
                                             className="px-3 py-1.5 text-black/60 hover:bg-[#242424]/5 text-sm disabled:opacity-50"
@@ -793,14 +793,14 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                         Stok:{" "}
                                         <span className="font-semibold text-black">
                                             {product?.has_variants && product?.variants
-                                              ? (product.variants.find(v => v.id === activeVariant)?.stock || 0)
-                                              : (product?.stock || 0)}
+                                                ? (product.variants.find(v => v.id === activeVariant)?.stock || 0)
+                                                : (product?.stock || 0)}
                                         </span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="mb-5 pt-3 border-t-2 border-black/20">
+                            <div className="mb-5 pt-3 border-t-2 border-black/10">
                                 <div className="flex justify-between items-center">
                                     <span className="text-black/60 text-md">Subtotal</span>
                                     <span className="text-2xl font-bold text-black">
@@ -884,131 +884,131 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 </button>
                             </div>
 
-                        <div className="pt-4 border-t-2 border-black/20 mt-auto">
-                            <div className="flex justify-center gap-4">
-                                <button className="flex items-center gap-1 text-black/60 hover:text-black text-xs">
-                                <FaCommentAlt className="w-4 h-4" />
-                                <span>Chat</span>
-                                </button>
-                                <button
-                                onClick={async () => {
-                                    if (!isAuthenticated) {
-                                    openLoginModal(async () => {
-                                        if (product) {
-                                        const isCurrentlyFavorite = checkIsFavorite(product.id.toString());
-                                        if (isCurrentlyFavorite) {
-                                            await removeFromFavorites(product.id.toString());
-                                        } else {
-                                            // Create the proper image URL for favorites
-                                            let imageUrl = product.image || "";
-                                            if (product.image && !product.image.startsWith('http')) {
-                                            // If not a full URL, check if it's a file that needs the uploads path
-                                            if (product.image.includes('uploads/')) {
-                                                // Extract filename from uploads path
-                                                const filename = product.image.split('uploads/').pop();
+                            <div className="pt-4 border-t-2 border-black/10 mt-auto">
+                                <div className="flex justify-center gap-4">
+                                    <button className="flex items-center gap-1 text-black/60 hover:text-black text-xs">
+                                        <FaCommentAlt className="w-4 h-4" />
+                                        <span>Chat</span>
+                                    </button>
+                                    <button
+                                        onClick={async () => {
+                                            if (!isAuthenticated) {
+                                                openLoginModal(async () => {
+                                                    if (product) {
+                                                        const isCurrentlyFavorite = checkIsFavorite(product.id.toString());
+                                                        if (isCurrentlyFavorite) {
+                                                            await removeFromFavorites(product.id.toString());
+                                                        } else {
+                                                            // Create the proper image URL for favorites
+                                                            let imageUrl = product.image || "";
+                                                            if (product.image && !product.image.startsWith('http')) {
+                                                                // If not a full URL, check if it's a file that needs the uploads path
+                                                                if (product.image.includes('uploads/')) {
+                                                                    // Extract filename from uploads path
+                                                                    const filename = product.image.split('uploads/').pop();
 
-                                                // Get the base URL and remove any /api/v1 suffix for static files
-                                                let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                                if (baseUrl.endsWith('/api/v1')) {
-                                                baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                                    // Get the base URL and remove any /api/v1 suffix for static files
+                                                                    let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                                    if (baseUrl.endsWith('/api/v1')) {
+                                                                        baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                                    }
+
+                                                                    imageUrl = `${baseUrl}/uploads/${filename}`;
+                                                                } else if (!product.image.startsWith('/')) {
+                                                                    // It's a simple filename, so prepend the uploads path
+                                                                    // Get the base URL and remove any /api/v1 suffix for static files
+                                                                    let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                                    if (baseUrl.endsWith('/api/v1')) {
+                                                                        baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                                    }
+
+                                                                    imageUrl = `${baseUrl}/uploads/${product.image}`;
+                                                                }
+                                                            }
+
+                                                            await addToFavorites({
+                                                                id: product.id.toString(),
+                                                                name: product.name,
+                                                                price: product.price,
+                                                                image: imageUrl
+                                                            });
+                                                        }
+                                                    }
+                                                }, 'favorite');
+                                                return;
+                                            }
+
+                                            if (product) {
+                                                const isCurrentlyFavorite = checkIsFavorite(product.id.toString());
+                                                if (isCurrentlyFavorite) {
+                                                    await removeFromFavorites(product.id.toString());
+                                                } else {
+                                                    // Create the proper image URL for favorites
+                                                    let imageUrl = product.image || "";
+                                                    if (product.image && !product.image.startsWith('http')) {
+                                                        // If not a full URL, check if it's a file that needs the uploads path
+                                                        if (product.image.includes('uploads/')) {
+                                                            // Extract filename from uploads path
+                                                            const filename = product.image.split('uploads/').pop();
+
+                                                            // Get the base URL and remove any /api/v1 suffix for static files
+                                                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                            if (baseUrl.endsWith('/api/v1')) {
+                                                                baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                            }
+
+                                                            imageUrl = `${baseUrl}/uploads/${filename}`;
+                                                        } else if (!product.image.startsWith('/')) {
+                                                            // It's a simple filename, so prepend the uploads path
+                                                            // Get the base URL and remove any /api/v1 suffix for static files
+                                                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                                                            if (baseUrl.endsWith('/api/v1')) {
+                                                                baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                                                            }
+
+                                                            imageUrl = `${baseUrl}/uploads/${product.image}`;
+                                                        }
+                                                    }
+
+                                                    await addToFavorites({
+                                                        id: product.id.toString(),
+                                                        name: product.name,
+                                                        price: product.price,
+                                                        image: imageUrl
+                                                    });
                                                 }
-
-                                                imageUrl = `${baseUrl}/uploads/${filename}`;
-                                            } else if (!product.image.startsWith('/')) {
-                                                // It's a simple filename, so prepend the uploads path
-                                                // Get the base URL and remove any /api/v1 suffix for static files
-                                                let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                                if (baseUrl.endsWith('/api/v1')) {
-                                                baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                                                }
-
-                                                imageUrl = `${baseUrl}/uploads/${product.image}`;
                                             }
+                                        }}
+                                        className="flex items-center gap-1 text-black/60 hover:text-black text-xs"
+                                    >
+                                        <FaHeart className={`${checkIsFavorite(product?.id.toString() || '') ? 'text-red-500 fill-red-500' : 'text-black/40'} w-4 h-4`} />
+                                        <span>Favourite</span>
+                                    </button>
+                                    <button
+                                        onClick={async () => {
+                                            const productUrl = window.location.href;
+                                            try {
+                                                await navigator.clipboard.writeText(productUrl);
+                                                alert('Link produk berhasil disalin!');
+                                            } catch (err) {
+                                                console.error('Failed to copy: ', err);
+                                                // Fallback for older browsers
+                                                const textArea = document.createElement('textarea');
+                                                textArea.value = productUrl;
+                                                document.body.appendChild(textArea);
+                                                textArea.select();
+                                                document.execCommand('copy');
+                                                document.body.removeChild(textArea);
+                                                alert('Link produk berhasil disalin!');
                                             }
-
-                                            await addToFavorites({
-                                            id: product.id.toString(),
-                                            name: product.name,
-                                            price: product.price,
-                                            image: imageUrl
-                                            });
-                                        }
-                                        }
-                                    }, 'favorite');
-                                    return;
-                                    }
-
-                                    if (product) {
-                                    const isCurrentlyFavorite = checkIsFavorite(product.id.toString());
-                                    if (isCurrentlyFavorite) {
-                                        await removeFromFavorites(product.id.toString());
-                                    } else {
-                                        // Create the proper image URL for favorites
-                                        let imageUrl = product.image || "";
-                                        if (product.image && !product.image.startsWith('http')) {
-                                        // If not a full URL, check if it's a file that needs the uploads path
-                                        if (product.image.includes('uploads/')) {
-                                            // Extract filename from uploads path
-                                            const filename = product.image.split('uploads/').pop();
-
-                                            // Get the base URL and remove any /api/v1 suffix for static files
-                                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                            if (baseUrl.endsWith('/api/v1')) {
-                                            baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                                            }
-
-                                            imageUrl = `${baseUrl}/uploads/${filename}`;
-                                        } else if (!product.image.startsWith('/')) {
-                                            // It's a simple filename, so prepend the uploads path
-                                            // Get the base URL and remove any /api/v1 suffix for static files
-                                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                            if (baseUrl.endsWith('/api/v1')) {
-                                            baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                                            }
-
-                                            imageUrl = `${baseUrl}/uploads/${product.image}`;
-                                        }
-                                        }
-
-                                        await addToFavorites({
-                                        id: product.id.toString(),
-                                        name: product.name,
-                                        price: product.price,
-                                        image: imageUrl
-                                        });
-                                    }
-                                    }
-                                }}
-                                className="flex items-center gap-1 text-black/60 hover:text-black text-xs"
-                                >
-                                <FaHeart className={`${checkIsFavorite(product?.id.toString() || '') ? 'text-red-500 fill-red-500' : 'text-black/40'} w-4 h-4`} />
-                                <span>Favourite</span>
-                                </button>
-                                <button
-                                onClick={async () => {
-                                    const productUrl = window.location.href;
-                                    try {
-                                    await navigator.clipboard.writeText(productUrl);
-                                    alert('Link produk berhasil disalin!');
-                                    } catch (err) {
-                                    console.error('Failed to copy: ', err);
-                                    // Fallback for older browsers
-                                    const textArea = document.createElement('textarea');
-                                    textArea.value = productUrl;
-                                    document.body.appendChild(textArea);
-                                    textArea.select();
-                                    document.execCommand('copy');
-                                    document.body.removeChild(textArea);
-                                    alert('Link produk berhasil disalin!');
-                                    }
-                                }}
-                                className="flex items-center gap-1 text-black/60 hover:text-black text-xs"
-                                >
-                                <FaShareAlt className="w-4 h-4" />
-                                <span>Share</span>
-                                </button>
+                                        }}
+                                        className="flex items-center gap-1 text-black/60 hover:text-black text-xs"
+                                    >
+                                        <FaShareAlt className="w-4 h-4" />
+                                        <span>Share</span>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                 </div>

@@ -339,7 +339,7 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-white py-4">
         <div className="w-full md:w-[90vw] lg:w-[90vw] mx-auto h-fit">
           <div className="flex items-center gap-4 mb-6">
-            <Link href="/shop/cart" className="flex items-center text-black/60  py-2 px-4 rounded-2xl border-2 border-black/20 hover:border-black/40 hover:text-black transition-colors group">
+            <Link href="/shop/cart" className="flex items-center text-black/60  py-2 px-4 rounded-2xl border-2 border-black/10 hover:border-black/40 hover:text-black transition-colors group">
               <FiArrowLeft className="hover:font-bold transition-all" />
             </Link>
             <h1 className="text-3xl font-bold">Checkout</h1>

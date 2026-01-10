@@ -46,7 +46,7 @@ function PaymentSuccessContent() {
 
     return (
         <div className="min-h-screen bg-white flex items-center justify-center p-4">
-            <div className="max-w-6xl w-full bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-black/20 flex flex-col md:flex-row-reverse text-left">
+            <div className="max-w-6xl w-full bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-black/10 flex flex-col md:flex-row-reverse text-left">
 
                 {/* Right Side: Status & Actions */}
                 <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center items-start">
@@ -82,7 +82,7 @@ function PaymentSuccessContent() {
 
                         <Link
                             href="/"
-                            className="flex-1 flex items-center justify-center border-2 border-black/20 py-3.5 px-6 rounded-full hover:bg-[#242424]/5 transition text-sm font-medium"
+                            className="flex-1 flex items-center justify-center border-2 border-black/10 py-3.5 px-6 rounded-full hover:bg-[#242424]/5 transition text-sm font-medium"
                         >
                             Continue Shopping
                             <FiArrowRight className="ml-2" />

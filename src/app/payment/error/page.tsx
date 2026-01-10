@@ -58,7 +58,7 @@ function PaymentErrorContent() {
 
                     <Link
                         href="/shop/cart"
-                        className="flex items-center justify-center w-full border-2 border-black/20 py-3 px-6 rounded-full hover:bg-[#242424]/5 transition"
+                        className="flex items-center justify-center w-full border-2 border-black/10 py-3 px-6 rounded-full hover:bg-[#242424]/5 transition"
                     >
                         <FiArrowLeft className="mr-2" />
                         Return to Cart

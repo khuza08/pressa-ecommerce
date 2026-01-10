@@ -65,7 +65,7 @@ const MobileMenu = ({
         className="fixed top-0 left-0 right-0 z-50 bg-[#242424]/20 backdrop-blur-sm lg:hidden h-screen"
         onClick={onClose}
       ></div>
-      <div className="fixed top-0 right-0 z-50 h-full w-80 max-w-[80vw] bg-white lg:hidden overflow-y-auto border-r-2 border-black/20">
+      <div className="fixed top-0 right-0 z-50 h-full w-80 max-w-[80vw] bg-white lg:hidden overflow-y-auto border-r-2 border-black/10">
         <div className="p-4 flex justify-between items-center border-b">
           <h2 className="text-lg font-bold text-black">Menu</h2>
           <button

@@ -33,7 +33,7 @@ export default function CategoryPage() {
       // Fetch all products and filter by category
       const allProducts = await productService.getAllProducts();
       const filteredResults = allProducts.filter(product =>
-        product.category && 
+        product.category &&
         product.category.toLowerCase().includes(category.toLowerCase())
       );
       setCategoryResults(filteredResults);
@@ -81,24 +81,24 @@ export default function CategoryPage() {
                 <Link
                   key={product.id}
                   href={`/shop/products/${product.id}`}
-                  className="bg-white rounded-lg overflow-hidden border-2 border-black/20 hover:border-black/40 transition-colors"
+                  className="bg-white rounded-lg overflow-hidden border-2 border-black/10 hover:border-black/40 transition-colors"
                 >
                   <div className="bg-[#242424]/10 h-48 md:h-56 lg:h-64 flex items-center justify-center">
                     {product.image ? (
                       <img
                         src={product.image.includes('uploads')
                           ? (() => {
-                              // Get the base URL and remove any /api/v1 suffix for static files
-                              let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                              if (baseUrl.endsWith('/api/v1')) {
-                                baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                              }
+                            // Get the base URL and remove any /api/v1 suffix for static files
+                            let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+                            if (baseUrl.endsWith('/api/v1')) {
+                              baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
+                            }
 
-                              let normalizedPath = product.image.replace(/\\/g, '/');
-                              if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
-                              if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
-                              return `${baseUrl}${normalizedPath}`;
-                            })()
+                            let normalizedPath = product.image.replace(/\\/g, '/');
+                            if (!normalizedPath.startsWith('/')) normalizedPath = '/' + normalizedPath;
+                            if (!normalizedPath.startsWith('/uploads')) normalizedPath = '/uploads/' + normalizedPath.split('uploads/')[1];
+                            return `${baseUrl}${normalizedPath}`;
+                          })()
                           : product.image}
                         alt={product.name}
                         className="w-full h-full object-cover"

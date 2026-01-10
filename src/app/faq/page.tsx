@@ -27,10 +27,10 @@ export default function FAQPage() {
     <div className="min-h-screen bg-white py-12">
       <div className="container mx-auto px-4 max-w-4xl">
         <h1 className="text-3xl font-bold mb-8">Frequently Asked Questions</h1>
-        
+
         <div className="space-y-6">
           {faqs.map((faq, index) => (
-            <div key={index} className="border-b-2 border-black/20 pb-6">
+            <div key={index} className="border-b-2 border-black/10 pb-6">
               <h2 className="text-xl font-semibold mb-2">{faq.question}</h2>
               <p className="text-black/60">{faq.answer}</p>
             </div>
