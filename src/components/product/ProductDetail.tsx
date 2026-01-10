@@ -272,10 +272,10 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
 
             if (isLeftSwipe && currentIndex < images.length - 1) {
                 // Swipe left - go to next image
-                setMainImage(images[currentIndex + 1].url);
+                setMainImage(resolveImageUrl(images[currentIndex + 1].url) || images[currentIndex + 1].url);
             } else if (isRightSwipe && currentIndex > 0) {
                 // Swipe right - go to previous image
-                setMainImage(images[currentIndex - 1].url);
+                setMainImage(resolveImageUrl(images[currentIndex - 1].url) || images[currentIndex - 1].url);
             }
         }
 
@@ -429,7 +429,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                         {(product?.images && product?.images?.length > 0 ? product.images : product?.image ? [{url: product.image, alt: product.name}] : []).map((img, index) => (
                                             <button
                                                 key={index}
-                                                onClick={() => setMainImage(img.url)}
+                                                onClick={() => setMainImage(resolveImageUrl(img.url) || img.url)}
                                                 className={`w-2 h-2 rounded-full ${mainImage === img.url ? 'bg-white' : 'bg-white/50'}`}
                                                 aria-label={`View image ${index + 1}`}
                                             />
@@ -469,7 +469,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
 
                                 {/* Fullscreen Zoom Button - Desktop only */}
                                 <button
-                                    onClick={() => handleFullscreenZoom(mainImage)}
+                                    onClick={() => handleFullscreenZoom(resolveImageUrl(mainImage) || mainImage)}
                                     className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full p-2 transition-all"
                                     aria-label="Zoom image"
                                 >
@@ -493,7 +493,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                     {(product?.images && product?.images?.length > 0 ? product.images : product?.image ? [{url: product.image, alt: product.name}] : []).map((img, index) => (
                                         <button
                                             key={index}
-                                            onClick={() => setMainImage(img.url)}
+                                            onClick={() => setMainImage(resolveImageUrl(img.url) || img.url)}
                                             className={`shrink-0 w-16 h-16 rounded border-2 overflow-hidden ${mainImage === img.url
                                                 ? "border-black/50"
                                                 : "border-black/20"
@@ -543,7 +543,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                         <div
                                             className="absolute inset-0"
                                             style={{
-                                                background: `url(${mainImage}) no-repeat`,
+                                                background: `url(${resolveImageUrl(mainImage) || "https://placehold.co/600x600?text=Product+Image"}) no-repeat`,
                                                 backgroundSize: "200%",
                                                 backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
                                             }}
@@ -1032,34 +1032,11 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                         className="relative max-w-4xl max-h-[90vh] w-full flex items-center justify-center"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        {fullscreenImage?.includes('uploads') ? (
-                            <img
-                                src={(() => {
-                                    // Extract just the filename from the uploads path
-                                    let filename = fullscreenImage;
-                                    if (fullscreenImage?.includes('uploads/')) {
-                                      filename = fullscreenImage.split('uploads/').pop() || fullscreenImage;
-                                    }
-
-                                    // Get the base URL and remove any /api/v1 suffix for static files
-                                    let baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-                                    if (baseUrl.endsWith('/api/v1')) {
-                                      baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/api/v1'));
-                                    }
-
-                                    // Use a relative URL that will be proxied to the backend
-                                    return `${baseUrl}/uploads/${filename}`;
-                                })()}
-                                alt="Fullscreen view"
-                                className="max-h-[85vh] w-auto object-contain rounded-xl"
-                            />
-                        ) : (
-                            <img
-                                src={fullscreenImage}
-                                alt="Fullscreen view"
-                                className="max-h-[85vh] w-auto object-contain rounded-xl"
-                            />
-                        )}
+                        <img
+                            src={resolveImageUrl(fullscreenImage) || "https://placehold.co/600x600?text=Product+Image"}
+                            alt="Fullscreen view"
+                            className="max-h-[85vh] w-auto object-contain rounded-xl"
+                        />
                     </div>
                 </div>
             )}
