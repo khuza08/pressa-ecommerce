@@ -1,5 +1,4 @@
-// src/services/productService.ts
-// Service to fetch products from the Go backend API
+import { apiService } from './apiService';
 
 export interface ProductVariant {
   id: number;
@@ -35,16 +34,10 @@ export interface Product {
   updatedAt: string;
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1';
-
 export const productService = {
   getAllProducts: async (): Promise<Product[]> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/products`);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch products: ${response.status}`);
-      }
-      const data = await response.json();
+      const data = await apiService.get('/products');
 
       // Handle both simple array format and paginated format for backward compatibility
       if (Array.isArray(data)) {
@@ -64,15 +57,7 @@ export const productService = {
 
   getProductById: async (id: string): Promise<Product | undefined> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/products/${id}`);
-      if (!response.ok) {
-        if (response.status === 404) {
-          return undefined;
-        }
-        throw new Error(`Failed to fetch product: ${response.status}`);
-      }
-      const product = await response.json();
-      return product || undefined;
+      return await apiService.get(`/products/${id}`);
     } catch (error) {
       console.error('Error fetching product:', error);
       return undefined;

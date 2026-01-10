@@ -54,74 +54,48 @@ export const cartService = {
   syncCartWithBackend: async (): Promise<void> => {
     console.log('syncCartWithBackend called');
     const token = localStorage.getItem('auth_token');
-    console.log('Current token in syncCartWithBackend:', token);
-    console.log('Is authenticated?', !!token);
 
     try {
-      // Get current cart from localStorage
       const localCart = cartService.getCart();
-      console.log('Local cart:', localCart);
-
-      // If user is authenticated, sync with backend
       if (token) {
         console.log('Making API call to sync cart with backend');
-        // Get current cart from backend
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1'}/cart`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
+        const backendData = await apiService.get('/cart');
+        const backendItems: BackendCartItem[] = backendData.items || [];
+
+        const mergedItems = [...localCart.items];
+
+        backendItems.forEach(backendItem => {
+          const existingIndex = mergedItems.findIndex(item =>
+            item.productId === backendItem.product_id &&
+            item.size === backendItem.size &&
+            item.color === backendItem.color
+          );
+
+          if (existingIndex >= 0) {
+            if (mergedItems[existingIndex].quantity < backendItem.quantity) {
+              mergedItems[existingIndex].quantity = backendItem.quantity;
+            }
+          } else {
+            mergedItems.push({
+              id: `${backendItem.product_id}-${backendItem.size || ''}-${backendItem.color || ''}-${Date.now()}`,
+              productId: backendItem.product_id,
+              name: backendItem.product.name,
+              price: backendItem.product.price,
+              image: resolveImageUrl(backendItem.product.image) || '',
+              quantity: backendItem.quantity,
+              size: backendItem.size,
+              color: backendItem.color,
+            });
+          }
         });
 
-        console.log('Sync cart API response:', response.status);
-        if (response.ok) {
-          const backendData = await response.json();
-          console.log('Backend cart data:', backendData);
-          const backendItems: BackendCartItem[] = backendData.items || [];
+        const updatedCart: Cart = {
+          items: mergedItems,
+          total: mergedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+        };
 
-          // Merge local cart with backend cart
-          const mergedItems = [...localCart.items];
-
-          backendItems.forEach(backendItem => {
-            const existingIndex = mergedItems.findIndex(item =>
-              item.productId === backendItem.product_id &&
-              item.size === backendItem.size &&
-              item.color === backendItem.color
-            );
-
-            if (existingIndex >= 0) {
-              // Update quantity if backend has more items
-              if (mergedItems[existingIndex].quantity < backendItem.quantity) {
-                mergedItems[existingIndex].quantity = backendItem.quantity;
-              }
-            } else {
-              // Add item from backend to local cart
-              mergedItems.push({
-                id: `${backendItem.product_id}-${backendItem.size || ''}-${backendItem.color || ''}-${Date.now()}`,
-                productId: backendItem.product_id,
-                name: backendItem.product.name,
-                price: backendItem.product.price,
-                image: resolveImageUrl(backendItem.product.image) || '',
-                quantity: backendItem.quantity,
-                size: backendItem.size,
-                color: backendItem.color,
-              });
-            }
-          });
-
-          // Update local cart
-          const updatedCart: Cart = {
-            items: mergedItems,
-            total: mergedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-          };
-
-          cartService.setCart(updatedCart);
-          console.log('Cart synced with backend and updated locally:', updatedCart);
-        } else {
-          console.error('Failed to sync cart with backend:', response.statusText);
-        }
-      } else {
-        console.log('No token found, skipping cart sync with backend');
+        cartService.setCart(updatedCart);
+        console.log('Cart synced with backend and updated locally:', updatedCart);
       }
     } catch (error) {
       console.error('Error syncing cart with backend:', error);
@@ -132,60 +106,39 @@ export const cartService = {
   loadCartFromBackend: async (): Promise<Cart> => {
     console.log('loadCartFromBackend called');
     const token = localStorage.getItem('auth_token');
-    console.log('Current token in loadCartFromBackend:', token);
-    console.log('Is authenticated?', !!token);
 
     try {
       if (token) {
         console.log('Making API call to load cart from backend');
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1'}/cart`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+        const backendData = await apiService.get('/cart');
+        const backendItems: BackendCartItem[] = backendData.items || [];
 
-        console.log('Load cart API response:', response.status);
-        if (response.ok) {
-          const backendData = await response.json();
-          console.log('Loaded cart data from backend:', backendData);
-          const backendItems: BackendCartItem[] = backendData.items || [];
+        const localItems = backendItems.map(backendItem => ({
+          id: `${backendItem.product_id}-${backendItem.size || ''}-${backendItem.color || ''}-${backendItem.variant_id || 'no_variant'}-${Date.now()}`,
+          productId: backendItem.product_id,
+          name: backendItem.product.name,
+          price: backendItem.product.price,
+          image: resolveImageUrl(backendItem.product.image) || '',
+          quantity: backendItem.quantity,
+          size: backendItem.size,
+          color: backendItem.color,
+          variantId: backendItem.variant_id,
+          variantSize: backendItem.size_variant,
+        }));
 
-          // Convert backend items to local cart format
-          const localItems = backendItems.map(backendItem => ({
-            id: `${backendItem.product_id}-${backendItem.size || ''}-${backendItem.color || ''}-${backendItem.variant_id || 'no_variant'}-${Date.now()}`,
-            productId: backendItem.product_id,
-            name: backendItem.product.name,
-            price: backendItem.product.price,
-            image: resolveImageUrl(backendItem.product.image) || '',
-            quantity: backendItem.quantity,
-            size: backendItem.size,
-            color: backendItem.color,
-            variantId: backendItem.variant_id,
-            variantSize: backendItem.size_variant,
-          }));
+        const cart: Cart = {
+          items: localItems,
+          total: localItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+        };
 
-          const cart: Cart = {
-            items: localItems,
-            total: localItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-          };
-
-          // Save to localStorage
-          cartService.setCart(cart);
-          console.log('Cart loaded from backend and saved to localStorage:', cart);
-          return cart;
-        } else {
-          console.error('Failed to load cart from backend:', response.statusText);
-        }
-      } else {
-        console.log('No token found, skipping cart load from backend');
+        cartService.setCart(cart);
+        console.log('Cart loaded from backend and saved to localStorage:', cart);
+        return cart;
       }
     } catch (error) {
       console.error('Error loading cart from backend:', error);
     }
 
-    // Return empty cart if failed to load from backend
-    console.log('Returning empty cart');
     return { items: [], total: 0 };
   },
 
@@ -197,29 +150,16 @@ export const cartService = {
     try {
       if (token) {
         console.log('Making API call to clear cart on backend');
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1'}/cart`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          console.error('Error clearing cart on backend:', response.statusText);
-        } else {
-          console.log('Successfully cleared cart on backend');
-        }
+        await apiService.delete('/cart');
+        console.log('Successfully cleared cart on backend');
       }
     } catch (error) {
       console.error('Error clearing cart on backend:', error);
     }
 
-    // Clear local storage
     cartService.clearCart();
   },
 
-  // Alias for backward compatibility if needed, or just use clearCartFromServer
   clearCartOnLogout: async (): Promise<void> => {
     await cartService.clearCartFromServer();
   },
@@ -227,8 +167,6 @@ export const cartService = {
   addToCart: async (product: Product, quantity: number = 1, size?: string, color?: string, variantId?: number): Promise<Cart> => {
     console.log('addToCart called with product:', product);
     const token = localStorage.getItem('auth_token');
-    console.log('Current token in addToCart:', token);
-    console.log('Is authenticated?', !!token);
 
     const cart = cartService.getCart();
     const existingItemIndex = cart.items.findIndex(item =>
@@ -262,36 +200,20 @@ export const cartService = {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
 
-    // If user is authenticated, sync with backend
     if (token) {
       console.log('Making API call to add to cart');
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1'}/cart`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            product_id: product.id,
-            quantity,
-            size,
-            color,
-            variant_id: variantId
-          }),
+        await apiService.post('/cart', {
+          product_id: product.id,
+          quantity,
+          size,
+          color,
+          variant_id: variantId
         });
-
-        console.log('Cart API response:', response.status);
-        if (!response.ok) {
-          console.error('Error adding to cart on backend:', await response.text());
-        } else {
-          console.log('Successfully added to cart on backend');
-        }
+        console.log('Successfully added to cart on backend');
       } catch (error) {
         console.error('Error adding to cart on backend:', error);
       }
-    } else {
-      console.log('No token found, skipping backend sync for cart');
     }
 
     return cart;
@@ -300,61 +222,56 @@ export const cartService = {
   updateQuantity: async (itemId: string, quantity: number): Promise<Cart> => {
     console.log('updateQuantity called with itemId:', itemId, 'quantity:', quantity);
     const token = localStorage.getItem('auth_token');
-    console.log('Current token in updateQuantity:', token);
-    console.log('Is authenticated?', !!token);
 
     const cart = cartService.getCart();
-
     const itemIndex = cart.items.findIndex(item => item.id === itemId);
+
     if (itemIndex >= 0) {
+      const item = cart.items[itemIndex];
       if (quantity <= 0) {
         cart.items.splice(itemIndex, 1);
       } else {
         cart.items[itemIndex].quantity = quantity;
       }
-    }
 
-    cart.total = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('cart', JSON.stringify(cart));
-    }
-
-    // If user is authenticated, sync with backend
-    if (token && cart.items[itemIndex]) {
-      console.log('Making API call to update cart quantity');
-      try {
-        const item = cart.items[itemIndex];
-        const queryParams = new URLSearchParams();
-        if (item.size) queryParams.append('size', item.size);
-        if (item.color) queryParams.append('color', item.color);
-        if (item.variantId) queryParams.append('variant_id', item.variantId.toString());
-
-        const queryString = queryParams.toString();
-        const url = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1'}/cart/${item.productId}${queryString ? `?${queryString}` : ''}`;
-
-        const response = await fetch(url, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            quantity,
-          }),
-        });
-
-        console.log('Update cart API response:', response.status);
-        if (!response.ok) {
-          console.error('Error updating cart on backend:', await response.text());
-        } else {
-          console.log('Successfully updated cart on backend');
-        }
-      } catch (error) {
-        console.error('Error updating cart on backend:', error);
+      cart.total = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('cart', JSON.stringify(cart));
       }
-    } else {
-      console.log('No token found or item not found, skipping backend sync for updateQuantity');
+
+      if (token && quantity > 0) {
+        console.log('Making API call to update cart quantity');
+        try {
+          const queryParams = new URLSearchParams();
+          if (item.size) queryParams.append('size', item.size);
+          if (item.color) queryParams.append('color', item.color);
+          if (item.variantId) queryParams.append('variant_id', item.variantId.toString());
+
+          const queryString = queryParams.toString();
+          const url = `/cart/${item.productId}${queryString ? `?${queryString}` : ''}`;
+
+          await apiService.put(url, { quantity });
+          console.log('Successfully updated cart on backend');
+        } catch (error) {
+          console.error('Error updating cart on backend:', error);
+        }
+      } else if (token && quantity <= 0) {
+        // Handle deletion if quantity is 0
+        try {
+          const queryParams = new URLSearchParams();
+          if (item.size) queryParams.append('size', item.size);
+          if (item.color) queryParams.append('color', item.color);
+          if (item.variantId) queryParams.append('variant_id', item.variantId.toString());
+
+          const queryString = queryParams.toString();
+          const url = `/cart/${item.productId}${queryString ? `?${queryString}` : ''}`;
+
+          await apiService.delete(url);
+          console.log('Successfully removed from cart on backend (via updateQuantity)');
+        } catch (error) {
+          console.error('Error removing from cart on backend:', error);
+        }
+      }
     }
 
     return cart;
@@ -363,22 +280,19 @@ export const cartService = {
   removeFromCart: async (itemId: string): Promise<Cart> => {
     console.log('removeFromCart called with itemId:', itemId);
     const token = localStorage.getItem('auth_token');
-    console.log('Current token in removeFromCart:', token);
-    console.log('Is authenticated?', !!token);
 
     const cart = cartService.getCart();
     const itemIndex = cart.items.findIndex(item => item.id === itemId);
 
     if (itemIndex >= 0) {
       const item = cart.items[itemIndex];
-      cart.items = cart.items.filter(item => item.id !== itemId);
-      cart.total = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      cart.items = cart.items.filter(i => i.id !== itemId);
+      cart.total = cart.items.reduce((sum, i) => sum + (i.price * i.quantity), 0);
 
       if (typeof window !== 'undefined') {
         localStorage.setItem('cart', JSON.stringify(cart));
       }
 
-      // If user is authenticated, sync with backend
       if (token) {
         console.log('Making API call to remove from cart');
         try {
@@ -388,27 +302,13 @@ export const cartService = {
           if (item.variantId) queryParams.append('variant_id', item.variantId.toString());
 
           const queryString = queryParams.toString();
-          const url = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1'}/cart/${item.productId}${queryString ? `?${queryString}` : ''}`;
+          const url = `/cart/${item.productId}${queryString ? `?${queryString}` : ''}`;
 
-          const response = await fetch(url, {
-            method: 'DELETE',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
-
-          console.log('Remove from cart API response:', response.status);
-          if (!response.ok) {
-            console.error('Error removing from cart on backend:', await response.text());
-          } else {
-            console.log('Successfully removed from cart on backend');
-          }
+          await apiService.delete(url);
+          console.log('Successfully removed from cart on backend');
         } catch (error) {
           console.error('Error removing from cart on backend:', error);
         }
-      } else {
-        console.log('No token found, skipping backend sync for removeFromCart');
       }
     }
 

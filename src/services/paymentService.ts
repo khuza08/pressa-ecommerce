@@ -1,6 +1,4 @@
-// src/services/paymentService.ts
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1';
+import { apiService } from './apiService';
 
 export interface CartItem {
     product_id: string | number;
@@ -68,79 +66,16 @@ export interface PaymentStatus {
 }
 
 class PaymentService {
-    private getAuthToken(): string | null {
-        if (typeof window === 'undefined') return null;
-        return localStorage.getItem('auth_token');
-    }
-
     async createTransaction(data: CreateTransactionRequest): Promise<CreateTransactionResponse> {
-        const token = this.getAuthToken();
-
-        if (!token) {
-            throw new Error('User not authenticated');
-        }
-
-        const response = await fetch(`${API_BASE_URL}/payments/create-transaction`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `Payment creation failed: ${response.status}`);
-        }
-
-        return response.json();
+        return apiService.post('/payments/create-transaction', data);
     }
 
     async getPaymentStatus(orderId: string): Promise<PaymentStatus> {
-        const token = this.getAuthToken();
-
-        if (!token) {
-            throw new Error('User not authenticated');
-        }
-
-        const response = await fetch(`${API_BASE_URL}/payments/status/${orderId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `Failed to get payment status: ${response.status}`);
-        }
-
-        return response.json();
+        return apiService.get(`/payments/status/${orderId}`);
     }
 
     async getOrderByMidtransId(orderId: string): Promise<any> {
-        const token = this.getAuthToken();
-
-        if (!token) {
-            throw new Error('User not authenticated');
-        }
-
-        const response = await fetch(`${API_BASE_URL}/orders/midtrans/${orderId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `Failed to get order: ${response.status}`);
-        }
-
-        return response.json();
+        return apiService.get(`/orders/midtrans/${orderId}`);
     }
 }
 

@@ -5,8 +5,7 @@ import Link from 'next/link';
 import { FiPackage, FiArrowLeft, FiClock, FiCheckCircle, FiXCircle, FiLoader } from 'react-icons/fi';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1';
+import { apiService } from '@/services/apiService';
 
 interface Order {
     id: number;
@@ -45,26 +44,8 @@ export default function OrdersPage() {
 
         const fetchOrders = async () => {
             try {
-                const token = getToken();
-                console.log('OrdersPage: Fetching orders with token:', token ? 'exists' : 'missing');
-
-                const response = await fetch(`${API_BASE_URL}/orders`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    if (response.status === 401) {
-                        console.error('OrdersPage: Unauthorized error. Token might be invalid or expired.');
-                        throw new Error('Your session has expired. Please log in again.');
-                    }
-                    throw new Error(errorData.error || errorData.message || `Failed to fetch orders: ${response.status}`);
-                }
-
-                const data = await response.json();
+                console.log('OrdersPage: Fetching orders');
+                const data = await apiService.get('/orders');
                 setOrders(data.orders || []);
                 setError(null);
             } catch (err: any) {

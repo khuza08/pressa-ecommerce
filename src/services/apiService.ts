@@ -2,78 +2,55 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1';
 
 class ApiService {
-  async get(endpoint: string) {
+  private async request(endpoint: string, options: RequestInit = {}) {
     const token = localStorage.getItem('auth_token');
-    
+
+    const headers = {
+      'Content-Type': 'application/json',
+      ...(token && { 'Authorization': `Bearer ${token}` }),
+      ...(options.headers || {}),
+    };
+
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { 'Authorization': `Bearer ${token}` })
-      },
+      ...options,
+      headers,
     });
-    
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status}`);
+
+    if (response.status === 401) {
+      console.warn('Unauthorized access detected, dispatching event');
+      window.dispatchEvent(new CustomEvent('unauthorized-access'));
     }
-    
+
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => 'No error detail');
+      throw new Error(`API request failed: ${response.status} - ${errorText}`);
+    }
+
     return response.json();
   }
 
-  async post(endpoint: string, data: any) {
-    const token = localStorage.getItem('auth_token');
-    
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  async get(endpoint: string, options: RequestInit = {}) {
+    return this.request(endpoint, { ...options, method: 'GET' });
+  }
+
+  async post(endpoint: string, data: any, options: RequestInit = {}) {
+    return this.request(endpoint, {
+      ...options,
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { 'Authorization': `Bearer ${token}` })
-      },
       body: JSON.stringify(data),
     });
-    
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status}`);
-    }
-    
-    return response.json();
   }
 
-  async put(endpoint: string, data: any) {
-    const token = localStorage.getItem('auth_token');
-    
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  async put(endpoint: string, data: any, options: RequestInit = {}) {
+    return this.request(endpoint, {
+      ...options,
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { 'Authorization': `Bearer ${token}` })
-      },
       body: JSON.stringify(data),
     });
-    
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status}`);
-    }
-    
-    return response.json();
   }
 
-  async delete(endpoint: string) {
-    const token = localStorage.getItem('auth_token');
-    
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { 'Authorization': `Bearer ${token}` })
-      },
-    });
-    
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status}`);
-    }
-    
-    return response.json();
+  async delete(endpoint: string, options: RequestInit = {}) {
+    return this.request(endpoint, { ...options, method: 'DELETE' });
   }
 }
 

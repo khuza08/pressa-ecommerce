@@ -1,5 +1,4 @@
-// src/services/carouselService.ts
-// Service to manage carousel items from the backend API
+import { apiService } from './apiService';
 
 export interface CarouselItem {
   id: number;
@@ -14,19 +13,13 @@ export interface CarouselItem {
   updatedAt: string;
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-
 export const carouselService = {
   // Public methods - for frontend carousel display
   getActiveCarouselItems: async (): Promise<CarouselItem[]> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/v1/carousels`);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch carousel items: ${response.status}`);
-      }
-      const items = await response.json();
+      const items = await apiService.get('/carousels');
       // Ensure all items have proper defaults to prevent undefined values
-      const normalizedItems = Array.isArray(items) ? items.map(item => ({
+      const normalizedItems = Array.isArray(items) ? items.map((item: any) => ({
         ...item,
         image: item.image || '',
         imageType: item.imageType || 'url',
@@ -42,14 +35,7 @@ export const carouselService = {
 
   getCarouselItemById: async (id: number): Promise<CarouselItem | undefined> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/v1/carousels/${id}`);
-      if (!response.ok) {
-        if (response.status === 404) {
-          return undefined;
-        }
-        throw new Error(`Failed to fetch carousel item: ${response.status}`);
-      }
-      const item = await response.json();
+      const item = await apiService.get(`/carousels/${id}`);
       // Ensure the item has proper defaults to prevent undefined values
       return {
         ...item,
@@ -67,20 +53,7 @@ export const carouselService = {
   // Admin methods - require authentication
   createCarouselItem: async (item: Omit<CarouselItem, 'id' | 'createdAt' | 'updatedAt'>): Promise<CarouselItem | null> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/carousels`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // Assuming JWT token storage
-        },
-        body: JSON.stringify(item)
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Failed to create carousel item: ${response.status}`);
-      }
-      
-      return await response.json();
+      return await apiService.post('/carousels', item);
     } catch (error) {
       console.error('Error creating carousel item:', error);
       return null;
@@ -89,20 +62,7 @@ export const carouselService = {
 
   updateCarouselItem: async (id: number, item: Partial<CarouselItem>): Promise<CarouselItem | null> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/carousels/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // Assuming JWT token storage
-        },
-        body: JSON.stringify(item)
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Failed to update carousel item: ${response.status}`);
-      }
-      
-      return await response.json();
+      return await apiService.put(`/carousels/${id}`, item);
     } catch (error) {
       console.error('Error updating carousel item:', error);
       return null;
@@ -111,14 +71,8 @@ export const carouselService = {
 
   deleteCarouselItem: async (id: number): Promise<boolean> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/carousels/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // Assuming JWT token storage
-        }
-      });
-      
-      return response.ok;
+      await apiService.delete(`/carousels/${id}`);
+      return true;
     } catch (error) {
       console.error('Error deleting carousel item:', error);
       return false;
@@ -128,15 +82,7 @@ export const carouselService = {
   // Method to get all carousel items (admin access)
   getAllCarouselItems: async (): Promise<CarouselItem[]> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/carousels`, { // Note: This would typically require admin access
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // Assuming JWT token storage
-        }
-      });
-      if (!response.ok) {
-        throw new Error(`Failed to fetch carousel items: ${response.status}`);
-      }
-      const items = await response.json();
+      const items = await apiService.get('/carousels');
       return Array.isArray(items) ? items : [];
     } catch (error) {
       console.error('Error fetching all carousel items:', error);
