@@ -7,9 +7,16 @@ import { useAuth } from '@/context/AuthContext';
 import { useFavorites } from '@/context/FavoriteContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Script from 'next/script';
 import { resolveImageUrl } from '@/lib/imageUrl';
 import { paymentService, CreateTransactionRequest } from '@/services/paymentService';
+import Script from 'next/script';
+
+// Add type definition for Midtrans Snap
+declare global {
+  interface Window {
+    snap: any;
+  }
+}
 
 // Midtrans configuration
 const MIDTRANS_CLIENT_KEY = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || '';
@@ -43,7 +50,32 @@ export default function CheckoutPage() {
     setMounted(true);
     console.log('DEBUG: MIDTRANS_CLIENT_KEY available:', !!MIDTRANS_CLIENT_KEY);
     console.log('DEBUG: MIDTRANS_SNAP_URL:', MIDTRANS_SNAP_URL);
+
+    // Initial check for snap
+    if (typeof window !== 'undefined' && window.snap) {
+      console.log('DEBUG: window.snap already available on mount');
+      setSnapReady(true);
+    }
   }, []);
+
+  // Monitor snap availability more aggressively
+  useEffect(() => {
+    if (snapReady) return;
+
+    const checkInterval = setInterval(() => {
+      if (typeof window !== 'undefined' && window.snap) {
+        console.log('DEBUG: window.snap detected via interval');
+        setSnapReady(true);
+        clearInterval(checkInterval);
+      }
+    }, 1000);
+
+    return () => clearInterval(checkInterval);
+  }, [snapReady]);
+
+  useEffect(() => {
+    console.log('DEBUG: snapReady state changed:', snapReady);
+  }, [snapReady]);
 
   // Check authentication
   useEffect(() => {
@@ -170,19 +202,21 @@ export default function CheckoutPage() {
 
   return (
     <>
-      {/* Load Midtrans Snap.js */}
       <Script
         src={MIDTRANS_SNAP_URL}
         data-client-key={MIDTRANS_CLIENT_KEY}
         id="midtrans-script"
+        strategy="afterInteractive"
         onLoad={() => {
           console.log('Midtrans Snap.js loaded successfully');
+          if (!MIDTRANS_CLIENT_KEY) {
+            console.error('CRITICAL: Midtrans Client Key is missing! Snap popup will not function correctly.');
+          }
           setSnapReady(true);
         }}
         onError={(e) => {
           console.error('Midtrans Snap.js failed to load', e);
         }}
-        strategy="afterInteractive"
       />
 
       <div className="min-h-screen bg-white py-8">
@@ -197,21 +231,32 @@ export default function CheckoutPage() {
           <h1 className="text-2xl font-bold mb-8 px-4">Checkout</h1>
 
           {/* Progress indicator */}
-          <div className="flex items-center justify-between mb-8 px-4 max-w-md">
-            <div className={`flex flex-col items-center ${step >= 1 ? 'text-black' : 'text-black/40'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${step >= 1 ? 'bg-black text-white' : 'bg-black/10'}`}>
-                1
-              </div>
-              <span className="text-sm">Shipping</span>
-            </div>
+          <div className="max-w-2xl mx-auto mb-12 px-4">
+            <div className="relative flex items-center justify-between">
+              {/* Progress Line Background */}
+              <div className="absolute top-1/2 left-8 right-8 h-0.5 bg-black/10 -translate-y-4"></div>
 
-            <div className="flex-1 h-0.5 bg-black/20 mx-2"></div>
+              {/* Active Progress Line */}
+              <div
+                className="absolute top-1/2 left-8 h-0.5 bg-black -translate-y-4 transition-all duration-500"
+                style={{ width: step === 1 ? '0%' : 'calc(100% - 64px)' }}
+              ></div>
 
-            <div className={`flex flex-col items-center ${step >= 2 ? 'text-black' : 'text-black/40'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${step >= 2 ? 'bg-black text-white' : 'bg-black/10'}`}>
-                2
+              {/* Step 1 */}
+              <div className="relative z-10 flex flex-col items-center">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 transition-colors duration-300 ${step >= 1 ? 'bg-black text-white' : 'bg-white border-2 border-black/20 text-black/40'}`}>
+                  1
+                </div>
+                <span className={`text-xs font-medium uppercase tracking-wider ${step >= 1 ? 'text-black' : 'text-black/40'}`}>Shipping</span>
               </div>
-              <span className="text-sm">Review & Pay</span>
+
+              {/* Step 2 */}
+              <div className="relative z-10 flex flex-col items-center">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 transition-colors duration-300 ${step >= 2 ? 'bg-black text-white' : 'bg-white border-2 border-black/20 text-black/40'}`}>
+                  2
+                </div>
+                <span className={`text-xs font-medium uppercase tracking-wider ${step >= 2 ? 'text-black' : 'text-black/40'}`}>Review & Pay</span>
+              </div>
             </div>
           </div>
 
@@ -273,13 +318,12 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
-                {/* Midtrans badge */}
                 <div className="mt-4 pt-4 border-t border-black/10">
-                  <p className="text-xs text-black/50 text-center">Secured by Midtrans</p>
-                  <div className="flex justify-center items-center gap-2 mt-2">
-                    <img src="https://midtrans.com/assets/images/payments/visa.svg" alt="Visa" className="h-6" />
-                    <img src="https://midtrans.com/assets/images/payments/mastercard.svg" alt="Mastercard" className="h-6" />
-                    <img src="https://midtrans.com/assets/images/payments/gopay.svg" alt="GoPay" className="h-6" />
+                  <p className="text-xs text-black/50 text-center mb-2">Secured by Midtrans</p>
+                  <div className="flex justify-center items-center gap-3 mt-2">
+                    <img src="/images/payments/visa.svg" alt="Visa" className="h-4" />
+                    <img src="/images/payments/mastercard.svg" alt="Mastercard" className="h-6" />
+                    <img src="/images/payments/gopay.svg" alt="GoPay" className="h-6" />
                   </div>
                 </div>
               </div>
