@@ -67,13 +67,13 @@ export default function PreCheckoutModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-end">
+    <div className="fixed inset-0 bg-[#242424]/50 z-50 flex items-end">
       <div 
         className="w-full bg-white rounded-t-xl max-h-[80vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="p-4 border-b border-black/20 flex justify-between items-center">
+        <div className="p-4 border-b-2 border-black/20 flex justify-between items-center">
           <h3 className="font-bold text-lg">Detail Pesanan</h3>
           <button
             onClick={onClose}
@@ -86,7 +86,7 @@ export default function PreCheckoutModal({
 
         {/* Product Info */}
         <div className="p-4 flex gap-4">
-          <div className="w-16 h-16 bg-black/10 rounded shrink-0">
+          <div className="w-16 h-16 bg-[#242424]/10 rounded shrink-0">
             <img
               src={mainImage}
               alt={product?.name}
@@ -111,7 +111,7 @@ export default function PreCheckoutModal({
                   disabled={variant.stock <= 0}
                   className={`py-2 px-3 rounded border text-sm ${
                     activeVariant === variant.id
-                      ? 'border-black bg-black text-white'
+                      ? 'border-black bg-[#242424] text-white'
                       : variant.stock <= 0
                           ? 'border-black/30 text-black/30 cursor-not-allowed'
                           : 'border-black/30'
@@ -126,7 +126,7 @@ export default function PreCheckoutModal({
         )}
 
         {/* Quantity Selection */}
-        <div className="px-4 py-4 border-t border-black/20">
+        <div className="px-4 py-4 border-t-2 border-black/20">
           <div className="flex items-center justify-between">
             <span className="font-medium">Jumlah:</span>
             <div className="flex items-center border border-black/30 rounded-lg">
@@ -150,7 +150,7 @@ export default function PreCheckoutModal({
         </div>
 
         {/* Price Summary */}
-        <div className="px-4 py-4 border-t border-black/20">
+        <div className="px-4 py-4 border-t-2 border-black/20">
           <div className="flex justify-between mb-2">
             <span>Subtotal:</span>
             <span className="font-bold">Rp{(product?.price * quantity)?.toLocaleString('id-ID')}</span>
@@ -161,13 +161,13 @@ export default function PreCheckoutModal({
         <div className="p-4">
           <button
             onClick={handleConfirmBuy}
-            className="w-full bg-black text-white py-3 rounded-xl font-bold mb-2"
+            className="w-full bg-[#242424] text-white py-3 rounded-xl font-bold mb-2"
           >
             Beli Sekarang
           </button>
           <button
             onClick={onClose}
-            className="w-full bg-black/10 text-black py-3 rounded-xl font-bold"
+            className="w-full bg-[#242424]/10 text-black py-3 rounded-xl font-bold"
           >
             Batal
           </button>

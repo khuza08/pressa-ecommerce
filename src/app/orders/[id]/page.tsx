@@ -139,7 +139,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                     </div>
                     <Link
                         href="/orders"
-                        className="inline-block bg-black text-white py-3 px-6 rounded-full hover:bg-black/90 transition"
+                        className="inline-block bg-[#242424] text-white py-3 px-6 rounded-full hover:bg-[#242424]/90 transition"
                     >
                         View All Orders
                     </Link>
@@ -157,7 +157,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                     <p className="text-gray-400 mb-6">The order you are looking for does not exist.</p>
                     <Link
                         href="/orders"
-                        className="inline-block bg-black text-white py-3 px-6 rounded-full hover:bg-black/90 transition"
+                        className="inline-block bg-[#242424] text-white py-3 px-6 rounded-full hover:bg-[#242424]/90 transition"
                     >
                         View All Orders
                     </Link>
@@ -206,9 +206,9 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                         {['Confirmed', 'Processing', 'Shipped', 'Delivered'].map((label, index) => (
                             <div key={label} className="flex-1 flex flex-col items-center relative">
                                 {index < 3 && (
-                                    <div className={`absolute top-6 md:top-8 left-[50%] w-full h-1 md:h-1.5 ${index < currentStep ? 'bg-black' : 'bg-black/10'}`} />
+                                    <div className={`absolute top-6 md:top-8 left-[50%] w-full h-1 md:h-1.5 ${index < currentStep ? 'bg-[#242424]' : 'bg-[#242424]/10'}`} />
                                 )}
-                                <div className={`w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center relative z-10 transition-all duration-300 ${index <= currentStep ? 'bg-black text-white' : 'bg-[#E5E5E5] text-black'
+                                <div className={`w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center relative z-10 transition-all duration-300 ${index <= currentStep ? 'bg-[#242424] text-white' : 'bg-[#E5E5E5] text-black'
                                     }`}>
                                     {index === 0 && <FiCheckCircle className="text-lg md:text-2xl" />}
                                     {index === 1 && <FiPackage className="text-lg md:text-2xl" />}
@@ -231,7 +231,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                             <div className="space-y-4">
                                 {order.items?.map((item) => (
                                     <div key={item.id} className="flex items-center py-3 border-b-2 border-black/10 last:border-0">
-                                        <div className="w-20 h-20 bg-black/5 rounded-lg overflow-hidden mr-4">
+                                        <div className="w-20 h-20 bg-[#242424]/5 rounded-lg overflow-hidden mr-4">
                                             {(() => {
                                                 const imgSrc = resolveImageUrl(item.product?.image || item.product?.images?.[0]?.url);
                                                 return imgSrc ? (
@@ -274,18 +274,18 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                             {transaction && (
                                 <div className="space-y-3">
                                     <div className="grid grid-cols-2 gap-3">
-                                        <div className="p-3 bg-black/5 rounded-lg border border-black/10">
+                                        <div className="p-3 bg-[#242424]/5 rounded-lg border-2 border-black/10">
                                             <span className="text-[10px] uppercase tracking-wider text-black font-bold block mb-1">Method</span>
                                             <p className="text-sm text-black/60 capitalize font-medium">{transaction.payment_type?.replace(/_/g, ' ') || 'Midtrans'}</p>
                                         </div>
-                                        <div className="p-3 bg-black/5 rounded-lg border border-black/10">
+                                        <div className="p-3 bg-[#242424]/5 rounded-lg border-2 border-black/10">
                                             <span className="text-[10px] uppercase tracking-wider text-black font-bold block mb-1">Status</span>
                                             <p className="text-sm text-black/60 capitalize font-medium">{transaction.transaction_status}</p>
                                         </div>
                                     </div>
 
                                     {(transaction.va_number || transaction.bank || transaction.bill_key || transaction.payment_code) && (
-                                        <div className="p-3 bg-black/5 rounded-lg border border-black/10 space-y-2">
+                                        <div className="p-3 bg-[#242424]/5 rounded-lg border-2 border-black/10 space-y-2">
                                             {transaction.bank && (
                                                 <div className="flex justify-between items-center">
                                                     <span className="text-[10px] uppercase tracking-wider text-black font-bold">Bank</span>
@@ -293,13 +293,13 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                                                 </div>
                                             )}
                                             {transaction.va_number && (
-                                                <div className="flex justify-between items-center pt-2 border-t border-black/5">
+                                                <div className="flex justify-between items-center pt-2 border-t-2 border-black/10">
                                                     <span className="text-[10px] uppercase tracking-wider text-black font-bold">VA Number</span>
                                                     <span className="text-sm text-black/80 font-mono font-bold tracking-wider">{transaction.va_number}</span>
                                                 </div>
                                             )}
                                             {transaction.payment_code && (
-                                                <div className="flex justify-between items-center pt-2 border-t border-black/5">
+                                                <div className="flex justify-between items-center pt-2 border-t-2 border-black/10">
                                                     <span className="text-[10px] uppercase tracking-wider text-black font-bold">Payment Code</span>
                                                     <span className="text-sm text-black/80 font-mono font-bold tracking-wider">{transaction.payment_code}</span>
                                                 </div>
@@ -329,7 +329,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                                 <h2 className="font-bold">Shipping Address</h2>
                             </div>
                             <div className="space-y-3">
-                                <div className="p-3 bg-black/5 rounded-lg border border-black/10">
+                                <div className="p-3 bg-[#242424]/5 rounded-lg border-2 border-black/10">
                                     <p className="text-sm font-bold text-black mb-1">{order.shipping_address}</p>
                                     <p className="text-sm text-black/60 leading-relaxed">
                                         {order.shipping_city}, {order.shipping_postal}
@@ -339,7 +339,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                                 </div>
 
                                 {order.shipping_phone && (
-                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/5 rounded-lg border border-black/10">
+                                    <div className="flex items-center gap-2 px-3 py-2 bg-[#242424]/5 rounded-lg border-2 border-black/10">
                                         <FiPhone className="text-black" size={14} />
                                         <div className="flex flex-col">
                                             <span className="text-[10px] uppercase tracking-wider text-black font-bold">Contact Phone</span>

@@ -21,7 +21,7 @@ export default function GoogleLoginButton() {
       type="button"
       onClick={handleGoogleLogin}
       disabled={loading}
-      className="w-full flex items-center justify-center gap-1 py-3 px-4 border border-black/20 rounded-lg hover:bg-black/5 transition font-medium"
+      className="w-full flex items-center justify-center gap-1 py-3 px-4 border-2 border-black/20 rounded-lg hover:bg-[#242424]/5 transition font-medium"
     >
       {loading ? (
         <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin"></div>

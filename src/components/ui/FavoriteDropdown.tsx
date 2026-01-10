@@ -40,11 +40,11 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
   return (
     <div
       ref={dropdownRef}
-      className={`absolute top-full right-0 mt-2 w-80 bg-white rounded-lg border border-black/20 z-50 transition-all duration-300 ${
+      className={`absolute top-full right-0 mt-2 w-80 bg-white rounded-lg border-2 border-black/20 z-50 transition-all duration-300 ${
         isOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'
       }`}
     >
-      <div className="p-4 border-b border-black/20 flex justify-between items-center">
+      <div className="p-4 border-b-2 border-black/20 flex justify-between items-center">
         <h3 className="font-bold text-lg">Favorites</h3>
         <button
           onClick={onClose}
@@ -73,9 +73,9 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
             {favorites.map((item) => (
               <li
                 key={item.id}
-                className="p-4 border-b border-black/10 flex items-center gap-3 hover:bg-black/5"
+                className="p-4 border-b-2 border-black/10 flex items-center gap-3 hover:bg-[#242424]/5"
               >
-                <div className="w-16 h-16 bg-black/20 rounded-md overflow-hidden flex-shrink-0">
+                <div className="w-16 h-16 bg-[#242424]/20 rounded-md overflow-hidden flex-shrink-0">
                   {(() => {
                     const imgSrc = resolveImageUrl(item.image);
                     return imgSrc ? (
@@ -109,11 +109,11 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
       </div>
 
       {getFavoritesCount() > 0 && (
-        <div className="p-4 border-t border-black/20">
+        <div className="p-4 border-t-2 border-black/20">
           <div className="flex gap-2">
             <Link
               href="/favorites"
-              className="flex-1 bg-black text-white py-2 px-2 rounded-full text-center hover:bg-black/90 transition"
+              className="flex-1 bg-[#242424] text-white py-2 px-2 rounded-full text-center hover:bg-[#242424]/90 transition"
               onClick={onClose}
             >
               View Favorites

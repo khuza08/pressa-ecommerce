@@ -61,14 +61,14 @@ export default function CartPage() {
 
         {cart.items.length === 0 ? (
           <div className="text-center py-12 px-4">
-            <div className="mx-auto w-24 h-24 bg-black/10 rounded-full flex items-center justify-center mb-4">
+            <div className="mx-auto w-24 h-24 bg-[#242424]/10 rounded-full flex items-center justify-center mb-4">
               <FiX className="text-black/40 text-3xl" />
             </div>
             <h3 className="text-lg font-medium mb-2">Your cart is empty</h3>
             <p className="text-black/60 mb-6">Looks like you haven't added anything to your cart yet</p>
             <Link
               href="/"
-              className="inline-block bg-black text-white py-3 px-6 rounded-full hover:bg-black/90 transition"
+              className="inline-block bg-[#242424] text-white py-3 px-6 rounded-full hover:bg-[#242424]/90 transition"
             >
               Continue Shopping
             </Link>
@@ -80,9 +80,9 @@ export default function CartPage() {
                 {cart.items.map((item) => (
                   <li
                     key={item.id}
-                    className="py-6 border-b border-black/20 flex flex-col sm:flex-row"
+                    className="py-6 border-b-2 border-black/20 flex flex-col sm:flex-row"
                   >
-                    <div className="w-24 h-24 bg-black/10 rounded-md overflow-hidden mb-4 sm:mb-0 sm:mr-6 flex-shrink-0">
+                    <div className="w-24 h-24 bg-[#242424]/10 rounded-md overflow-hidden mb-4 sm:mb-0 sm:mr-6 flex-shrink-0">
                       {item.image ? (
                         <img
                           src={resolveImageUrl(item.image)}
@@ -118,7 +118,7 @@ export default function CartPage() {
                         <div className="flex items-center border border-black/30 rounded-full">
                           <button
                             onClick={() => updateItemQuantity(item.id, item.quantity - 1)}
-                            className="px-3 py-1 text-black/60 hover:bg-black/10 rounded-l-full"
+                            className="px-3 py-1 text-black/60 hover:bg-[#242424]/10 rounded-l-full"
                             aria-label="Decrease quantity"
                           >
                             <FiMinus size={14} />
@@ -126,7 +126,7 @@ export default function CartPage() {
                           <span className="px-3 py-1 text-gray-800">{item.quantity}</span>
                           <button
                             onClick={() => updateItemQuantity(item.id, item.quantity + 1)}
-                            className="px-3 py-1 text-black/60 hover:bg-black/10 rounded-r-full"
+                            className="px-3 py-1 text-black/60 hover:bg-[#242424]/10 rounded-r-full"
                             aria-label="Increase quantity"
                           >
                             <FiPlus size={14} />
@@ -144,7 +144,7 @@ export default function CartPage() {
             </div>
 
             <div className="lg:col-span-1">
-              <div className="p-6 rounded-4xl border border-black/20">
+              <div className="p-6 rounded-4xl border-2 border-black/20">
                 <h2 className="text-lg font-bold mb-4">Order Summary</h2>
 
                 <div className="space-y-3 mb-6">
@@ -163,7 +163,7 @@ export default function CartPage() {
                     <span>Rp{(getTotalPrice() * 0.1).toLocaleString('id-ID')}</span>
                   </div>
 
-                  <div className="border-t border-black/30 pt-3 mt-3 flex justify-between font-bold">
+                  <div className="border-t-2 border-black/30 pt-3 mt-3 flex justify-between font-bold">
                     <span>Total</span>
                     <span>Rp{(getTotalPrice() * 1.1).toLocaleString('id-ID')}</span>
                   </div>
@@ -171,12 +171,12 @@ export default function CartPage() {
 
                 <Link
                   href="/checkout"
-                  className="w-full bg-black text-white py-3 px-4 rounded-full text-center block hover:bg-black/90 transition"
+                  className="w-full bg-[#242424] text-white py-3 px-4 rounded-full text-center block hover:bg-[#242424]/90 transition"
                 >
                   Proceed to Checkout
                 </Link>
 
-                <Link href="/" className="w-full mt-3 border border-black/30 py-3 px-4 rounded-full text-center hover:bg-black/10 transition block">
+                <Link href="/" className="w-full mt-3 border border-black/30 py-3 px-4 rounded-full text-center hover:bg-[#242424]/10 transition block">
                   Continue Shopping
                 </Link>
               </div>

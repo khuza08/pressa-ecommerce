@@ -1,6 +1,6 @@
 "use client";
 // src/components/layout/Footer.tsx
-import { FaFacebook, FaInstagram, FaTwitter, FaCcVisa, FaCcMastercard, FaCcPaypal, FaLock } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTwitter, FaLock } from "react-icons/fa";
 import { useState, useEffect } from 'react';
 import { Category } from '@/types/category';
 
@@ -55,6 +55,36 @@ export default function Footer() {
               <a href="#" className="text-black/50 hover:text-black text-lg">
                 <FaTwitter />
               </a>
+            </div>
+
+            {/* Payment Methods */}
+            <div className="mt-8">
+              <div className="flex flex-wrap gap-3 max-w-sm items-center" >
+                {[
+                  { name: 'Visa', src: '/images/payments/visa.svg' },
+                  { name: 'Mastercard', src: '/images/payments/mastercard.svg' },
+                  { name: 'JCB', src: 'https://cdn.jsdelivr.net/gh/veritrans/logo@master/logo/jcb.png' },
+                  { name: 'BCA', src: 'https://cdn.jsdelivr.net/gh/veritrans/logo@master/logo/bca.png' },
+                  { name: 'Mandiri', src: 'https://cdn.jsdelivr.net/gh/veritrans/logo@master/logo/mandiri.png' },
+                  { name: 'BNI', src: 'https://cdn.jsdelivr.net/gh/veritrans/logo@master/logo/bni.png' },
+                  { name: 'BRI', src: 'https://cdn.jsdelivr.net/gh/veritrans/logo@master/logo/bri.png' },
+                  { name: 'CIMB', src: '/images/payments/cimb.png' },
+                  { name: 'Permata', src: '/images/payments/permata.png' },
+                  { name: 'GoPay', src: '/images/payments/gopay.svg' },
+                  { name: 'ShopeePay', src: 'https://cdn.jsdelivr.net/gh/veritrans/logo@master/logo/shopeepay.png' },
+                  { name: 'QRIS', src: 'https://cdn.jsdelivr.net/gh/veritrans/logo@master/logo/qris.png' },
+                  { name: 'Akulaku', src: '/images/payments/akulaku.png' },
+                ].map((method) => (
+                  <img
+                    key={method.name}
+                    src={method.src}
+                    alt={method.name}
+                    title={method.name}
+                    className="h-6 w-auto object-contain saturate-0 hover:saturate-100 transition-all opacity-80 hover:opacity-100 transition-all duration-300"
+                    loading="lazy"
+                  />
+                ))}
+              </div>
             </div>
           </div>
 
@@ -111,19 +141,19 @@ export default function Footer() {
         </div>
 
         {/* Payment & Copyright */}
-        <div className="border-t border-black/20 pt-6">
+        <div className="border-t-2 border-black/20 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex space-x-2 mb-4 md:mb-0">
-              <FaCcVisa className="text-2xl text-black" />
-              <FaCcMastercard className="text-2xl text-black" />
-              <FaCcPaypal className="text-2xl text-black" />
-            </div>
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              <FaLock className="text-green-500" />
-              <span className="text-xs text-black">Secure Payment</span>
+              <img
+                src="https://cdn.jsdelivr.net/gh/veritrans/logo@master/logo/Midtrans%20Logo/midtrans_logo_black.svg"
+                alt="Midtrans"
+                className="h-4 w-auto object-contain ml-2 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all"
+              />
+              <FaLock className="text-green-500/60" />
+              <span className="text-sm text-black/60">Secure Payment</span>
             </div>
-            <p className="text-sm text-black">
-              Copyright © {new Date().getFullYear()} PRESSA. All rights reserved.
+            <p className="text-sm font-medium text-black/60">
+              © 2025 - {new Date().getFullYear()} PRESSA. All rights reserved.
             </p>
           </div>
         </div>

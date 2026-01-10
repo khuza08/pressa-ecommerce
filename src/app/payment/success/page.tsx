@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { FiCheckCircle, FiClock, FiPackage, FiArrowRight } from 'react-icons/fi';
@@ -13,6 +13,7 @@ function PaymentSuccessContent() {
 
     const [orderDetails, setOrderDetails] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const audioPlayedRef = useRef(false);
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
@@ -33,9 +34,19 @@ function PaymentSuccessContent() {
 
     const isPending = status === 'pending';
 
+    useEffect(() => {
+        if (!isPending && !audioPlayedRef.current) {
+            audioPlayedRef.current = true;
+            const audio = new Audio('/sfx/success.mp3');
+            audio.play().catch(error => {
+                console.log('Audio playback failed:', error);
+            });
+        }
+    }, [isPending]);
+
     return (
         <div className="min-h-screen bg-white flex items-center justify-center p-4">
-            <div className="max-w-5xl w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-black/20 flex flex-col md:flex-row-reverse text-left">
+            <div className="max-w-6xl w-full bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-black/20 flex flex-col md:flex-row-reverse text-left">
 
                 {/* Right Side: Status & Actions */}
                 <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center items-start">
@@ -56,14 +67,14 @@ function PaymentSuccessContent() {
                     <p className="text-black/60 mb-6 text-lg leading-relaxed">
                         {isPending
                             ? 'Your payment is being processed. Please complete the payment according to the instructions.'
-                            : 'Thank you for your purchase. Your order has been confirmed and will be shipped soon.'}
+                            : 'Thank you for your purchase. Your order will becc confirmed and will be shipped soon.'}
                     </p>
 
                     {/* Action Buttons */}
                     <div className="flex flex-col sm:flex-row gap-4 w-full mt-auto">
                         <Link
                             href="/orders"
-                            className="flex-1 flex items-center justify-center bg-black text-white py-3.5 px-6 rounded-full hover:bg-black/90 transition text-sm font-medium"
+                            className="flex-1 flex items-center justify-center bg-[#242424] text-white py-3.5 px-6 rounded-full hover:bg-[#242424]/90 transition text-sm font-medium"
                         >
                             <FiPackage className="mr-2" />
                             View Orders
@@ -71,7 +82,7 @@ function PaymentSuccessContent() {
 
                         <Link
                             href="/"
-                            className="flex-1 flex items-center justify-center border border-black/20 py-3.5 px-6 rounded-full hover:bg-black/5 transition text-sm font-medium"
+                            className="flex-1 flex items-center justify-center border-2 border-black/20 py-3.5 px-6 rounded-full hover:bg-[#242424]/5 transition text-sm font-medium"
                         >
                             Continue Shopping
                             <FiArrowRight className="ml-2" />
@@ -85,7 +96,7 @@ function PaymentSuccessContent() {
                 </div>
 
                 {/* Left Side: Order Details */}
-                <div className="w-full md:w-1/2 bg-black/5 p-8 md:p-12 border-t md:border-t-0 md:border-r border-black/10 flex flex-col justify-center">
+                <div className="w-full md:w-1/2 bg-[#242424]/5 p-8 md:p-12 border-t-2 md:border-t-0 md:border-r-2 border-black/10 flex flex-col justify-center">
                     {/* Order ID */}
                     {orderId && (
                         <div className="mb-8">
@@ -103,11 +114,11 @@ function PaymentSuccessContent() {
                         </div>
                     ) : orderDetails?.order ? (
                         <div className="space-y-4 mb-8">
-                            <div className="flex justify-between border-b border-black/10 pb-4">
+                            <div className="flex justify-between border-b-2 border-black/10 pb-4">
                                 <span className="text-black/60">Total Amount</span>
                                 <span className="font-bold text-xl">Rp{orderDetails.order.total_amount?.toLocaleString('id-ID')}</span>
                             </div>
-                            <div className="flex justify-between border-b border-black/10 pb-4 items-center">
+                            <div className="flex justify-between border-b-2 border-black/10 pb-4 items-center">
                                 <span className="text-black/60">Payment Status</span>
                                 <span className={`font-medium px-2 py-1 rounded-full text-xs uppercase tracking-wide ${orderDetails.transaction?.transaction_status === 'settlement' || orderDetails.transaction?.transaction_status === 'capture' ? 'bg-green-100 text-green-700 border-2 border-green-600/20' :
                                     orderDetails.transaction?.transaction_status === 'pending' ? 'bg-yellow-100 text-yellow-700 border border-yellow-600/20' :
@@ -117,7 +128,7 @@ function PaymentSuccessContent() {
                                 </span>
                             </div>
                             {orderDetails.transaction?.payment_type && (
-                                <div className="flex justify-between border-b border-black/10 pb-4">
+                                <div className="flex justify-between border-b-2 border-black/10 pb-4">
                                     <span className="text-black/60">Payment Method</span>
                                     <span className="font-bold capitalize">{orderDetails.transaction.payment_type.replace(/_/g, ' ')}</span>
                                 </div>

@@ -81,9 +81,9 @@ export default function CategoryPage() {
                 <Link
                   key={product.id}
                   href={`/shop/products/${product.id}`}
-                  className="bg-white rounded-lg overflow-hidden border border-black/20 hover:border-black/40 transition-colors"
+                  className="bg-white rounded-lg overflow-hidden border-2 border-black/20 hover:border-black/40 transition-colors"
                 >
-                  <div className="bg-black/10 h-48 md:h-56 lg:h-64 flex items-center justify-center">
+                  <div className="bg-[#242424]/10 h-48 md:h-56 lg:h-64 flex items-center justify-center">
                     {product.image ? (
                       <img
                         src={product.image.includes('uploads')

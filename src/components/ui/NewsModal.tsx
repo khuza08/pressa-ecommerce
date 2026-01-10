@@ -3,7 +3,7 @@ import { FiX } from 'react-icons/fi';
 export default function NewsletterModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#242424] bg-opacity-50 p-4">
       <div className="bg-white rounded-xl max-w-md w-full p-6 relative">
         <button
           onClick={onClose}

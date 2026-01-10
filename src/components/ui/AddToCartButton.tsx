@@ -45,8 +45,8 @@ export default function AddToCartButton({ product, size, color }: AddToCartButto
       disabled={isInCart}
       className={`flex items-center justify-center w-full py-3 px-4 rounded-full font-medium ${
         isInCart
-          ? 'bg-black/30 text-black/50 cursor-not-allowed'
-          : 'bg-black text-white hover:bg-black/90'
+          ? 'bg-[#242424]/30 text-black/50 cursor-not-allowed'
+          : 'bg-[#242424] text-white hover:bg-[#242424]/90'
       } transition`}
     >
       {isInCart ? 'Added to Cart' : 'Add to Cart'}

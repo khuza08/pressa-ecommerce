@@ -373,7 +373,7 @@ export default function Header() {
                   <div className="flex items-center space-x-3">
                     <button
                       onClick={handleLoginClick}
-                      className="text-white bg-black px-4 py-2 rounded-full text-sm"
+                      className="text-white bg-[#242424] px-4 py-2 rounded-full text-sm"
                     >
                       Sign In
                     </button>

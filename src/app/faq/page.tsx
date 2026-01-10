@@ -30,7 +30,7 @@ export default function FAQPage() {
         
         <div className="space-y-6">
           {faqs.map((faq, index) => (
-            <div key={index} className="border-b border-black/20 pb-6">
+            <div key={index} className="border-b-2 border-black/20 pb-6">
               <h2 className="text-xl font-semibold mb-2">{faq.question}</h2>
               <p className="text-black/60">{faq.answer}</p>
             </div>

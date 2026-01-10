@@ -102,14 +102,14 @@ export default function FavoritesPage() {
 
         {favorites.length === 0 ? (
           <div className="text-center py-12 px-4 text-black">
-            <div className="mx-auto w-24 h-24 bg-black/10 rounded-full flex items-center justify-center mb-4">
+            <div className="mx-auto w-24 h-24 bg-[#242424]/10 rounded-full flex items-center justify-center mb-4">
               <FiHeart className="text-black/40 text-3xl" />
             </div>
             <h3 className="text-lg font-medium mb-2">Your favorites list is empty</h3>
             <p className="text-black/60 mb-6">Looks like you haven't added anything to your favorites yet</p>
             <Link
               href="/"
-              className="inline-block bg-black text-white py-3 px-6 rounded-full hover:bg-black/90 transition text-black"
+              className="inline-block bg-[#242424] text-white py-3 px-6 rounded-full hover:bg-[#242424]/90 transition text-black"
             >
               Discover Products
             </Link>
@@ -117,13 +117,13 @@ export default function FavoritesPage() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-4 text-black">
             <div className="lg:col-span-2">
-              <div className="flex items-center justify-between py-4 border-b border-black/20 mb-2">
+              <div className="flex items-center justify-between py-4 border-b-2 border-black/20 mb-2">
                 <div className="flex items-center">
                   <button
                     onClick={handleSelectAll}
                     className="flex items-center text-sm font-medium hover:text-black/70 transition"
                   >
-                    <div className={`w-5 h-5 rounded-full border border-black/20 mr-3 flex items-center justify-center ${selectedIds.length === favorites.length ? 'bg-black' : 'bg-transparent'}`}>
+                    <div className={`w-5 h-5 rounded-full border-2 border-black/20 mr-3 flex items-center justify-center ${selectedIds.length === favorites.length ? 'bg-[#242424]' : 'bg-transparent'}`}>
                       {selectedIds.length === favorites.length && <FiCheck className="text-white text-xs" />}
                     </div>
                     Select All ({favorites.length})
@@ -140,18 +140,18 @@ export default function FavoritesPage() {
                 {favorites.map((item) => (
                   <li
                     key={item.id}
-                    className={`py-6 border-b border-black/20 flex flex-col sm:flex-row transition-colors ${selectedIds.includes(item.id) ? 'bg-black/[0.02]' : ''}`}
+                    className={`py-6 border-b-2 border-black/20 flex flex-col sm:flex-row transition-colors ${selectedIds.includes(item.id) ? 'bg-[#242424]/[0.02]' : ''}`}
                   >
                     <div className="flex items-center mr-4 mb-4 sm:mb-0">
                       <button
                         onClick={() => handleToggleSelect(item.id)}
-                        className={`w-6 h-6 rounded-full border border-black/20 flex items-center justify-center transition-colors ${selectedIds.includes(item.id) ? 'bg-black' : 'bg-transparent hover:bg-black/5'}`}
+                        className={`w-6 h-6 rounded-full border-2 border-black/20 flex items-center justify-center transition-colors ${selectedIds.includes(item.id) ? 'bg-[#242424]' : 'bg-transparent hover:bg-[#242424]/5'}`}
                       >
                         {selectedIds.includes(item.id) && <FiCheck className="text-white text-sm" />}
                       </button>
                     </div>
 
-                    <div className="w-24 h-24 bg-black/10 rounded-md overflow-hidden mb-4 sm:mb-0 sm:mr-6 flex-shrink-0">
+                    <div className="w-24 h-24 bg-[#242424]/10 rounded-md overflow-hidden mb-4 sm:mb-0 sm:mr-6 flex-shrink-0">
                       {item.image ? (
                         <img
                           src={resolveImageUrl(item.image) || undefined}
@@ -192,7 +192,7 @@ export default function FavoritesPage() {
                               router.push('/checkout');
                             }
                           }}
-                          className="text-sm bg-black text-white px-4 py-2 rounded-full hover:bg-black/80 transition flex items-center"
+                          className="text-sm bg-[#242424] text-white px-4 py-2 rounded-full hover:bg-[#242424]/80 transition flex items-center"
                         >
                           <FiShoppingCart className="mr-2" size={14} />
                           Check Out
@@ -211,9 +211,9 @@ export default function FavoritesPage() {
             </div>
 
             <div className="lg:col-span-1">
-              <div className="p-6 rounded-4xl border border-black/20 sticky top-24">
+              <div className="p-6 rounded-4xl border-2 border-black/20 sticky top-24">
                 <h2 className="text-lg font-bold mb-4">Summary</h2>
-                <div className="space-y-3 pb-4 border-b border-black/10 mb-4">
+                <div className="space-y-3 pb-4 border-b-2 border-black/10 mb-4">
                   <div className="flex justify-between">
                     <span className="text-black/60">Total Favorites</span>
                     <span className="font-medium">{favorites.length}</span>
@@ -227,7 +227,7 @@ export default function FavoritesPage() {
                 <button
                   onClick={handleCheckoutSelected}
                   disabled={selectedIds.length === 0 || isCheckingOut}
-                  className="w-full bg-black text-white py-3 px-4 rounded-full hover:bg-black/80 transition disabled:cursor-not-allowed flex items-center justify-center font-bold"
+                  className="w-full bg-[#242424] text-white py-3 px-4 rounded-full hover:bg-[#242424]/80 transition disabled:cursor-not-allowed flex items-center justify-center font-bold"
                 >
                   {isCheckingOut ? (
                     <FiLoader className="animate-spin mr-2" />
@@ -238,7 +238,7 @@ export default function FavoritesPage() {
                 </button>
 
 
-                <Link href="/" className="w-full mt-4 border border-black/20 py-3 px-4 rounded-full text-black text-center bg-white hover:bg-black/5 transition block text-sm">
+                <Link href="/" className="w-full mt-4 border-2 border-black/20 py-3 px-4 rounded-full text-black text-center bg-white hover:bg-[#242424]/5 transition block text-sm">
                   Continue Shopping
                 </Link>
               </div>

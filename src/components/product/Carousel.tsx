@@ -125,7 +125,7 @@ const Carousel = memo(() => {
                   console.error('Image failed to load:', (e.target as HTMLImageElement).src);
                 }}
               />
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+              <div className="absolute inset-0 bg-[#242424]/30 flex items-center justify-center">
                 <div className="text-center text-white px-4 max-w-2xl">
                   <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-2">
                     {slide.title}
@@ -134,7 +134,7 @@ const Carousel = memo(() => {
                   {slide.link && (
                     <a
                       href={slide.link}
-                      className="inline-block bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-colors"
+                      className="inline-block bg-[#242424] text-white px-6 py-3 rounded-full font-medium hover:bg-[#242424]/90 transition-colors"
                     >
                       Shop Now
                     </a>
@@ -149,14 +149,14 @@ const Carousel = memo(() => {
       {/* Navigation Arrows */}
       <button
         onClick={goToPrevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-[#242424]/50 hover:bg-[#242424]/70 text-white p-2 rounded-full transition-colors"
         aria-label="Previous slide"
       >
         <FiChevronLeft className="text-xl" />
       </button>
       <button
         onClick={goToNextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-[#242424]/50 hover:bg-[#242424]/70 text-white p-2 rounded-full transition-colors"
         aria-label="Next slide"
       >
         <FiChevronRight className="text-xl" />

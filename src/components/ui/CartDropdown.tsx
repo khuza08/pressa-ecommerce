@@ -40,15 +40,15 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
   return (
     <div
       ref={dropdownRef}
-      className={`absolute top-full right-0 mt-2 w-80 bg-white rounded-lg border border-black/20 z-50 transition-all duration-300 ${
+      className={`absolute top-full right-0 mt-2 w-80 bg-white rounded-lg border-2 border-black/20 z-50 transition-all duration-300 ${
         isOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'
       }`}
     >
-      <div className="p-4 border-b border-black/20 flex justify-between items-center">
+      <div className="p-4 border-b-2 border-black/20 flex justify-between items-center">
         <h3 className="font-bold text-lg">Your Cart</h3>
         <button
           onClick={onClose}
-          className="text-black/50 hover:text-black p-1 rounded-full hover:bg-black/10"
+          className="text-black/50 hover:text-black p-1 rounded-full hover:bg-[#242424]/10"
           aria-label="Close cart"
         >
           <FiX size={20} />
@@ -73,9 +73,9 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
             {cart.items.map((item) => (
               <li
                 key={item.id}
-                className="p-4 border-b border-black/10 flex items-center gap-3 hover:bg-black/5"
+                className="p-4 border-b-2 border-black/10 flex items-center gap-3 hover:bg-[#242424]/5"
               >
-                <div className="w-16 h-16 bg-black/20 rounded-md overflow-hidden shrink-0">
+                <div className="w-16 h-16 bg-[#242424]/20 rounded-md overflow-hidden shrink-0">
                   {(() => {
                     const imgSrc = resolveImageUrl(item.image);
                     return imgSrc ? (
@@ -107,7 +107,7 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
       </div>
       
       {cart.items.length > 0 && (
-        <div className="p-4 border-t border-black/20">
+        <div className="p-4 border-t-2 border-black/20">
           <div className="flex justify-between items-center mb-4">
             <span className="font-bold">Total:</span>
             <span className="font-bold">Rp{getTotalPrice().toLocaleString('id-ID')}</span>
@@ -115,7 +115,7 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
           <div className="flex gap-2">
             <Link
               href="/shop/cart"
-              className="flex-1 bg-black text-white py-2 px-4 rounded-full text-center hover:bg-black/90 transition"
+              className="flex-1 bg-[#242424] text-white py-2 px-4 rounded-full text-center hover:bg-[#242424]/90 transition"
               onClick={(e) => {
                 e.preventDefault();
                 onClose();
@@ -127,7 +127,7 @@ export default function CartDropdown({ isOpen, onClose, visible }: CartDropdownP
             >
               View Cart
             </Link>
-            <button className="flex-1 bg-black/90 text-white py-2 px-4 rounded-full hover:bg-black/80 transition">
+            <button className="flex-1 bg-[#242424]/90 text-white py-2 px-4 rounded-full hover:bg-[#242424]/80 transition">
               Checkout
             </button>
           </div>

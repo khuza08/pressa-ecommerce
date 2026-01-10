@@ -374,7 +374,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                     {/* Left Column - Product Images */}
                     <div className="product-images-container w-full md:w-[280px] relative">
                         <div
-                            className="bg-white overflow-hidden sticky flex flex-col border border-black/20 rounded-none md:rounded-lg h-[400px]"
+                            className="bg-white overflow-hidden sticky flex flex-col border-2 border-black/20 rounded-none md:rounded-lg h-[400px]"
                             style={snapToHeader.productImages ? { top: '70px' } : { top: '70px' }}
                         >
                             {/* Mobile: Single Image with Swipe */}
@@ -529,7 +529,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                         <div className="hidden md:block">
                             {isHovering && !isFullscreenZoom && (
                                 <div
-                                    className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-lg border border-black/20 p-3 z-10"
+                                    className="absolute top-0 right-[-320px] w-[300px] bg-white rounded-lg border-2 border-black/20 p-3 z-10"
                                     style={{
                                         maxHeight: "400px",
                                         overflowY: "auto"
@@ -646,7 +646,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                             onClick={() => setActiveVariant(variant.id)}
                                             disabled={variant.stock <= 0}
                                             className={`px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all flex items-center gap-2 ${activeVariant === variant.id
-                                                ? "border-black/50 text-black/80 bg-black/5"
+                                                ? "border-black/50 text-black/80 bg-[#242424]/5"
                                                 : variant.stock <= 0
                                                     ? "border-black/20 text-black/30 cursor-not-allowed"
                                                     : "border-black/20 hover:border-black/30"
@@ -664,7 +664,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 </div>
                             </div>
 
-                            <div className="border-t border-black/20 pt-">
+                            <div className="border-t-2 border-black/20 pt-">
                                 <div className="flex items-center justify-between mb-4">
                                     <button
                                         onClick={() => setActiveTab("detail")}
@@ -730,7 +730,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                         className="hidden md:block purchase-card-container lg:w-[300px] sticky h-[400px]"
                         style={snapToHeader.purchaseCard ? { top: '70px' } : { top: '36px' }}
                     >
-                        <div className="bg-white rounded-xl p-5 h-full flex flex-col justify-between border border-black/20">
+                        <div className="bg-white rounded-xl p-5 h-full flex flex-col justify-between border-2 border-black/20">
                             <div className="mb-4 flex items-center gap-3">
                                 <div className="w-14 h-14 bg-green-50 rounded-lg flex items-center justify-center">
                                     <span className="text-xl">
@@ -753,7 +753,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                     <div className="flex items-center border-2 border-black/20 rounded-lg">
                                         <button
                                             onClick={() => handleQuantityChange("decrement")}
-                                            className="px-3 py-1.5 text-black/60 hover:bg-black/5 text-sm disabled:opacity-50"
+                                            className="px-3 py-1.5 text-black/60 hover:bg-[#242424]/5 text-sm disabled:opacity-50"
                                             disabled={quantity <= 1}
                                         >
                                             −
@@ -777,7 +777,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                             />
                                         <button
                                             onClick={() => handleQuantityChange("increment")}
-                                            className="px-3 py-1.5 text-black/60 hover:bg-black/5 text-sm disabled:opacity-50"
+                                            className="px-3 py-1.5 text-black/60 hover:bg-[#242424]/5 text-sm disabled:opacity-50"
                                             disabled={
                                                 quantity >= (
                                                     product?.has_variants && product?.variants
@@ -800,7 +800,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 </div>
                             </div>
 
-                            <div className="mb-5 pt-3 border-t border-black/20">
+                            <div className="mb-5 pt-3 border-t-2 border-black/20">
                                 <div className="flex justify-between items-center">
                                     <span className="text-black/60 text-md">Subtotal</span>
                                     <span className="text-2xl font-bold text-black">
@@ -875,7 +875,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                             });
                                         }
                                     }}
-                                    className="w-full bg-black text-white font-bold text-base py-2 rounded-xl transition-colors"
+                                    className="w-full bg-[#242424] text-white font-bold text-base py-2 rounded-xl transition-colors"
                                 >
                                     + Keranjang
                                 </button>
@@ -884,7 +884,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
                                 </button>
                             </div>
 
-                        <div className="pt-4 border-t border-black/20 mt-auto">
+                        <div className="pt-4 border-t-2 border-black/20 mt-auto">
                             <div className="flex justify-center gap-4">
                                 <button className="flex items-center gap-1 text-black/60 hover:text-black text-xs">
                                 <FaCommentAlt className="w-4 h-4" />
@@ -1017,7 +1017,7 @@ const ProductDetail = memo(({ productId }: { productId: string }) => {
             {/* Fullscreen Zoom Overlay */}
             {isFullscreenZoom && (
                 <div
-                    className="fixed inset-0 bg-black/50 backdrop-blur-xl z-9999 flex items-center justify-center p-4"
+                    className="fixed inset-0 bg-[#242424]/50 backdrop-blur-xl z-9999 flex items-center justify-center p-4"
                     onClick={closeFullscreenZoom}
                 >
                     <button

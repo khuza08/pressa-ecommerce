@@ -52,7 +52,7 @@ const LoginModal = ({ isOpen, onClose, onAction, actionType }: LoginModalProps) 
   const actionText = actionType === 'favorite' ? 'favorite this item' : 'add to cart';
   
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-[#242424]/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div 
         className="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
@@ -62,7 +62,7 @@ const LoginModal = ({ isOpen, onClose, onAction, actionType }: LoginModalProps) 
             <h2 className="text-xl font-bold">Log in to {actionText}</h2>
             <button 
               onClick={onClose}
-              className="p-1 rounded-full hover:bg-black/10 transition-colors"
+              className="p-1 rounded-full hover:bg-[#242424]/10 transition-colors"
               aria-label="Close modal"
             >
               <FiX className="text-lg" />
@@ -114,7 +114,7 @@ const LoginModal = ({ isOpen, onClose, onAction, actionType }: LoginModalProps) 
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-black text-white py-2.5 rounded-lg font-medium hover:bg-gray-800 transition-colors disabled:opacity-50"
+                className="w-full bg-[#242424] text-white py-2.5 rounded-lg font-medium hover:bg-gray-800 transition-colors disabled:opacity-50"
               >
                 {isLoading ? 'Logging in...' : 'Sign In'}
               </button>

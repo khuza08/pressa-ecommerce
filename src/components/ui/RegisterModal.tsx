@@ -43,7 +43,7 @@ export default function RegisterModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#242424]/50 backdrop-blur-sm">
       <div 
         className="relative bg-white rounded-2xl w-full max-w-md overflow-hidden"
         onClick={(e) => e.stopPropagation()}
@@ -53,7 +53,7 @@ export default function RegisterModal({
             <h2 className="text-2xl font-bold">Create Account</h2>
             <button 
               onClick={onClose}
-              className="text-black/50 hover:text-black p-1 rounded-full hover:bg-black/10"
+              className="text-black/50 hover:text-black p-1 rounded-full hover:bg-[#242424]/10"
               aria-label="Close modal"
             >
               <FiX size={20} />
@@ -81,7 +81,7 @@ export default function RegisterModal({
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-black/20 rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black focus:outline-none"
+                    className="w-full pl-10 pr-4 py-3 border-2 border-black/20 rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black focus:outline-none"
                     placeholder="John Doe"
                     required
                   />
@@ -101,7 +101,7 @@ export default function RegisterModal({
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-black/20 rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black focus:outline-none"
+                    className="w-full pl-10 pr-4 py-3 border-2 border-black/20 rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black focus:outline-none"
                     placeholder="your@email.com"
                     required
                   />
@@ -121,7 +121,7 @@ export default function RegisterModal({
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-black/20 rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black focus:outline-none"
+                    className="w-full pl-10 pr-4 py-3 border-2 border-black/20 rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black focus:outline-none"
                     placeholder="••••••••"
                     required
                   />
@@ -141,7 +141,7 @@ export default function RegisterModal({
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-black/20 rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black focus:outline-none"
+                    className="w-full pl-10 pr-4 py-3 border-2 border-black/20 rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black focus:outline-none"
                     placeholder="••••••••"
                     required
                   />
@@ -152,7 +152,7 @@ export default function RegisterModal({
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-6 bg-black text-white py-3 px-4 rounded-lg font-medium hover:bg-black/90 transition"
+              className="w-full mt-6 bg-[#242424] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#242424]/90 transition"
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>

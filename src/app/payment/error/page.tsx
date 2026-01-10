@@ -50,7 +50,7 @@ function PaymentErrorContent() {
                 <div className="space-y-3">
                     <Link
                         href="/checkout"
-                        className="flex items-center justify-center w-full bg-black text-white py-3 px-6 rounded-full hover:bg-black/90 transition"
+                        className="flex items-center justify-center w-full bg-[#242424] text-white py-3 px-6 rounded-full hover:bg-[#242424]/90 transition"
                     >
                         <FiRefreshCw className="mr-2" />
                         Try Again
@@ -58,7 +58,7 @@ function PaymentErrorContent() {
 
                     <Link
                         href="/shop/cart"
-                        className="flex items-center justify-center w-full border border-black/20 py-3 px-6 rounded-full hover:bg-black/5 transition"
+                        className="flex items-center justify-center w-full border-2 border-black/20 py-3 px-6 rounded-full hover:bg-[#242424]/5 transition"
                     >
                         <FiArrowLeft className="mr-2" />
                         Return to Cart

@@ -126,7 +126,7 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
   return (
     <Link
       href={`/shop/products/${product.id}`}
-      className="block bg-white p-4 rounded-lg border border-black/20 hover:border-black/40 transition-all overflow-hidden"
+      className="block bg-white p-4 rounded-lg border-2 border-black/20 hover:border-black/40 transition-all overflow-hidden"
     >
       <div className="relative">
         <div className="aspect-square w-full overflow-hidden rounded-md">

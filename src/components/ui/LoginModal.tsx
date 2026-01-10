@@ -34,7 +34,7 @@ export default function LoginModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#242424]/50 backdrop-blur-sm">
       <div
         className="relative bg-white rounded-2xl w-full max-w-md overflow-hidden"
         onClick={(e) => e.stopPropagation()}
@@ -44,7 +44,7 @@ export default function LoginModal({
             <h2 className="text-2xl font-bold">Sign In</h2>
             <button
               onClick={onClose}
-              className="text-black/50 hover:text-black p-1 rounded-full hover:bg-black/10"
+              className="text-black/50 hover:text-black p-1 rounded-full hover:bg-[#242424]/10"
               aria-label="Close modal"
             >
               <FiX size={20} />

@@ -179,13 +179,13 @@ const Category = memo(() => {
                   style={{ scrollSnapAlign: 'start' }}
                 >
                   <div
-                    className="rounded-lg overflow-hidden border border-black/20 cursor-pointer h-24 transition-all hover:border-black/40"
+                    className="rounded-lg overflow-hidden border-2 border-black/20 cursor-pointer h-24 transition-all hover:border-black/40"
                     onClick={() => handleCategoryClick(category.name)}
                     onMouseEnter={() => setHoveredCategory(1)}
                     onMouseLeave={() => setHoveredCategory(null)}
                   >
                     <div className="flex h-full">
-                      <div className="w-1/3 h-full bg-black/10 flex items-center justify-center">
+                      <div className="w-1/3 h-full bg-[#242424]/10 flex items-center justify-center">
                         <IconComponent className="text-3xl text-black/70" />
                       </div>
                       <div className="flex-1 p-3 flex flex-col justify-between">
@@ -242,7 +242,7 @@ const Category = memo(() => {
                   style={{ scrollSnapAlign: 'start' }}
                 >
                   <div
-                    className="w-16 h-16 rounded-lg bg-black/10 flex items-center justify-center mb-2 cursor-pointer"
+                    className="w-16 h-16 rounded-lg bg-[#242424]/10 flex items-center justify-center mb-2 cursor-pointer"
                     onClick={() => handleCategoryClick(category.name)}
                     onMouseEnter={() => setHoveredCategory(1)}
                     onMouseLeave={() => setHoveredCategory(null)}
