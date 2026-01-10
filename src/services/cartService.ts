@@ -325,7 +325,15 @@ export const cartService = {
       console.log('Making API call to update cart quantity');
       try {
         const item = cart.items[itemIndex];
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1'}/cart/${item.productId}`, {
+        const queryParams = new URLSearchParams();
+        if (item.size) queryParams.append('size', item.size);
+        if (item.color) queryParams.append('color', item.color);
+        if (item.variantId) queryParams.append('variant_id', item.variantId.toString());
+
+        const queryString = queryParams.toString();
+        const url = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1'}/cart/${item.productId}${queryString ? `?${queryString}` : ''}`;
+
+        const response = await fetch(url, {
           method: 'PUT',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -374,7 +382,15 @@ export const cartService = {
       if (token) {
         console.log('Making API call to remove from cart');
         try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1'}/cart/${item.productId}`, {
+          const queryParams = new URLSearchParams();
+          if (item.size) queryParams.append('size', item.size);
+          if (item.color) queryParams.append('color', item.color);
+          if (item.variantId) queryParams.append('variant_id', item.variantId.toString());
+
+          const queryString = queryParams.toString();
+          const url = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1'}/cart/${item.productId}${queryString ? `?${queryString}` : ''}`;
+
+          const response = await fetch(url, {
             method: 'DELETE',
             headers: {
               'Authorization': `Bearer ${token}`,
