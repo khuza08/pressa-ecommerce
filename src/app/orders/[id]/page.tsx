@@ -194,7 +194,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                                         <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden mr-4">
                                             {item.product?.image ? (
                                                 <img
-                                                    src={resolveImageUrl(item.product.image || '')}
+                                                    src={resolveImageUrl(item.product.image || '') ?? undefined}
                                                     alt={item.product?.name || 'Product'}
                                                     className="w-full h-full object-cover"
                                                 />
