@@ -31,6 +31,7 @@ interface FavoriteContextType {
   getFavoritesCount: () => number;
   loadFavoritesFromBackend: () => Promise<void>;
   clearFavoritesOnLogout: () => Promise<void>;
+  clearFavoritesFromServer: () => Promise<void>;
 }
 
 const FavoriteContext = createContext<FavoriteContextType | undefined>(undefined);
@@ -179,7 +180,7 @@ export const FavoriteProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const clearFavoritesOnLogout = async () => {
+  const clearFavoritesFromServer = async () => {
     const token = getToken();
     try {
       if (token) {
@@ -192,11 +193,15 @@ export const FavoriteProvider = ({ children }: { children: ReactNode }) => {
         });
       }
     } catch (error) {
-      console.error('Error clearing favorites on logout:', error);
+      console.error('Error clearing favorites from server:', error);
     }
 
     // Clear local storage
     setFavorites([]);
+  };
+
+  const clearFavoritesOnLogout = async () => {
+    await clearFavoritesFromServer();
   };
 
   return (
@@ -209,6 +214,7 @@ export const FavoriteProvider = ({ children }: { children: ReactNode }) => {
         getFavoritesCount,
         loadFavoritesFromBackend,
         clearFavoritesOnLogout,
+        clearFavoritesFromServer,
       }}
     >
       {children}

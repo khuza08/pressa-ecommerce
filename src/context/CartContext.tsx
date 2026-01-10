@@ -7,7 +7,7 @@ import { useAuth } from './AuthContext';
 
 interface CartContextType {
   cart: Cart;
-  addToCart: (product: any, quantity?: number, size?: string, color?: string) => Promise<void>;
+  addToCart: (product: any, quantity?: number, size?: string, color?: string, variantId?: number) => Promise<void>;
   updateQuantity: (itemId: string, quantity: number) => Promise<void>;
   removeItem: (itemId: string) => Promise<void>;
   getTotalItems: () => number;
@@ -45,8 +45,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [getToken]);
 
-  const addToCart = async (product: any, quantity: number = 1, size?: string, color?: string) => {
-    const updatedCart = await cartService.addToCart(product, quantity, size, color);
+  const addToCart = async (product: any, quantity: number = 1, size?: string, color?: string, variantId?: number) => {
+    const updatedCart = await cartService.addToCart(product, quantity, size, color, variantId);
     setCart(updatedCart);
   };
 

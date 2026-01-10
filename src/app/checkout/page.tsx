@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { FiArrowLeft, FiLoader } from 'react-icons/fi';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
+import { useFavorites } from '@/context/FavoriteContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
@@ -19,6 +20,7 @@ const MIDTRANS_SNAP_URL = MIDTRANS_IS_PRODUCTION
 
 export default function CheckoutPage() {
   const { cart, getTotalPrice, clearCartFromServer } = useCart();
+  const { clearFavoritesFromServer } = useFavorites();
   const { isAuthenticated, getToken } = useAuth();
   const router = useRouter();
 
@@ -141,11 +143,13 @@ export default function CheckoutPage() {
         onSuccess: (result: any) => {
           console.log('Payment success:', result);
           clearCartFromServer();
+          clearFavoritesFromServer();
           router.push(`/payment/success?order_id=${response.midtrans_order_id}`);
         },
         onPending: (result: any) => {
           console.log('Payment pending:', result);
           clearCartFromServer();
+          clearFavoritesFromServer();
           router.push(`/payment/success?order_id=${response.midtrans_order_id}&status=pending`);
         },
         onError: (result: any) => {

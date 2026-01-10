@@ -113,17 +113,11 @@ export default function FavoriteDropdown({ isOpen, onClose, visible }: FavoriteD
           <div className="flex gap-2">
             <Link
               href="/favorites"
-              className="flex-1 bg-black text-white py-2 px-4 rounded-full text-center hover:bg-black/90 transition"
+              className="flex-1 bg-black text-white py-2 px-2 rounded-full text-center hover:bg-black/90 transition"
               onClick={onClose}
             >
               View Favorites
             </Link>
-            <button
-              className="flex-1 bg-black/90 text-white py-2 px-4 rounded-full hover:bg-black/80 transition"
-              onClick={onClose}
-            >
-              Close
-            </button>
           </div>
         </div>
       )}
