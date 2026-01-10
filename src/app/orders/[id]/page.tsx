@@ -18,6 +18,7 @@ interface OrderItem {
         id: number;
         name: string;
         image: string;
+        images?: { url: string }[];
     };
 }
 
@@ -193,17 +194,20 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                                 {order.items?.map((item) => (
                                     <div key={item.id} className="flex items-center py-3 border-b-2 border-black/10 last:border-0">
                                         <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden mr-4">
-                                            {item.product?.image ? (
-                                                <img
-                                                    src={resolveImageUrl(item.product.image || '') ?? undefined}
-                                                    alt={item.product?.name || 'Product'}
-                                                    className="w-full h-full object-cover"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-gray-400">
-                                                    <FiPackage size={24} />
-                                                </div>
-                                            )}
+                                            {(() => {
+                                                const imgSrc = resolveImageUrl(item.product?.image || item.product?.images?.[0]?.url);
+                                                return imgSrc ? (
+                                                    <img
+                                                        src={imgSrc}
+                                                        alt={item.product?.name || 'Product'}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                                        <FiPackage size={24} />
+                                                    </div>
+                                                );
+                                            })()}
                                         </div>
                                         <div className="flex-1">
                                             <h3 className="font-medium">{item.product?.name || `Product #${item.product_id}`}</h3>
